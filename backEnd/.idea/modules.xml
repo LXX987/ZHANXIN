@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/huaqiBackend.iml" filepath="$PROJECT_DIR$/.idea/huaqiBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/huaqi/zhanxin.iml" filepath="$PROJECT_DIR$/huaqi/zhanxin.iml" />
+    </modules>
+  </component>
+</project>
