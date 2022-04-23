@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-     
-    <div class="content">
+    <div class="body">
+      <div class="loginbox"></div>
       <el-row>
         <el-col :span="14" class="background">
         
@@ -61,9 +61,16 @@ export default {
 </script>
 
 <style scoped>
+.hello{
+  height:800px;
+}
 .body {
   background-image: url(../../src/assets/background.png);
-  background-size:1024px;
+  background-size:100% 100%;
+  background-attachment:fixed;
+}
+.loginbox {
+  
 }
 .logocenter{
   text-align: center;
@@ -113,9 +120,7 @@ h1, h2 {
   margin: 8px;
 }
 
-.hello{
-  height:800px;
-}
+
 
 .description{
   margin-top: 20px;
