@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
+import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
 
 Vue.use(Router)
@@ -38,8 +39,20 @@ export default new Router({
           components: {   
             table: () => import('@/components/PsychologyHome')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
+        },
+        {
+          path: 'HomePage',
+          name: 'HomePage',
+          components: {
+            table: () => import('@/components/HomePage')
+          }
         }
       ]
+    },
+    {
+      path: 'Footer',
+      name: 'Footer',
+      components: Footer
     }
   ]
 })
