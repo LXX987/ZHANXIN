@@ -3,12 +3,15 @@
 <div class="guidebar">
   <el-menu default-active="/CreditReport" class="el-menu-demo" mode="horizontal" :router="true">
     <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
-    <el-menu-item index="1" @click="gotoMain">首页</el-menu-item>
+    <el-menu-item index="">首页</el-menu-item>
     <el-menu-item index="/CreditReport">信用报告</el-menu-item>
-    <el-menu-item index="3" @click="gotoMeasure">心理测试</el-menu-item>
+    <el-menu-item index="">心理测试</el-menu-item>
     <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
-    <el-menu-item index="5" @click="gotoInvite">好友人脉</el-menu-item>
-    <el-menu-item index="6" @click="gotoCS">意见反馈</el-menu-item>
+    <el-menu-item index="">好友人脉</el-menu-item>
+    <el-menu-item index="">意见反馈</el-menu-item>
+    <el-menu-item index="">
+      <img src='@/assets/avatar.png' class="avatar">
+    </el-menu-item>
 </el-menu>
 </div>
 <div class="body">
@@ -23,30 +26,6 @@
        return {
       };
     },
-    methods: {
-      gotoMain(){
-        //this.$router.push({path:'/HomePage'})
-      },
-      gotoRating(){
-         //this.$router.push({path:'/CreditRating'})
-        // router.push({path:'/CreditRating'})
-      },
-      gotoVideo(){
-        this.$router.push('/HonestyVideo')
-      },
-      gotoMeasure(){
-        this.$router.push('/CreditReport')
-      },
-      gotoCS(){
-        //this.$router.push('/CustomService')
-      },
-      gotoCenter(){
-        //this.$router.push('/PersonalCenter')
-      },
-      gotoInvite(){
-        //this.$router.push('/InviteCode')
-      },
-    }
   }
 </script>
 <style lang="css" scoped>
@@ -87,5 +66,8 @@
 }
 .el-menu.el-menu--horizontal {
     border-bottom: solid 0.005208rem #fff8f8;
+}
+.avatar{
+  height: 50%;
 }
 </style>
