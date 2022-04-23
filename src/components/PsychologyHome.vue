@@ -1,6 +1,5 @@
 <template>
     <el-container>
-        <el-header>Header</el-header>
         <el-main>
             <div class="imageBlock">
                 <el-carousel :interval="2000" arrow="always" :height="bannerH+'px'">
@@ -33,6 +32,44 @@
                     <br><br>
                 </el-row>
             </div>
+            <div class="creditEvaluateGroup">
+                <el-row>
+                    <el-row><img id="evaluateImg" src="@/assets/creditEvaluateGroup.png"></el-row>
+                    <el-row id="assistantMain">
+                        <el-col :span="2"><div class="whiteassistantBlock"></div></el-col>
+                        <el-col :span="4">
+                            <div class="assistantPiece"><el-card class="evaluateCard" shadow="hover"><img class="assistantPieceImg" src="@/assets/evaluate1.gif"></el-card></div>
+                        </el-col>
+                        <el-col :span="4">
+                            <div class="assistantPiece"><el-card class="evaluateCard" shadow="hover"><img class="assistantPieceImg" src="@/assets/evaluate2.gif"></el-card></div>
+                        </el-col>
+                        <el-col :span="4">
+                            <div class="assistantPiece"><el-card class="evaluateCard" shadow="hover"><img class="assistantPieceImg" src="@/assets/evaluate3.gif"></el-card></div>
+                        </el-col>
+                        <el-col :span="4">
+                            <div class="assistantPiece"><el-card class="evaluateCard" shadow="hover"><img class="assistantPieceImg" src="@/assets/evaluate4.gif"></el-card></div>
+                        </el-col>
+                        <el-col :span="4">
+                            <div class="assistantPiece"><el-card class="evaluateCard" shadow="hover"><img class="assistantPieceImg" src="@/assets/evaluate5.gif"></el-card></div>
+                        </el-col>
+                        <el-col :span="2"><div class="whiteassistantBlock"></div></el-col>
+                    </el-row>
+                    <br><br><br><br>
+                </el-row>
+            </div>
+            <div class="dataSourceBlock">
+                <el-row>
+                    <el-col :span="5"><img id="dataSourceImg" src="@/assets/dataSourceGroup.png"></el-col>
+                    <el-col :span="19">
+                        <div class="or-container">
+                            <div class="box" :class="eleindex ==i?'eleactive':''" v-for="(ele,i) in piclist" :key="i" @mouseenter="enter(i)" @mouseleave="out(i)">
+                                <img :src="ele.img">
+                            </div>
+                        </div>
+                    </el-col>
+                    <br><br><br><br>
+                </el-row>
+            </div>
         </el-main>
         <el-footer>Footer</el-footer>
     </el-container>
@@ -42,6 +79,15 @@ export default {
     name: 'PsychologyHome',
     data() {
         return {
+            eleindex: 0,
+        piclist: [
+          {text: '播放/录制页面', bg: require('../assets/aliyun.jpg'), img:  require('../assets/aliyun.jpg')},
+          {text: '播放/录制页面', bg: require('../assets/kaggle.jpg'), img:  require('../assets/kaggle.jpg')},
+          {text: '播放/录制页面', bg: require('../assets/GitHub.jpeg'), img:  require('../assets/GitHub.jpeg')},
+          {text: '播放/录制页面', bg: require('../assets/kaggle.jpg'), img:  require('../assets/kaggle.jpg')}
+
+        ],
+            activeName: '1',
             bannerH: this.setBannerH1,
             images: [
                 { url: require("@/assets/1.png")},
@@ -51,6 +97,18 @@ export default {
         };
     },
     methods: {
+        enter: function (i) {
+        // console.log(i)
+        this.eleindex = i
+        // if (this.eleindex === i) {
+        //   this.eleindex = -1
+        // } else {
+        //   this.eleindex = i
+        // }
+      },
+      out: function (i) {
+        this.imgindex = -1
+      },
         setBannerH(){
 			this.bannerH=document.getElementsByClassName("bannertt")[0].height
 		},
@@ -70,6 +128,69 @@ export default {
 }
 </script>
 <style scoped>
+/*手风琴样式*/
+.or-container {
+  display: flex;
+  width: 97%;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  padding-left: 0%;
+  padding-right: 6%;
+  box-sizing: border-box;
+  height: 48vh;
+}
+.or-container:before {
+  background-color: rgba(0,0,0,0.4);
+}
+
+.box {
+  flex: 1;
+  overflow: hidden;
+  transition: .5s;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+  line-height: 0;
+}
+
+.box > img {
+  width: 100%;
+  /* height: calc(100% - 10vh); */
+  height: calc(100%);
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: .5s;
+}
+
+.box > span {
+  font-size: 3.8vh;
+  display: block;
+  text-align: center;
+  height: 10vh;
+  line-height: 2.6;
+}
+
+.eleactive {
+  flex: 1 1 40%;
+}
+
+.eleactive > img {
+  width: 100%;
+  height: 100%;
+}
+  /*end*/
+
+#dataSourceImg {
+    height: 300px;
+}
+.evaluateCard {
+    background-color: #f1f8ff;
+    border-color: #f1f8ff;
+}
+.dataSourceBlock {
+    background-color: #ffffff;
+}
+.creditEvaluateGroup {
+    background-color: #f1f8ff;
+}
 .el-card {
     border-color: #ffffff;
 }
@@ -89,6 +210,10 @@ export default {
 }
 .assistantPieceImg {
     width: 80%;
+}
+#evaluateImg {
+    width: 20%;
+    margin-top: 2%;
 }
 #assistantImg {
     width: 20%;
@@ -134,9 +259,6 @@ export default {
     color: #333;
     text-align: center;
     padding: 0px;
-}
-.el-container {
-    /* height: 1000px; */
 }
 body > .el-container {
     margin-bottom: 40px;

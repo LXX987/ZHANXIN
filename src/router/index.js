@@ -14,11 +14,6 @@ export default new Router({
       component: Login
     },
     {
-      path: '/PsychologyHome',
-      name: 'PsychologyHome',
-      component: PsychologyHome
-    },
-    {
       path: '/',
       name: 'GuideBar',
       component: GuideBar,
@@ -37,6 +32,13 @@ export default new Router({
             table: () => import('@/components/CreditReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
+        {
+          path: 'PsychologyHome', 
+          name: 'PsychologyHome',
+          components: {   
+            table: () => import('@/components/PsychologyHome')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        }
       ]
     }
   ]
