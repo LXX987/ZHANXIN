@@ -23,7 +23,16 @@ export default new Router({
           name: 'HonestyVideo',
           components: {   
             table: () => import('@/components/HonestyVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
-          }
+          },
+          children:[
+            {
+              path: 'BasicVideo', 
+              name: 'BasicVideo',
+              components: {   
+              video: () => import('@/components/BasicVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          },
+            }
+          ]
         },
         {
           path: 'CreditReport', 

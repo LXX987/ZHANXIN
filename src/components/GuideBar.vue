@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="guidebar">
-  <el-menu default-active="/CreditReport" class="el-menu-demo" mode="horizontal" :router="true">
+  <el-menu  class="el-menu-demo" mode="horizontal" :router="true">
     <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
     <el-menu-item index="">首页</el-menu-item>
     <el-menu-item index="/CreditReport">信用报告</el-menu-item>
