@@ -15,6 +15,7 @@
     "axios": "^0.26.1",
     "echarts": "^5.3.2",
     "element-ui": "^2.15.8",
+    "lib-flexible": "^0.3.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -57,6 +58,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
+    "px2rem-loader": "^0.1.9",
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",

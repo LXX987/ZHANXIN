@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import * as echarts from 'echarts'
 import axios from 'axios'
+import './utils/flexible'
 Vue.prototype.$axios = axios// 全局注册，之后可在其他组件中通过 this.$axios 发送数据
 axios.defaults.headers.post["Content-type"] = "application/json"
 
