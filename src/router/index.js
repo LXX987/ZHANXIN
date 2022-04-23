@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
-import PersonalCenter from '@/components/PersonalCenter'
+import PsychologyHome from '@/components/PsychologyHome'
 
 Vue.use(Router)
 
@@ -20,9 +20,37 @@ export default new Router({
       component: Register
     },
     {
+      path: '/PsychologyHome',
+      name: 'PsychologyHome',
+      component: PsychologyHome
+    },
+    {
       path: '/',
-      name: 'PersonalCenter',
-      component: PersonalCenter
+      name: 'GuideBar',
+      component: GuideBar,
+      children: [   // 添加子路由
+        {
+          path: 'HonestyVideo', 
+          name: 'HonestyVideo',
+          components: {   
+            table: () => import('@/components/HonestyVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'CreditReport', 
+          name: 'CreditReport',
+          components: {   
+            table: () => import('@/components/CreditReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'PersonalCenter', 
+          name: 'PersonalCenter',
+          components: {   
+            table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        }
+      ]
     }
   ]
 })
