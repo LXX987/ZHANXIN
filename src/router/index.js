@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
+import Register from '@/components/Register'
 import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
 import PsychologyQuestions from '@/components/PsychologyQuestions'
@@ -17,6 +18,16 @@ export default new Router({
       path: '/Login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/Register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/PsychologyHome',
+      name: 'PsychologyHome',
+      component: PsychologyHome
     },
     {
       path: '/',
@@ -44,6 +55,13 @@ export default new Router({
           name: 'CreditReport',
           components: {   
             table: () => import('@/components/CreditReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'PersonalCenter', 
+          name: 'PersonalCenter',
+          components: {   
+            table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {
@@ -75,7 +93,7 @@ export default new Router({
               }
             },
             {
-              path: 'PsychologyHistory',
+              path: '/PsychologyGuidebar/PsychologyHistory',
               name: 'PsychologyHistory',
               components: {
                 subtable: () =>  import('@/components/PsychologyHistory')
