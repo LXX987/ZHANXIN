@@ -82,19 +82,19 @@ export default ({
                   value:'0',
                   src:require('../assets/avatar.png'),
                   des:'测试图',
-                  price:198,
+                  price:222,
               },
               {
                   value:'1',
                   src:require('../assets/avatar.png'),
                   des:'测试图',
-                  price:198,
+                  price:222,
               },
               {
                   value:'2',
                   src:require('../assets/avatar.png'),
                   des:'测试图',
-                  price:198,
+                  price:222,
               }
           ]
         }

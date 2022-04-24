@@ -37,13 +37,16 @@
     </div>
     <div class="video">
         <div class="video_guide">
-            <el-menu default-active="/HonestyVideo/BasicVideo" class="video_guide" mode="horizontal" :router="true">
-                <el-menu-item index="/HonestyVideo/BasicVideo">基本知识</el-menu-item>
-                <el-menu-item index="/CreditReport">信贷知识</el-menu-item>
-                <el-menu-item index="/PsychologyHome">诚信文化</el-menu-item>
+            <el-menu default-active="/HonestyVideo" class="video_guide" mode="horizontal" :router="true">
+                <el-menu-item index="/HonestyVideo">基本知识</el-menu-item>
+                <el-menu-item index="/CreditVideo">信贷知识</el-menu-item>
+                <el-menu-item index="/HonestyCulture">诚信文化</el-menu-item>
+                <el-menu-item index="/VideoRecord">我的观看记录</el-menu-item>
             </el-menu>
         </div>
-        <router-view name="video"/>
+        <div>
+            <router-view name="video"></router-view>
+        </div>
     </div>
 </div>
 </div>   
@@ -55,6 +58,7 @@ export default {
      },
     data(){
         return{
+            video_index:'/HonestyVideo/BasicVideo',
             num:'1',
             watched:require('@/assets/unwatch.png'),
             index: 1,
@@ -67,7 +71,15 @@ export default {
          ]
         }
     },
+    computed: {
+        defaultActive() {
+            return '/' + this.$route.path.split('/').reverse()[0];
+        }
+    },
     methods:{
+        setvideoindex(){
+
+        },
         setBannerH(){
 			this.bannerH=document.getElementsByClassName("bannertt")[0].height
 		},
@@ -93,14 +105,15 @@ export default {
             let newUrl = this.$router.resolve({name:'Video', query:{videoUrl:this.videoUrl}});
             window.open(newUrl.href, "_blank");
             //this.$router.push({name:'Video', query:{videoUrl:this.videoUrl}})
-        }
-    },
+        },
+        },
     mouted(){
         this.setBannerH1()//初始值根据图片的缩放比率和屏幕大小来定，不然走马灯开始时候就会默认一个值
 		window.addEventListener('resize',()=>{
 			this.setBannerH()
 		},false)
-    }
+    },
+
 }
 </script>
     
@@ -239,5 +252,8 @@ body > .el-container {
     font-size: 34px;
     color: #303133;
     margin-bottom: 60px;
+}
+.el-menu.el-menu--horizontal {
+    border-bottom: solid 0;
 }
 </style>
