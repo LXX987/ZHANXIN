@@ -1,82 +1,35 @@
 <template>
-    <!-- <el-main> -->
+    <el-main>
         <div>
             <el-row>
-                <!-- <el-col :span="4">
+                <el-col :span="4">
                     <div class="NavMenu">
-                        <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                            <el-menu-item index="/PsychologyHome">
+                        <el-menu default-active="/PsychologyGuidebar/PsychologyHome" class="el-menu-demo" :router="true">
+                            <el-menu-item index="/PsychologyGuidebar/PsychologyHome">
                                 <i class="el-icon-date"></i>
                                 <span slot="title">测试介绍</span>
                             </el-menu-item>
-                            <el-menu-item index="/PsychologyQuestions">
+                            <el-menu-item index="/PsychologyGuidebar/PsychologyQuestions">
                                 <i class="el-icon-document"></i>
                                 <span slot="title">测试题目</span>
                             </el-menu-item>
-                            <el-menu-item index="/PsychologyResult">
+                            <el-menu-item index="/PsychologyGuidebar/PsychologyResult">
                                 <i class="el-icon-data-analysis"></i>
                                 <span slot="title">测试结果</span>
                             </el-menu-item>
-                            <el-menu-item index="/PsychologyHistory">
+                            <el-menu-item index="/PsychologyGuidebar/PsychologyHistory">
                                 <i class="el-icon-user"></i>
                                 <span slot="title">历史记录</span>
                             </el-menu-item>
                         </el-menu>
                     </div>
-                </el-col> -->
-                <el-col :span="14">
-                    <el-row class="measureHomeHead">
-                        <span id="measureHomeHeading">大五人格心理测试</span>
-                    </el-row>
-                    <el-row class="psychologyIntro">
-                        <el-col :span="14">
-                            <div class="psychologyIntroWord">
-                                <p>&ensp;&ensp;&ensp;&ensp;&ensp;近年来，研究者们在人格描述模式上形成了比较一致的共识，提出了人格的大五模式， Goldberg（1992）称之为人格心理学中的一场革命。</p>
-                                <p>&ensp;&ensp;&ensp;&ensp;&ensp;研究者通过词汇学的方法，发现大约有五种特质可以涵盖人格描述的所有方面。大五人格（OCEAN），也被称之为人格的海洋。</p>
-                                <p>&ensp;&ensp;&ensp;&ensp;&ensp;人格理论为：</p>
-                                <ul>
-                                    <li>开放性（openness）</li>
-                                    <li>责任心（conscientiousness）</li>
-                                    <li>外倾性（extraversion）</li>
-                                    <li>宜人性（agreeableness）</li>
-                                    <li>神经质性（neuroticism）</li>
-                                </ul>
-                            </div>
-                        </el-col>
-                        <el-col :span="10">
-                            <img id="psychologyMeasureIntroImg" src="@/assets/psychologyMeasureHome.jpg">
-                        </el-col>
-                    </el-row>
-                    <el-divider id="divider"></el-divider>
-                    <el-row>
-                        <div class="introBox">
-                            <el-button id="startButton" @click="jumpToPsychologyQuestions">开始测试</el-button>
-                        </div>
-                    </el-row>
                 </el-col>
-                <el-col :span="10">
-                    <el-row>
-                        <div class="Notice">
-                            <el-row>
-                                <span id="NoticeHeading">测评提示</span>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row>
-                                <ul>
-                                    <li>性格乜有好与坏，测试的目的是反映最真实的自己。</li>
-                                    <li>请最大程度放松下来，根据您的直觉进行测试</li>
-                                    <li>我们会加密保存您的答案，保护您的隐私安全</li>
-                                </ul>
-                            </el-row>
-                        </div>
-                    </el-row>
-                    <el-row>
-                        <div class="recommend"></div>
-                    </el-row>
+                <el-col :span="20">
+                    <router-view name="subtable"></router-view>
                 </el-col>
             </el-row>
         </div>
-    <!-- </el-main> -->
+    </el-main>
 </template>
 <style scoped>
 #NoticeHeading {
@@ -217,15 +170,18 @@
 </style>
 <script>
 export default {
-    name: 'PsychologyHome',
+    name: 'PsychologyGuidebar',
     data() {
         return {
             
         }
     },
     methods: {
-      jumpToPsychologyQuestions(){
-          this.$router.push('/PsychologyGuidebar/PsychologyQuestions')
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
       }
     }
 }
