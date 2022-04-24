@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
 
 Vue.use(Router)
@@ -34,7 +35,16 @@ export default new Router({
           name: 'HonestyVideo',
           components: {   
             table: () => import('@/components/HonestyVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
-          }
+          },
+          children:[
+            {
+              path: 'BasicVideo', 
+              name: 'BasicVideo',
+              components: {   
+              video: () => import('@/components/BasicVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          },
+            }
+          ]
         },
         {
           path: 'CreditReport', 
@@ -47,10 +57,29 @@ export default new Router({
           path: 'PersonalCenter', 
           name: 'PersonalCenter',
           components: {   
-            table: () => import('@/components/HonestyProof')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+            table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'PsychologyHome', 
+          name: 'PsychologyHome',
+          components: {   
+            table: () => import('@/components/PsychologyHome')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'HomePage',
+          name: 'HomePage',
+          components: {
+            table: () => import('@/components/HomePage')
           }
         }
       ]
+    },
+    {
+      path: 'Footer',
+      name: 'Footer',
+      components: Footer
     }
   ]
 })

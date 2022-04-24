@@ -1,11 +1,11 @@
 <template>
 <div>
 <div class="guidebar">
-  <el-menu default-active="/CreditReport" class="el-menu-demo" mode="horizontal" :router="true">
+  <el-menu default-active="/HomePage" class="el-menu-demo" mode="horizontal" :router="true">
     <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
-    <el-menu-item index="">首页</el-menu-item>
+    <el-menu-item index="/HomePage">首页</el-menu-item>
     <el-menu-item index="/CreditReport">信用报告</el-menu-item>
-    <el-menu-item index="">心理测试</el-menu-item>
+    <el-menu-item index="/PsychologyHome">心理测试</el-menu-item>
     <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
     <el-menu-item index="">好友人脉</el-menu-item>
     <el-menu-item index="">意见反馈</el-menu-item>
@@ -17,11 +17,18 @@
 <div class="body">
   <router-view name="table"></router-view>
   </div>
+  <div>
+    <Footer></Footer>
+  </div>
 </div>
 </template>
 <script>
+import Footer from '@/components/Footer'
   export default {
     name:'GuideBar',
+    components:{
+    Footer
+  },
     data() {
        return {
       };
