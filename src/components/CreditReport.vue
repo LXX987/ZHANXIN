@@ -42,7 +42,7 @@
             <h1>评分依据</h1>
             <el-card class="bodycard">
                 <div class="proportion">
-                    <img src="@/assets/proportion.png"/>
+                    <img style="width:110%" src="@/assets/proportion.png"/>
                 </div>
                 <div class="instruction">
                     <div>瞻信网融合多学科领域交叉知识，分析普惠金融市场现状，制定针对20~25岁金融弱势信贷白户群体的创新评估指标，降低普惠金融对信用背书的依赖。在传统信用评估指标的基础上，加入以下创新性指标。</div>
@@ -355,5 +355,8 @@ h1{
     padding-top: 2%;
     padding-right: 2%;
     line-height:1.8em;
+}
+.proportion{
+    width: 1000px;
 }
 </style>

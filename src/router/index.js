@@ -5,6 +5,9 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
+import Video from '@/components/Video'
+import VideoRecord from '@/components/VideoRecord'
+import VideoQuestion from '@/components/VideoQuestion'
 import PsychologyQuestions from '@/components/PsychologyQuestions'
 import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
@@ -37,11 +40,25 @@ export default new Router({
           },
           children:[
             {
-              path: 'BasicVideo', 
+              path: '', 
               name: 'BasicVideo',
               components: {   
               video: () => import('@/components/BasicVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
-          },
+              }
+            },
+            {
+              path: '/CreditVideo', 
+              name: 'CreditVideo',
+              components: {   
+              video: () => import('@/components/CreditVideo')
+              }
+            },
+            {
+              path: '/HonestyCulture', 
+              name: 'HonestyCulture',
+              components: {   
+              video: () => import('@/components/HonestyCulture')
+              }
             }
           ]
         },
@@ -102,8 +119,23 @@ export default new Router({
           components: {
             table: () => import('@/components/HomePage')
           }
-        }
+        },
       ]
+    },
+    {
+      path: '/Video',
+      name: 'Video',
+      component: Video
+    },
+    {
+      path: '/VideoRecord',
+      name: 'VideoRecord',
+      component: VideoRecord
+    },
+    {
+      path: '/VideoQuestion',
+      name: 'VideoQuestion',
+      component: VideoQuestion
     },
     {
       path: 'Footer',
