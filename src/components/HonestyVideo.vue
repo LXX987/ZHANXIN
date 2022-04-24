@@ -1,75 +1,49 @@
 <template>
 <div class="rate">
-
+    <div class="imageBlock">
+        <el-carousel :interval="2000" arrow="always" :height="bannerH+'px'">
+            <el-carousel-item v-for="(bitem,bindex) in images" :key="bindex">
+                <div class="carousel">
+                    <img class="bannertt" :src="bitem.url" >
+                </div>
+            </el-carousel-item>
+        </el-carousel>
+    </div>
 <div class="body">
     <div class="illu">
-    <span class="title">诚信文化</span>
-    </div>
-    <div class="intro">
-         <div class="tip">
-             <p>您已经观看了{{num}}个诚信文化视频，为您的行为积累增加了{{num}}分。</p>
-             <el-button @click="gotoAnswer()">查看答题情况</el-button>
-             </div>
+        <div class="recommend">
+            <img src="@/assets/recommend.png"/>
+        </div>
+        <div class="recommendvideo">
+            <el-card shadow="none">
+                <el-row>
+                    <el-col :span="12">
+                        <img id="video1" alt="借呗欠了5万半年没还会怎样？" @click="index=1,gotoVideo()"  tag="a" target="_blank" src="https://img.qudayun.com/csai_cms/site/2022-03/1394/20220307174846578.jpg">
+                        <img id="startVideo" alt="播放" @click="index=1,gotoVideo()" src="@/assets/button_watch.png"/>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="videointro">视频介绍</div>
+                        <div class="intro">
+                            <h1 style="font-size:20px;margin-bottom:10px">借呗欠了5万半年没还会怎样？</h1>
+                            <span style="font-size:16px">借呗欠了5万半年没有还，贷款人的征信会受到影响，在征信报告上面会留下不良的贷款记录，逾期半年算比较严重的行为了，就算是结清了逾期贷款也会对贷款人以后的信贷活动造成影响。</span>
+                            <p style="font-size:16px">视频长度：5：25</p>
+                            <p style="font-size:16px">发布时间：2022-2-5</p>
+                            <span></span>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </div>
     </div>
     <div class="video">
-       <ul class="spfl_list">
-            <li>
-                <el-card>
-                    <el-row>
-                        <el-col :span="12">
-                            
-                    <img alt="借呗欠了5万半年没还会怎样？" @click="index=1,gotoVideo()"  tag="a" target="_blank" src="https://img.qudayun.com/csai_cms/site/2022-03/1394/20220307174846578.jpg" style="width:80%;height:80%">
-                    <img id="startVideo" alt="播放" @click="index=1,gotoVideo()" src="@/assets/video.png"/>
-                        </el-col>
-                        <el-col :span="12">
-                            <div>
-                            <h1 style="font-size:20px">借呗欠了5万半年没还会怎样？</h1>
-                            <span>借呗欠了5万半年没有还，贷款人的征信会受到影响，在征信报告上面会留下不良的贷款记录，逾期半年算比较严重的行为了，就算是结清了逾期贷款也会对贷款人以后的信贷活动造成影响。</span>
-                            <p>2022-03-07</p><span></span>
-                            </div>
-                            <div>
-                            <img id="watched" src="@/assets/watched.png"/><span style="vertical-align: top;line-height: 50px;">已观看</span></div>
-                        </el-col>
-                        </el-row>
-                </el-card>
-            </li>
-            <li>
-                <el-card>
-                    <el-row>
-                        <el-col :span="12">
-                <img alt="申请房贷个人需要准备什么？" @click="index=2,gotoVideo()"  target="_blank" src="https://img.qudayun.com/csai_cms/site/2022-03/71/20220307174615329.jpg" style="width:80%;height:80%">
-                <img id="startVideo2" alt="播放" @click="index=2,gotoVideo()" src="@/assets/video.png"/>
-                        </el-col>
-                        <el-col :span="12">
-                            <div>
-                            <h1 style="font-size:20px">申请房贷个人需要准备什么？</h1>
-                            <span>在申请房贷的时候，个人需要准备征信报告、收入流水、收入证明、银行卡、有效身份证件、户口本等等，如果是异地购房，可能还需要贷款人准备居住证、社保缴纳证明等等。一般来说，客户需要准备什么资料开发商都会详细告知，按照开发商的提醒来操作就好了，按照提示来准备资料一般就不会有问题。</span>
-                            <p>2022-03-07</p><span></span>
-                            </div>
-                            <div style="height:50px">
-                                <img id="watched" :src="watched"/>
-                                <span style="vertical-align: top;line-height: 50px;">{{watch}}</span></div>
-                        </el-col>
-                    </el-row>
-            </el-card>
-            </li>
-            <li>
-                <el-card>
-                      <el-row>
-                        <el-col :span="12">
-                <img alt="车贷逾期三个月的后果？" @click="index=3,gotoVideo()" target="_blank" src="https://img.qudayun.com/csai_cms/site/2022-03/1422/20220307173513634.jpg" style="width:80%;height:80%">
-                <img id="startVideo3" alt="播放" @click="index=3,gotoVideo()" src="@/assets/video.png"/>
-                        </el-col>
-             <el-col :span="12">
-                            <h1 style="font-size:20px">车贷逾期三个月的后果？</h1>
-                            <span>车贷逾期三个月，贷款人的征信就会受到影响，因为贷款机构会将贷款人的逾期记录上报个人征信系统，并且逾期三个月算比较严重的逾期行为，会对贷款人以后申请房贷等贷款造成不便。</span>
-                            <p>2022-03-07</p><span></span>
-                            <img id="watched" src='@/assets/unwatch.png'/><span style="vertical-align: top;line-height: 50px;">未观看</span>
-                        </el-col>
-                      </el-row>
-             </el-card>
-            </li>
-       </ul>
+        <div class="video_guide">
+            <el-menu default-active="/HonestyVideo/BasicVideo" class="video_guide" mode="horizontal" :router="true">
+                <el-menu-item index="/HonestyVideo/BasicVideo">基本知识</el-menu-item>
+                <el-menu-item index="/CreditReport">信贷知识</el-menu-item>
+                <el-menu-item index="/PsychologyHome">诚信文化</el-menu-item>
+            </el-menu>
+        </div>
+        <router-view name="video"/>
     </div>
 </div>
 </div>   
@@ -82,13 +56,27 @@ export default {
     data(){
         return{
             num:'1',
-            watch:'未观看',
             watched:require('@/assets/unwatch.png'),
             index: 1,
             videoUrl:'',
+            bannerH: this.setBannerH1,
+            images: [
+                { url: require("@/assets/1.png")},
+                { url: require("@/assets/4.png")},
+                { url: require("@/assets/5.png")},
+         ]
         }
     },
     methods:{
+        setBannerH(){
+			this.bannerH=document.getElementsByClassName("bannertt")[0].height
+		},
+		setBannerH1(){
+			var bwidth=document.getElementsByClassName("bannertt")[0].width;
+			var bheight=document.getElementsByClassName("bannertt")[0].height;
+			var ssss=document.body.clientWidth;
+			this.bannerH=ssss*(bheight/bwidth);
+		},
         gotoAnswer(){
            this.$router.push('/VideoAnswer')
         },
@@ -106,6 +94,12 @@ export default {
             window.open(newUrl.href, "_blank");
             //this.$router.push({name:'Video', query:{videoUrl:this.videoUrl}})
         }
+    },
+    mouted(){
+        this.setBannerH1()//初始值根据图片的缩放比率和屏幕大小来定，不然走马灯开始时候就会默认一个值
+		window.addEventListener('resize',()=>{
+			this.setBannerH()
+		},false)
     }
 }
 </script>
@@ -120,10 +114,9 @@ export default {
 }
 #startVideo{
     position: absolute;
-    left: 195px;
+    left: 100px;
     top: 110px;
-    width: 55px;
-    height: 55px;
+    height: 40%;
 }
 #startVideo2{
     position: absolute;
@@ -136,20 +129,10 @@ export default {
     position: absolute;
     left: 195px;
     top: 100px;
-    width: 55px;
-    height: 55px;
 }
 .illu{
     height:150px;
     text-align: left;
-}
-.title{
-    color:#fff;
-    font-size: 48px;
-    font-weight:bold;
-    margin-top: 0px;
-    margin-left: 220px;
-    line-height:150px;
 }
 .tip {
     padding: 8px 16px;
@@ -172,5 +155,89 @@ li{
     padding-left: 50px;
     padding-right: 120px;
 
+}
+.carousel {
+    color: #000000;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+}
+.imageBlock{
+    margin-top: 20px;
+    height: 500px;
+}
+>>>.el-carousel__container {
+    position: relative;
+    height: 480px;
+}
+.el-carousel__item h3 {
+    color: #F2E5D5;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 500px;
+    margin: 0;
+}
+.el-carousel__item:nth-child(2n) {
+    background-color: #F2E5D5;
+}
+.el-carousel__item:nth-child(2n+1) {
+    background-color: #F2E5D5;
+}
+body > .el-container {
+    margin-bottom: 40px;
+}
+.recommend{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #32BDFE;
+    text-align: center;
+}
+.video{
+    margin-top: 300px;
+}
+.recommendvideo{
+    margin-left: 15%;
+    margin-right: 15%;
+
+}
+.el-card{
+    border: 0;
+}
+#video1{
+    height: 90%;
+    width: 100%;
+}
+.videointro{
+    display:flex;
+    align-items:center;/*所有子元素都垂直居中了*/
+    height: 80px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #666666;
+    border-left: #32BDFE solid 11px;
+    padding-left: 20px;
+}
+.intro{
+    background-color: #F3F9FF;
+    height: 250px;
+    padding-left: 5%;
+    padding-top: 20px;
+    padding-right: 5%;
+    line-height:1.6em;
+}
+.el-menu-item{
+    font-size: 24px;
+}
+.video_guide{
+    padding-top: 30px;
+    margin-left: 10%;
+    color: #999999;
+}
+.el-menu--horizontal>.el-menu-item.is-active {
+    border-bottom: 0;
+    font-size: 34px;
+    color: #303133;
+    margin-bottom: 60px;
 }
 </style>
