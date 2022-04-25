@@ -47,6 +47,33 @@ export default {
         }
       }  
   },
+  methods:{ 
+    login(){
+            this.$axios({
+            method:"post",
+            url: 'http://localhost:8888/user/login',
+            params:{
+                userEmail:this.ruleForm.userid,
+                userPassword:this.ruleForm.password,
+            }
+            }).then(res=>{
+                console.log(res.data.msg);
+                if(res.data.msg=="登录成功"){
+                    console.log(res);
+                    window.sessionStorage.setItem("token",res.data.token);
+                    this.$router.push('/HomePage')
+                }
+                else{
+                 this.$message({
+                    showClose: true,
+                    message: '登录失败!'
+                    });
+                }
+            },err=>{
+                console.log(err);
+            })
+        }
+   }
 }
 </script>
 

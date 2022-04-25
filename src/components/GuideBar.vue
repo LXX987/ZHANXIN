@@ -9,7 +9,7 @@
     <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
     <el-menu-item index="">好友人脉</el-menu-item>
     <el-menu-item index="">意见反馈</el-menu-item>
-    <el-menu-item index="/HonestyVideo">
+    <el-menu-item index="/PersonalCenter">
       <img src='@/assets/avatar.png' class="avatar">
     </el-menu-item>
 </el-menu>

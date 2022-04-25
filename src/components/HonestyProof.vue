@@ -5,7 +5,7 @@
         <el-col :span="2">
           <div class="grid-content bg-purple">
             <div class="nochoose-block">
-              <img src='@/assets/pic_personalInfo1.png'>
+              <img src='@/assets/pic_personalInfo.png'>
               <p class="txt-nochoose">基本资料</p>
             </div>
             <div class="nochoose-block">
@@ -33,126 +33,137 @@
         <el-col :span="22">
           <div class="grid-content bg-purple-light">
             <el-row class="bg-white">
-              <el-col :span="12">
-                <div class="grid-content">
-                  <p class="txt-title">个人资料<el-button type="text" class="btn-text" @click="dialogVisible = true">编辑</el-button>
-                    <el-dialog
-                      title="编辑个人资料"
-                      :visible.sync="dialogVisible"
-                      width="30%">
-                      <!-- <span>
-                        <p>姓&emsp;&emsp;名：<el-input v-model="inputName" placeholder="请输入内容"></el-input></p>
-                        <p>职&emsp;&emsp;业：
-                          <el-select v-model="value" placeholder="请选择">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </el-select>
-                        </p>
-                        <p>年&ensp;收&ensp;入：<el-input v-model="inputIncome" placeholder="请输入内容"></el-input></p>
-                        <p>就业年限：<el-input v-model="inputWorkYear" placeholder="请输入内容"></el-input></p>
-                      </span> -->
-                      <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="姓名">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="职业">
-                          <el-select v-model="form.region" placeholder="请选择职业类型">
-                            <el-option label="身份证" value="shanghai"></el-option>
-                          </el-select>
-                        </el-form-item>
-                        <el-form-item label="年收入">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="就业年限">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                      </el-form>
-                      <span slot="footer" class="dialog-footer">
-                        <el-button @click="dialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="commitchange()">确 定</el-button>
-                        <el-dialog
-                          width="30%"
-                          title="确认修改？"
-                          :visible.sync="innerVisible"
-                          append-to-body center>
-                          <span slot="footer" class="dialog-footer">
-                            <el-button @click="innerVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="changeInfo()">确 定</el-button>
-                          </span>
-                        </el-dialog>
-                      </span>
-                    </el-dialog>
-                  </p>
-                  <el-descriptions title="" :column="1">
-                    <el-descriptions-item label="姓名">&emsp;&emsp;{{userName}}</el-descriptions-item>
-                    <el-descriptions-item label="职业">&emsp;&emsp;{{occupation_str}}</el-descriptions-item>
-                    <el-descriptions-item label="年收入">&emsp;{{annual_income}}元</el-descriptions-item>
-                    <el-descriptions-item label="就业年限">{{working_years}}</el-descriptions-item>
-                  </el-descriptions>
+              <div class="grid-content">
+                <p class="txt-title">声誉记录</p>
+                <p class="sub-title">守法情况</p>
+                <p class="txt-content">犯罪记录：</p>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8888/picture/uploadDonation"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text">点击上传无犯罪记录证明</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
                 </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="grid-content">
-                  <p class="txt-title">实名信息<el-button type="text" class="btn-text" @click="shimingDialogVisible = true">去实名</el-button>
-                    <el-dialog
-                      title="编辑个人资料"
-                      :visible.sync="shimingDialogVisible"
-                      width="30%">
-                      <!-- <span>
-                        <p>姓&emsp;&emsp;名：<el-input v-model="inputName1" placeholder="请输入内容"></el-input></p>
-                        <p>证件类型：
-                          <el-select v-model="chooseIDtype" placeholder="请选择">
-                            <el-option v-for="item in IDtypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </el-select>
-                        </p>
-                        <p>证&ensp;件&ensp;号：<el-input v-model="inputIDcard" placeholder="请输入内容"></el-input></p>
-                      </span> -->
-                      <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="姓名">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="证件类型">
-                          <el-select v-model="form.region" placeholder="请选择证件类型">
-                            <el-option label="身份证" value="shanghai"></el-option>
-                          </el-select>
-                        </el-form-item>
-                        <el-form-item label="证件号">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                      </el-form>
-                      <span slot="footer" class="dialog-footer">
-                        <el-button @click="shimingDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="shiMing()">确 定</el-button>
-                      </span>
-                    </el-dialog>
-                  </p>
-                  <el-descriptions title="" :column="1">
-                    <el-descriptions-item label="实名认证">{{authentication}}</el-descriptions-item>
-                    <el-descriptions-item label="证件类型">{{IDtype}}</el-descriptions-item>
-                    <el-descriptions-item label="证件号">&emsp;{{IDcard}}</el-descriptions-item>
-                  </el-descriptions>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeCrime" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+                <p class="sub-title">公益记录</p>
+                <p class="txt-content">献血次数：</p>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8888/picture/uploadDonation"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text">点击上传献血证明</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
                 </div>
-              </el-col>
-            </el-row>
-            <el-row class="bg-white mar-top">
-              <p class="txt-title">实名认证权益</p>
-              <el-col :span="12">
-                <div class="grid-content">
-                  <p class="sub-title">实名</p>
-                  <p class="txt-content">1. 可以获得信用评分。</p>
-                  <p class="txt-content">2. 完善的个人资料有助于更准确的信用评分。</p>
-                  <p class="txt-content">3. 进行心理测评后会获得相应信用得分。</p>
-                  <p class="txt-content">4. 观看金融教育视频会获得相应信用加分。</p>
-                  <p class="txt-content">5. 可以绑定银行账户，查询资产得分、信贷记录。</p>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeBlood" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+                <p class="txt-content">志愿服务时长：</p>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8888/picture/uploadDonation"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text">点击上传志愿服务证明</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
                 </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="grid-content">
-                  <p class="sub-title">未实名</p>
-                  <p class="txt-content">1. 无法获得信用评分。</p>
-                  <p class="txt-content">2. 可以进行心理测评。</p>
-                  <p class="txt-content">3. 可以观看金融教育视频</p>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeVolunteer" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+                <p class="txt-content">捐款：</p>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8888/picture/uploadDonation"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text">点击上传捐款证明</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
                 </div>
-              </el-col>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeDonation" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+                <p class="sub-title">缴费记录</p>
+                <p class="txt-content">话费缴费：</p>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8888/picture/uploadDonation"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text">点击上传话费缴费记录</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
+                </div>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeBlood" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+              </div>
             </el-row>
           </div>
         </el-col>
@@ -166,19 +177,10 @@ export default {
     name:'HonestyProof',
     data() {
       return {
-        dialogVisible: false,
-        innerVisible: false,
-        shimingDialogVisible:false,
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        }
+        activeCrime: 0,
+        activeBlood: 0,
+        activeVolunteer: 0,
+        activeDonation: 0,
       };
     },
   }
@@ -211,6 +213,7 @@ export default {
     background: #1f7c69;
     padding-top: 20px;
     padding-bottom: 20px;
+    height: 1123px;
   }
   .bg-purple-light {
     background: #F1F6F9;
@@ -259,7 +262,11 @@ export default {
   }
   .btn-text {
     font-size: 16px;
-    margin-left: 50px;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    margin-right: 40px;
   }
   .el-descriptions {
     margin-top: 30px;
@@ -283,7 +290,7 @@ export default {
   }
   .txt-content {
     text-align: left;
-    font-size: 17px;
+    font-size: 18px;
     margin-top: 20px;
   }
   .el-input {
@@ -291,5 +298,26 @@ export default {
   }
   .el-select {
     width: 80%;
+  }
+  .txt-tip {
+    text-align: left;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #666666;
+  }
+  .el-steps {
+    margin-top: 20px;
+  }
+  >>>.el-step__icon {
+    display: grid;
+  }
+  .upload-btn {
+    text-align:left;
+  }
+  .txt-upload {
+    text-align: left;
+    font-size: 12px;
+    margin-top: 20px;
+    color:#828282;
   }
 </style>
