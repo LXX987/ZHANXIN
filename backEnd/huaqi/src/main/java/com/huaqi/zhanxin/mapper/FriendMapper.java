@@ -10,6 +10,6 @@ import java.util.List;
 @Mapper
 public interface FriendMapper {
 
-    @Select("select friend_id,user_name,user_email,score from Social_Relationship join User on User.user_id=Social_Relationship.friend_id where Social_Relationship.user_id=#{id} limit ${(pageNum-1)*pageSize},#{pageSize}")
+    @Select("select `User`.user_id,user_name,user_email,total_score from Write_Code join Score join `User` on Score.user_id = `User`.user_id and Write_Code.user_id = `User`.user_id where invited_code=(select invite_code from Write_Code where user_id = #{id}) limit ${(pageNum-1)*pageSize},#{pageSize}")
     List<JSONObject> selectAllFriendsById(@Param("id") Integer id, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 }

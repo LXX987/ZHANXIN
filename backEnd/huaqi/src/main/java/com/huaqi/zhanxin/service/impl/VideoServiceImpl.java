@@ -33,7 +33,7 @@ public class VideoServiceImpl implements VideoService {
             e.printStackTrace();
             return "-1";
         }
-        videoMapper.insert(title, LocalDateTime.now(), url, intro, null, null);
+        videoMapper.insert(title, LocalDateTime.now(), url, intro);
         return url;
     }
 
