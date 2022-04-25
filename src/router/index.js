@@ -73,7 +73,7 @@ export default new Router({
           path: 'PersonalCenter', 
           name: 'PersonalCenter',
           components: {   
-            table: () => import('@/components/MyReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+            table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {

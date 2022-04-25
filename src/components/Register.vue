@@ -125,8 +125,14 @@ export default {
           }).then(res=>{
               if (res.data.msg != "关键数据缺失")
               {
-      console.log(res.data);
-                this.$alert(res.data.userId, '请牢记您的ID', {
+                console.log(res.data);
+                if(res.data.msg=="Fail") {
+                  this.$message({
+                    message: '该账户已存在！',
+                    type: 'warning'
+                  });
+                } else {
+                  this.$alert(res.data.userId, '请牢记您的ID', {
                   confirmButtonText: '确定',
                   // callback: action => {
                   //     this.$message({
@@ -135,6 +141,8 @@ export default {
                   //     });
                   // }
                   });
+                }
+                
               this.$router.push('/')
               }
               else{

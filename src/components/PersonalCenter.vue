@@ -169,6 +169,15 @@ export default {
         dialogVisible: false,
         innerVisible: false,
         shimingDialogVisible:false,
+        userName:'',
+        userEmail:'',
+        occupation:'',
+        occupation_str:'',
+        annual_income:'',
+        working_years:'',
+        authentication:'',
+        IDtype:'',
+        IDcard:'',
         form: {
           name: '',
           region: '',
@@ -180,6 +189,83 @@ export default {
           desc: ''
         }
       };
+    },
+    mounted:function(){
+      this.getMyInfo()
+    },
+    methods: {
+      getMyInfo() {
+      this.$axios({
+        method:"get",
+        url: 'http://localhost:8888/user/userInfo',
+        headers: { token:window.sessionStorage.getItem("token")}
+      }).then(res=>{
+        console.log('我的信息数据：', res.data);
+        this.userName=res.data.data.userName;
+        this.inputName=this.userName;
+        this.userEmail=res.data.data.userEmail;
+        this.inputEmail=this.userEmail;
+        this.occupation=res.data.data.occupation;
+        if(this.occupation==10000){
+          this.occupation_str='其他';
+        } else if(this.occupation==150000){
+          this.occupation_str='文化、体育和娱乐业';
+        } else if(this.occupation==89000){
+          this.occupation_str='卫生和社会工作';
+        } else if(this.occupation==91000){
+          this.occupation_str='教育';
+        } else if(this.occupation==73000){
+          this.occupation_str='居民服务、修理和其他服务业';
+        } else if(this.occupation==97000){
+          this.occupation_str='水利、环境和公共设施管理业';
+        } else if(this.occupation==140000){
+          this.occupation_str='科学研究和技术服务业';
+        } else if(this.occupation==130000){
+          this.occupation_str='租赁和商务服务业';
+        } else if(this.occupation==100000){
+          this.occupation_str='房地产业';
+        } else if(this.occupation==190000){
+          this.occupation_str='信息传输、软件和信息技术服务业';
+        } else if(this.occupation==55000){
+          this.occupation_str='住宿和餐饮业';
+        } else if(this.occupation==136000){
+          this.occupation_str='交通运输、仓储和邮政业';
+        } else if(this.occupation==106000){
+          this.occupation_str='批发和零售业';
+        } else if(this.occupation==760000){
+          this.occupation_str='建筑业';
+        } else if(this.occupation==138000){
+          this.occupation_str='电力、热力、燃气及水生产和供应业';
+        } else if(this.occupation==106600){
+          this.occupation_str='制造业';
+        } else if(this.occupation==110000){
+          this.occupation_str='采矿业';
+        }
+        this.value=this.occupation.toString();
+        this.annual_income=res.data.data.annual_income;
+        this.inputIncome=this.annual_income;
+        this.working_years=res.data.data.working_years;
+        this.inputWorkYear=this.working_years;
+        if(res.data.data.IDtype==1) {
+          this.IDtype='身份证';
+        } else if(res.data.data.IDtype==2) {
+          this.IDtype='护照';
+        } else {
+          this.IDtype=res.data.data.IDtype;
+        }
+        this.IDcard=res.data.data.IDcard.substr(0,2)+"**************"+res.data.data.IDcard.substr(16,2);
+        if(res.data.data.authentication) {
+          this.authentication="已实名";
+        } else {
+          this.authentication="未实名";
+        }
+        this.inputName1=this.userName;
+        this.chooseIDtype=res.data.data.IDtype.toString();
+        this.inputIDcard=this.IDcard;
+      },err=>{
+        console.log(err);
+      })
+    },
     },
   }
 </script>
