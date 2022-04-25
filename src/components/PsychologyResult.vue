@@ -266,6 +266,7 @@ export default {
 		  }
     },
     mounted() {
+        console.log(this.$route.path),
         // 在通过mounted调用即可
         this.myEcharts();
         this.totalScore = this.$route.query.totalScore,
