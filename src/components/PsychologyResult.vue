@@ -16,6 +16,7 @@
                                     <li>宜人性（agreeableness）：{{this.agreeablenessScore}}分</li>
                                     <li>神经质性（neuroticism）：{{this.neuroticismScore}}分</li>
                                 </ul>
+                                <span>您的测评总分为：{{this.totalScore}}分</span>
                             </div>
                         </el-col>
                         <el-col :span="10">
@@ -24,9 +25,9 @@
                     </el-row>
                     <el-divider id="divider"></el-divider>
                     <el-row>
-                        <div class="introBox">
+                        <!-- <div class="introBox">
                             <el-button id="startButton">开始测试</el-button>
-                        </div>
+                        </div> -->
                     </el-row>
                 </el-col>
                 <el-col :span="10">
@@ -157,6 +158,14 @@
 .psychologyIntroWord ul {
     list-style: disc;
 }
+.psychologyIntroWord span {
+    line-height: 4;
+    margin-bottom: 5px;
+    font-family: SourceHanSansSC;
+    font-weight: 400;
+    font-size: 18px;
+    margin-left: 8%;
+}
 .psychologyIntroWord li{
     line-height: 2;
     margin-bottom: 5px;
@@ -196,63 +205,58 @@ export default {
     name: 'PsychologyHome',
     data() {
         return {
+            totalScore: 0,
             opennessScore: 0,
             conscientiousnessScore: 0,
             extraversionScore: 0,
             agreeablenessScore: 0,
             neuroticismScore: 0,
             option: {
-  color: ['#67F9D8', '#FFE434', '#56A3F1', '#FF917C'],
-  title: {
-    text: 'Customized Radar Chart'
-  },
-  legend: {},
-  radar: [
-    {
-      indicator: [
-        { text: 'Indicator1', max: 150 },
-        { text: 'Indicator2', max: 150 },
-        { text: 'Indicator3', max: 150 },
-        { text: 'Indicator4', max: 120 },
-        { text: 'Indicator5', max: 108 },
-        { text: 'Indicator6', max: 72 }
-      ],
-      center: ['75%', '50%'],
-      radius: 120,
-      axisName: {
-        color: '#fff',
-        backgroundColor: '#666',
-        borderRadius: 3,
-        padding: [3, 5]
-      }
-    }
-  ],
-  series: [
-    {
-      type: 'radar',
-      radarIndex: 1,
-      data: [
-        {
-          value: [100, 93, 50, 90, 70, 60],
-          name: 'Data D',
-          areaStyle: {
-            color: new echarts.graphic.RadialGradient(0.1, 0.6, 1, [
-              {
-                color: 'rgba(255, 145, 124, 0.1)',
-                offset: 0
-              },
-              {
-                color: 'rgba(255, 145, 124, 0.9)',
-                offset: 1
-              }
-            ])
-          }
+                color: ['#67F9D8', '#FFE434', '#56A3F1', '#FF917C'],
+                title: {
+                    text: 'Customized Radar Chart'
+                },
+                legend: {},
+                radar: [{
+                    indicator: [
+                        { text: 'Indicator1', max: 150 },
+                        { text: 'Indicator2', max: 150 },
+                        { text: 'Indicator3', max: 150 },
+                        { text: 'Indicator4', max: 120 },
+                        { text: 'Indicator5', max: 108 },
+                        { text: 'Indicator6', max: 72 }
+                    ],
+                    center: ['75%', '50%'],
+                    radius: 120,
+                    axisName: {
+                        color: '#fff',
+                        backgroundColor: '#666',
+                        borderRadius: 3,
+                        padding: [3, 5]
+                    }
+                }],
+                series: [{
+                    type: 'radar',
+                    radarIndex: 1,
+                    data: [{
+                        value: [100, 93, 50, 90, 70, 60],
+                        name: 'Data D',
+                        areaStyle: {
+                            color: new echarts.graphic.RadialGradient(0.1, 0.6, 1, [
+                                {
+                                    color: 'rgba(255, 145, 124, 0.1)',
+                                    offset: 0
+                                },
+                                {
+                                    color: 'rgba(255, 145, 124, 0.9)',
+                                    offset: 1
+                                }
+                            ])
+                        }
+                    }]
+                }]
+            }
         }
-      ]
-    }
-  ]
-}
-    }
     },
     methods: {
         myEcharts(){
@@ -264,6 +268,12 @@ export default {
     mounted() {
         // 在通过mounted调用即可
         this.myEcharts();
+        this.totalScore = this.$route.query.totalScore,
+        this.neuroticismScore = this.$route.query.score1,
+        this.extraversionScore = this.$route.query.score2,
+        this.opennessScore = this.$route.query.score3,
+        this.agreeablenessScore = this.$route.query.score4,
+        this.conscientiousnessScore = this.$route.query.score5
     }
 }
 </script>
