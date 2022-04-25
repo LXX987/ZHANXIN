@@ -12,6 +12,7 @@ import PsychologyQuestions from '@/components/PsychologyQuestions'
 import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
+import ScoreDetail from '@/components/ScoreDetail'
 
 Vue.use(Router)
 
@@ -120,6 +121,13 @@ export default new Router({
             table: () => import('@/components/HomePage')
           }
         },
+        {
+          path: 'ScoreDetail',
+          name: 'ScoreDetail',
+          components: {
+            table: () => import('@/components/ScoreDetail')
+          }
+        }
       ]
     },
     {

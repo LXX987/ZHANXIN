@@ -21,7 +21,7 @@
                         <!-- 信用分数解读 -->
                         <div class="score_detail"> 
                             <el-row>
-                                <el-col :span="10"><el-card class="square"><div class="behavior">行为积累方面：{{behavior}}分</div></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotodetail()"><div class="behavior">行为积累方面：{{behavior}}分</div></el-card></el-col>
                                 <el-col :span="10"><el-card class="square"><div class="credit_histort">信贷记录方面：{{credit_histort}}分</div></el-card></el-col>
                             </el-row>  
                             <el-row>
@@ -45,8 +45,8 @@
                     <img style="width:110%" src="@/assets/proportion.png"/>
                 </div>
                 <div class="instruction">
-                    <div>瞻信网融合多学科领域交叉知识，分析普惠金融市场现状，制定针对20~25岁金融弱势信贷白户群体的创新评估指标，降低普惠金融对信用背书的依赖。在传统信用评估指标的基础上，加入以下创新性指标。</div>
-                    <div>瞻信网采用目前最新的信用评估手段——“大数据风控”，将多维度不同角度的信息数据引入到信贷信用风险评估中，利用统计学计算，分析不同数据特征与信贷信用风险评估目标存在的数据关联关系，说明关联背后的因果关系，确立数据使用的合理性和合规性。</div>
+                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网融合多学科领域交叉知识，分析普惠金融市场现状，制定针对20~25岁金融弱势信贷白户群体的创新评估指标，降低普惠金融对信用背书的依赖。在传统信用评估指标的基础上，加入以下创新性指标。</div>
+                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网采用目前最新的信用评估手段——“大数据风控”，将多维度不同角度的信息数据引入到信贷信用风险评估中，利用统计学计算，分析不同数据特征与信贷信用风险评估目标存在的数据关联关系，说明关联背后的因果关系，确立数据使用的合理性和合规性。</div>
                 </div>
             </el-card>
         </div>
@@ -55,7 +55,7 @@
         <div class="ratelevel">
             <h1>我的信用等级</h1>
             <el-card class="bodycard">
-            <div class="tip"><p>我们的信用评级分为六个等级，分别是Excellent(极优秀)、VeryGood(很优秀)、Good(良好)、Fair(一般)、Poor(较差)、VeryBad(很差)。不同的信用等级可以进行不同额度的贷款。</p></div>
+            <div class="tip"><p>&ensp;&ensp;&ensp;&ensp;我们的信用评级分为六个等级，分别是Excellent(极优秀)、VeryGood(很优秀)、Good(良好)、Fair(一般)、Poor(较差)、VeryBad(很差)。不同的信用等级可以进行不同额度的贷款。</p></div>
             <div class="rank">
                 <el-row>
                 <el-col :span="4">
@@ -114,14 +114,16 @@
          }
      },
      methods:{
-         
+        gotodetail(){// 前往详情页
+            this.$router.push('/ScoreDetail')
+         },
         // 雷达图作画
       drawPie() {
           let charts = this.$echarts.init(document.getElementById('leiDaTu'));
                 //charts.setOption(option);
                 this.$axios({
                     method:"get",
-                    url: 'api/credit/userCredit',
+                    url: 'http://localhost:8888/credit/userCredit',
                     headers:{
                     token:window.sessionStorage.getItem("token")},
                 }).then(res=>{

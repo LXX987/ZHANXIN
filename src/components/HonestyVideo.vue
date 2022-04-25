@@ -78,7 +78,7 @@ export default {
     },
     methods:{
         setvideoindex(){
-
+            console.log(this.$route.path)
         },
         setBannerH(){
 			this.bannerH=document.getElementsByClassName("bannertt")[0].height
@@ -107,7 +107,9 @@ export default {
             //this.$router.push({name:'Video', query:{videoUrl:this.videoUrl}})
         },
         },
-    mouted(){
+    mounted(){
+        this.setvideoindex(),
+        console.log(this.$route.path),
         this.setBannerH1()//初始值根据图片的缩放比率和屏幕大小来定，不然走马灯开始时候就会默认一个值
 		window.addEventListener('resize',()=>{
 			this.setBannerH()

@@ -1,15 +1,15 @@
 <template>
     <div>
         <div class="guidebar">
-            <el-menu class="el-menu-demo" mode="horizontal" :router="true">
+            <el-menu default-active="/HonestyVideo" class="el-menu-demo" mode="horizontal" :router="true">
                 <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
-                <el-menu-item index="">首页</el-menu-item>
+                <el-menu-item index="/HomePage">首页</el-menu-item>
                 <el-menu-item index="/CreditReport">信用报告</el-menu-item>
-                <el-menu-item index="/PsychologyHome">心理测试</el-menu-item>
+                <el-menu-item index="/PsychologyGuidebar">心理测试</el-menu-item>
                 <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
                 <el-menu-item index="">好友人脉</el-menu-item>
                 <el-menu-item index="">意见反馈</el-menu-item>
-                <el-menu-item index="">
+                <el-menu-item index="/PersonalCenter">
                     <img src='@/assets/avatar.png' class="avatar">
                 </el-menu-item>
             </el-menu>
