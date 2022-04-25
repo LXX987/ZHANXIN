@@ -2,28 +2,6 @@
     <!-- <el-main> -->
         <div>
             <el-row>
-                <!-- <el-col :span="4">
-                    <div class="NavMenu">
-                        <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                            <el-menu-item index="/PsychologyHome">
-                                <i class="el-icon-date"></i>
-                                <span slot="title">测试介绍</span>
-                            </el-menu-item>
-                            <el-menu-item index="/PsychologyQuestions">
-                                <i class="el-icon-document"></i>
-                                <span slot="title">测试题目</span>
-                            </el-menu-item>
-                            <el-menu-item index="/PsychologyResult">
-                                <i class="el-icon-data-analysis"></i>
-                                <span slot="title">测试结果</span>
-                            </el-menu-item>
-                            <el-menu-item index="/PsychologyHistory">
-                                <i class="el-icon-user"></i>
-                                <span slot="title">历史记录</span>
-                            </el-menu-item>
-                        </el-menu>
-                    </div>
-                </el-col> -->
                 <el-col :span="14">
                     <el-row class="measureHomeHead">
                         <span id="measureHomeHeading">大五人格心理测试</span>

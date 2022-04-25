@@ -4,8 +4,8 @@
             <el-row>
                 <el-col :span="4">
                     <div class="NavMenu">
-                        <el-menu default-active="/PsychologyGuidebar/PsychologyHome" class="el-menu-demo" :router="true">
-                            <el-menu-item index="/PsychologyGuidebar/PsychologyHome">
+                        <el-menu default-active="/PsychologyGuidebar" class="el-menu-demo" :router="true">
+                            <el-menu-item index="/PsychologyGuidebar">
                                 <i class="el-icon-date"></i>
                                 <span slot="title">测试介绍</span>
                             </el-menu-item>

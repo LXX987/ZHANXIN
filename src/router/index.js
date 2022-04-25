@@ -28,11 +28,6 @@ export default new Router({
       component: Register
     },
     {
-      path: '/PsychologyHome',
-      name: 'PsychologyHome',
-      component: PsychologyHome
-    },
-    {
       path: '/',
       name: 'GuideBar',
       component: GuideBar,
@@ -89,7 +84,7 @@ export default new Router({
           },
           children: [
             {
-              path: '/PsychologyGuidebar/PsychologyHome',
+              path: '',
               name: 'PsychologyHome',
               components: {
                 subtable: () =>  import('@/components/PsychologyHome')
