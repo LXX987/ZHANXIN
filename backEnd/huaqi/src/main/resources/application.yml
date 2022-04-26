@@ -47,3 +47,7 @@ mybatis:
 
 file:
   doc-dir: file/
+
+path:
+  video-upload-path: "C:/opt/ZhanXin/videos/"
+  picture-upload-path: "C:/opt/ZhanXin/images/"

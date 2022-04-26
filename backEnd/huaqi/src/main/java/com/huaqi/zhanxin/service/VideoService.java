@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface VideoService {
 
-    String uploadVideo(MultipartFile file, String title, String intro, HttpServletRequest request);
+    String uploadVideo(MultipartFile video, MultipartFile cover, String title, String intro, String type, HttpServletRequest request);
 
-    List<JSONObject> getVideoList();
+    List<JSONObject> getVideoList(String type);
 
     Integer deleteVideo(Integer id);
 }

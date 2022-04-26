@@ -14,14 +14,14 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("admin")
+
 public class QuestionController {
 
     @Resource
     QuestionService questionService;
 
     @ApiOperation(value = "问题列表")
-    @RequestMapping(value = "/questions/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/questions/{id}", method = RequestMethod.GET)
     public Result<?> getQuestionList(@PathVariable("id") Integer video_id)
     {
         List<JSONObject> questionList = questionService.getQuestionList(video_id);
@@ -31,7 +31,7 @@ public class QuestionController {
     }
 
     @ApiOperation(value = "添加问题")
-    @RequestMapping(value = "/questions", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/questions", method = RequestMethod.POST)
     public Result<?> addQuestion(@RequestParam("video_id") Integer video_id, @RequestParam("question_text")String question_text, @RequestParam("question_answer")String question_answer)
     {
         Integer count = questionService.addQuestion(video_id, question_text, question_answer);

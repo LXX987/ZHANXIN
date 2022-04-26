@@ -18,33 +18,33 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("admin")
+
 public class VideoController {
     @Resource
     VideoService videoService;
 
     @ApiOperation(value = "上传视频")
-    @RequestMapping(value = "/videos", method = RequestMethod.POST, consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result<?> uploadVideo(@RequestParam(name="file") MultipartFile file, String title, String intro, HttpServletRequest request)
+    @RequestMapping(value = "/admin/videos", method = RequestMethod.POST, consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result<?> uploadVideo(@RequestParam(name="video") MultipartFile video, @RequestParam(name="cover") MultipartFile cover, String title, String intro, String type, HttpServletRequest request)
     {
-        String uploadInfo = videoService.uploadVideo(file, title, intro, request);
+        String uploadInfo = videoService.uploadVideo(video, cover, title, intro, type, request);
         if(uploadInfo.equals("-1"))
             return Result.error("500","上传失败");
         else return Result.success(uploadInfo);
     }
 
     @ApiOperation(value = "查看视频列表")
-    @RequestMapping(value = "/videos", method = RequestMethod.GET)
-    public Result<?> getVideoList()
+    @RequestMapping(value = "/common/videos/{type}", method = RequestMethod.GET)
+    public Result<?> getVideoList(@PathVariable String type)
     {
-        List<JSONObject> jsonObjects = videoService.getVideoList();
+        List<JSONObject> jsonObjects = videoService.getVideoList(type);
         if(jsonObjects == null)
             return Result.error("404", "暂无视频");
         else return Result.success(jsonObjects);
     }
 
     @ApiOperation(value = "删除视频")
-    @RequestMapping(value = "/videos/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/videos/{id}", method = RequestMethod.DELETE)
     public Result<?> deleteVideo(@PathVariable Integer id)
     {
         Integer count = videoService.deleteVideo(id);
