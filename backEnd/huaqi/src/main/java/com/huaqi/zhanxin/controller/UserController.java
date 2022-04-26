@@ -102,6 +102,20 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "获取用户姓名")
+    @GetMapping("getUserName")
+    public Map<String, Object> getUserName(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID = 4;
+        UserBean user = userService.selectName(userID);
+        map.put("userName", user.getUserName());
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
     @ApiOperation(value = "更新身份信息")
     @PostMapping("updateUserInfo")
     public Map<String, Object> resetName(HttpServletRequest request, String userName, String userEmail,int occupation, float annualIncome, int workingYears) {
