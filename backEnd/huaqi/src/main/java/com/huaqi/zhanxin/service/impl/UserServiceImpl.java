@@ -6,6 +6,7 @@ import com.huaqi.zhanxin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     // 返回数据库注册结果
     @Override
-    public int register(String userEmail, String userPwd){return userMapper.registerUser(userEmail,userPwd);}
+    public int register(String userEmail, String userPwd, int userType,LocalDateTime userRegisterTime){return userMapper.registerUser(userEmail,userPwd,userType,userRegisterTime);}
 
     // 返回数据库实名结果
     @Override

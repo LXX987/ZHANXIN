@@ -4,6 +4,7 @@ import com.huaqi.zhanxin.entity.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -32,8 +33,8 @@ public interface UserMapper {
     int insertInfo(@Param("occupation") int occupation,@Param("annualIncome") float annualIncome,@Param("workingYears") int workingYears,@Param("userID") int userID);
 
     // 注册向数据库插入数据
-    @Insert("insert into User(user_email,user_pwd) values (#{userEmail},#{userPwd})")
-    int registerUser(@Param("userEmail") String userEmail,@Param("userPwd") String userPwd);
+    @Insert("insert into User(user_email,user_pwd,user_type,user_register_time) values (#{userEmail},#{userPwd},#{userType},#{userRegisterTime})")
+    int registerUser(@Param("userEmail") String userEmail,@Param("userPwd") String userPwd,@Param("userType") int userType,@Param("userRegisterTime") LocalDateTime userRegisterTime);
 
     //实名
     @Update("update Identity_Info set authentication = #{authentication},IDtype = #{IDtype},IDcard = #{IDcard} where user_id = #{userID}")

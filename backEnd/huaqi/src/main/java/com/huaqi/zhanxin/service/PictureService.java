@@ -12,5 +12,10 @@ public interface PictureService {
     public String uploadFile(int userID, MultipartFile file, String picType) throws Exception;
     int getCurNumber();
     Picture getHouse(int userId);
+    List<Picture> getCrime(int userId);
+    List<Picture> getBlood(int userId);
+    List<Picture> getVolunteer(int userId);
+    List<Picture> getDonation(int userId);
+    List<Picture> getPhoneCost(int userId);
     List<Picture> pictureList();
 }

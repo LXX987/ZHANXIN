@@ -61,7 +61,7 @@ public class PictureServiceImpl implements PictureService {
         file.transferTo(resultPath);
 //        fileMapper.insert(title, sdf.format(new Date()), imageName, fileName);
 
-        pictureMapper.fileInsert(userID,0,fileName,picType);
+        pictureMapper.fileInsert(userID,0,picType,fileName);
 
         System.out.println("absolutePath:"+fileRealPath.getCanonicalPath());
         System.out.println("resultPath:"+resultPath.getCanonicalPath());
@@ -80,6 +80,31 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public Picture getHouse(int userId) {
         return pictureMapper.getHouse(userId);
+    }
+
+    @Override
+    public List<Picture> getCrime(int userId) {
+        return pictureMapper.getCrime(userId);
+    }
+
+    @Override
+    public List<Picture> getBlood(int userId) {
+        return pictureMapper.getBlood(userId);
+    }
+
+    @Override
+    public List<Picture> getVolunteer(int userId) {
+        return pictureMapper.getVolunteer(userId);
+    }
+
+    @Override
+    public List<Picture> getDonation(int userId) {
+        return pictureMapper.getDonation(userId);
+    }
+
+    @Override
+    public List<Picture> getPhoneCost(int userId) {
+        return pictureMapper.getPhoneCost(userId);
     }
 
     @Override
