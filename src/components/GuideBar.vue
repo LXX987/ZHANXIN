@@ -7,7 +7,7 @@
     <el-menu-item index="/CreditReport">信用报告</el-menu-item>
     <el-menu-item index="/PsychologyGuidebar">心理测试</el-menu-item>
     <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
-    <el-menu-item index="">好友人脉</el-menu-item>
+    <el-menu-item index="/Friends">好友人脉</el-menu-item>
     <el-menu-item index="">意见反馈</el-menu-item>
     <el-menu-item index="/PersonalCenter">
       <img src='@/assets/avatar.png' class="avatar">
@@ -37,7 +37,7 @@ import Footer from '@/components/Footer'
     methods:{
       getIndex(){
         var index_temp = $route.path
-        if(index_temp=="/HomePage"||index_temp=="/CreditReport"||index_temp=="/PsychologyGuidebar"||index_temp=="/HonestyVideo"||index_temp=="/HonestyVideo"||index_temp=="/PersonalCenter"){
+        if(index_temp=="/HomePage"||index_temp=="/CreditReport"||index_temp=="/PsychologyGuidebar"||index_temp=="/HonestyVideo"||index_temp=="/Friends"||index_temp=="/PersonalCenter"){
           this.index = index_temp
         }
         else{
