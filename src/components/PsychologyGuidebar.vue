@@ -152,9 +152,9 @@
     text-decoration: none;
 }
 .NavMenu {
-    margin-left: 50%;
+    margin-left: 48%;
     margin-top: 5%;
-    width: 143px;
+    width: 155px;
     height: 233px;
     border-color: rgba(222, 222, 222, 0.8);
     border-width: 1px;

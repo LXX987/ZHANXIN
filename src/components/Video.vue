@@ -1,15 +1,15 @@
 <template>
 <div class="rate">
     <div class="guidebar">
-        <el-menu class="el-menu-demo" mode="horizontal" :router="true">
+        <el-menu default-active="/HonestyVideo" class="el-menu-demo" mode="horizontal" :router="true">
             <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
-            <el-menu-item index="">首页</el-menu-item>
+            <el-menu-item index="/HomePage">首页</el-menu-item>
             <el-menu-item index="/CreditReport">信用报告</el-menu-item>
-            <el-menu-item index="/PsychologyHome">心理测试</el-menu-item>
+            <el-menu-item index="/PsychologyGuidebar">心理测试</el-menu-item>
             <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
             <el-menu-item index="">好友人脉</el-menu-item>
             <el-menu-item index="">意见反馈</el-menu-item>
-            <el-menu-item index="">
+            <el-menu-item index="/PersonalCenter">
                 <img src='@/assets/avatar.png' class="avatar">
             </el-menu-item>
         </el-menu>
@@ -28,18 +28,24 @@
                     <div class="videotitle">
                         视频介绍
                     </div>
+                    <div class="videolist">
+                        下一集(获取视频列表得了)
+                    </div>
                     <div>
-                        下一集
-                        <div>
-                            <el-button>开始答题</el-button>
-                        </div>
+                        <el-button @click="gotoQuestion()">开始答题</el-button>
                     </div>
                 </el-col>
             </el-row>
-            <div>
+            <div class="videoshort">
                 <div class="videotitle">
                     视频概述
                 </div>
+                <div class="introduction">
+                    &ensp;&ensp;&ensp;&ensp;{{introduction}}
+                </div>
+            </div>
+             <div>
+                <Footer></Footer>
             </div>
         </div>
     </div>
@@ -47,18 +53,39 @@
 </template>
  
 <script>
+import Footer from '@/components/Footer'
 export default {
     name:'Video',
-    components:{
-     },
+    components:{ 
+        Footer
+    },
     data(){
         return{
             videoUrl:'',
+            introduction:'cc',
+            videoId:'',
         }
     },
     mounted:function(){
-        console.log(this.$route. query.videoUrl)
+        console.log(this.$route.query.videoId)
         this.videoUrl = this.$route.query.videoUrl
+        this.videoId = this.$route.query.videoId
+    },
+    methods:{
+        gotoQuestion(){
+            // // 获取id对应的视频题目
+            // this.$axios({
+            // method:"get",
+            // url: 'http://localhost:8888/admin/questions'+'/'+this.videoId,
+            // // params:{
+            // //     id = this.videoId
+            // // }
+            // }).then(res=>{
+            //     console.log(res.data.data)
+            //     this.list = res.data.data
+            // })
+             this.$router.push({path:'/VideoQuestion',query:{videoId:this.videoId}})
+        }
     }
 }
 </script>
@@ -140,6 +167,29 @@ export default {
     font-weight: bold;
     text-align: left;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
-
+.videoshort{
+    margin-left: 15%;
+    margin-right: 7%;
+    padding-left: 20px;
+    background-color: #fff;
+    padding-top: 10px;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
+}
+.introduction{
+    text-align: left;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.el-button{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.videolist{
+    min-height: 500px;
+}
 </style>

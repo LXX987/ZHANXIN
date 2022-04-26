@@ -402,9 +402,6 @@ export default {
   padding: 10px;
   box-shadow: 0px 0px 20px #6a8a84bb;
 }
-  .el-row {
-    /* margin-bottom: 20px; */
-  }
   .el-col {
     border-radius: 20px;
   }

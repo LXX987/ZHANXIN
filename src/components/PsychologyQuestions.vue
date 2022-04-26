@@ -16,16 +16,16 @@
                     <el-divider id="divider"></el-divider>
                     <el-row>
                         <div v-for="(item) in questions" :key="item.testID" class="text item">
-                <p style="width: 90%;font-size: 16px;margin-bottom: 5px;text-align: left;margin-left: 5%;margin-bottom: 3%;">{{item.testID}}.&nbsp;{{item.testContent}}</p>
-                <el-radio-group v-model="item.item_score">
-                <el-radio :label="1">{{item.option1}}</el-radio>
-                <el-radio :label="2">{{item.option2}}</el-radio>
-                <el-radio :label="3">{{item.option3}}</el-radio>
-                <el-radio :label="4">{{item.option4}}</el-radio>
-                <el-radio :label="5">{{item.option5}}</el-radio>
-                </el-radio-group>
-                <el-divider></el-divider>
-            </div>
+                            <p style="width: 90%;font-size: 16px;margin-bottom: 5px;text-align: left;margin-left: 5%;margin-bottom: 3%;">{{item.testID}}.&nbsp;{{item.testContent}}</p>
+                            <el-radio-group v-model="item.item_score">
+                            <el-radio :label="1">{{item.option1}}</el-radio>
+                            <el-radio :label="2">{{item.option2}}</el-radio>
+                            <el-radio :label="3">{{item.option3}}</el-radio>
+                            <el-radio :label="4">{{item.option4}}</el-radio>
+                            <el-radio :label="5">{{item.option5}}</el-radio>
+                            </el-radio-group>
+                                <el-divider></el-divider>
+                        </div>
             <el-button @click="submit">提交</el-button>
                     </el-row>
                 </el-col>
@@ -224,9 +224,6 @@ export default {
         })
     },
     methods: {
-    gotoAdmin(){
-        this.$router.push('/HomePage');
-        },
     submit(){
         console.log(this.questions);
         for(let i=0;i<60;i++){
@@ -323,17 +320,7 @@ export default {
             },err=>{
                 console.log(err);
             })
-            this.$router.push({
-			    path: '/PsychoMeasureRecord',
-			    query: {
-			        totalScore: this.totalScore, 
-                    score1: this.score1, 
-                    score2: this.score2,
-                    score3: this.score3,
-                    score4: this.score4,
-                    score5: this.score5
-			    }
-			})
+            this.$router.push('/PsychologyGuidebar/PsychologyResult')
     } 
   }
 }

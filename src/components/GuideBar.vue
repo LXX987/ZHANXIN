@@ -1,15 +1,15 @@
 <template>
 <div>
 <div class="guidebar">
-  <el-menu class="el-menu-demo" mode="horizontal" :router="true">
+  <el-menu :default-active="index" class="el-menu-demo" mode="horizontal" :router="true">
     <el-menu-item><img src='@/assets/logo.png' class="logo"></el-menu-item>
-    <el-menu-item index="/HomePage">首页</el-menu-item>
-    <el-menu-item index="/CreditReport">信用报告</el-menu-item>
-    <el-menu-item index="/PsychologyGuidebar">心理测试</el-menu-item>
-    <el-menu-item index="/HonestyVideo">金融教育</el-menu-item>
-    <el-menu-item index="">好友人脉</el-menu-item>
-    <el-menu-item index="">意见反馈</el-menu-item>
-    <el-menu-item index="/PersonalCenter">
+    <el-menu-item index="/HomePage" @click="saveIndex('/HomePage')">首页</el-menu-item>
+    <el-menu-item index="/CreditReport" @click="saveIndex('/CreditReport')">信用报告</el-menu-item>
+    <el-menu-item index="/PsychologyGuidebar" @click="saveIndex('/PsychologyGuidebar')">心理测试</el-menu-item>
+    <el-menu-item index="/HonestyVideo" @click="saveIndex('/HonestyVideo')">金融教育</el-menu-item>
+    <el-menu-item index="23" @click="saveIndex('/HonestyVideo')">好友人脉</el-menu-item>
+    <el-menu-item index="23" @click="saveIndex('/HonestyVideo')">意见反馈</el-menu-item>
+    <el-menu-item index="/PersonalCenter" @click="saveIndex('/PersonalCenter')">
       <img src='@/assets/avatar.png' class="avatar">
     </el-menu-item>
 </el-menu>
@@ -31,8 +31,36 @@ import Footer from '@/components/Footer'
   },
     data() {
        return {
+        index:'',
       };
     },
+    created(){
+      this.index = window.sessionStorage.getItem('index')
+    },
+    methods:{
+      saveIndex(index){
+          window.sessionStorage.setItem('index',index)
+          this.index=index;
+      },
+      getIndex(){
+        var index_temp = this.$route.path
+        if(index_temp=="/HomePage"||index_temp=="/CreditReport"||index_temp=="/PsychologyGuidebar"||index_temp=="/HonestyVideo"||index_temp=="/HonestyVideo"||index_temp=="/PersonalCenter"){
+          this.index = index_temp
+        }
+        else{
+          switch(index_temp){
+            case"/PsychologyGuidebar/PsychologyResult":this.index="/PsychologyGuidebar/";
+            case"/PsychologyGuidebar/PsychologyQuestion":this.index="/PsychologyGuidebar/";
+            case"/PsychologyGuidebar/History":this.index="/PsychologyGuidebar/";
+            case"/ScoreDetail":this.index="/CreditReport";
+            break;
+          }
+        }
+      }
+    },
+    mounted(){
+      this.getIndex()
+    }
   }
 </script>
 <style lang="css" scoped>

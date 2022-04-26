@@ -12,6 +12,10 @@ import PsychologyQuestions from '@/components/PsychologyQuestions'
 import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
+import ScoreDetail from '@/components/ScoreDetail'
+import backgroundGuidebar from '@/components/background/backgroundGuidebar'
+
+import FriendList from '@/components/FriendList'
 
 Vue.use(Router)
 
@@ -33,44 +37,44 @@ export default new Router({
       component: GuideBar,
       children: [   // 添加子路由
         {
-          path: 'HonestyVideo', 
+          path: 'HonestyVideo',
           name: 'HonestyVideo',
-          components: {   
+          components: {
             table: () => import('@/components/HonestyVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           },
           children:[
             {
-              path: '', 
+              path: '',
               name: 'BasicVideo',
-              components: {   
+              components: {
               video: () => import('@/components/BasicVideo')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
               }
             },
             {
-              path: '/CreditVideo', 
+              path: '/CreditVideo',
               name: 'CreditVideo',
-              components: {   
+              components: {
               video: () => import('@/components/CreditVideo')
               }
             },
             {
-              path: '/HonestyCulture', 
+              path: '/HonestyCulture',
               name: 'HonestyCulture',
-              components: {   
+              components: {
               video: () => import('@/components/HonestyCulture')
               }
             }
           ]
         },
         {
-          path: 'CreditReport', 
+          path: 'CreditReport',
           name: 'CreditReport',
-          components: {   
+          components: {
             table: () => import('@/components/CreditReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {
-          path: 'PersonalCenter', 
+          path: 'PersonalCenter',
           name: 'PersonalCenter',
           components: {   
             table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
@@ -112,9 +116,9 @@ export default new Router({
           }
         },
         {
-          path: 'PsychologyGuidebar', 
+          path: 'PsychologyGuidebar',
           name: 'PsychologyGuidebar',
-          components: {   
+          components: {
             table: () => import('@/components/PsychologyGuidebar')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           },
           children: [
@@ -155,6 +159,51 @@ export default new Router({
             table: () => import('@/components/HomePage')
           }
         },
+        {
+          path: 'ScoreDetail',
+          name: 'ScoreDetail',
+          components: {
+            table: () => import('@/components/ScoreDetail')
+          }
+        },
+        {
+          path: 'Possession',
+          name: 'Possession',
+          components: {
+            table: () => import('@/components/Possession')
+          }
+        },{
+          path: 'Loan',
+          name: 'Loan',
+          components: {
+            table: () => import('@/components/Loan')
+          }
+        },{
+          path: 'Behavior',
+          name: 'Behavior',
+          components: {
+            table: () => import('@/components/Behavior')
+          }
+        },{
+          path: 'Social',
+          name: 'Social',
+          components: {
+            table: () => import('@/components/Social')
+          }},
+          {
+          path: '/Friends',
+          name: 'FriendList',
+          components: {
+            table: () => import('@/components/FriendList')
+          }
+        }
+      ]
+    },
+    {
+      path: '/background',
+      name: '/background',
+      component: backgroundGuidebar,
+      children: [  // 添加子路由
       ]
     },
     {
