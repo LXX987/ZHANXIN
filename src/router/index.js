@@ -13,6 +13,7 @@ import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
 import ScoreDetail from '@/components/ScoreDetail'
+import backgroundGuidebar from '@/components/background/backgroundGuidebar'
 
 Vue.use(Router)
 
@@ -128,6 +129,13 @@ export default new Router({
             table: () => import('@/components/ScoreDetail')
           }
         }
+      ]
+    },
+    {
+      path: '/background',
+      name: '/background',
+      component: backgroundGuidebar,
+      children: [  // 添加子路由
       ]
     },
     {

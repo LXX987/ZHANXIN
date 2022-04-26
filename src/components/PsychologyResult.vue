@@ -7,27 +7,37 @@
                         <span id="measureHomeHeading">测评结果</span>
                     </el-row>
                     <el-row class="psychologyIntro">
-                        <el-col :span="14">
+                        <el-col :span="12">
                             <div class="psychologyIntroWord">
                                 <ul>
-                                    <li>开放性（openness）：{{this.opennessScore}}分</li>
-                                    <li>责任心（conscientiousness）：{{this.conscientiousnessScore}}分</li>
-                                    <li>外倾性（extraversion）：{{this.extraversionScore}}分</li>
-                                    <li>宜人性（agreeableness）：{{this.agreeablenessScore}}分</li>
-                                    <li>神经质性（neuroticism）：{{this.neuroticismScore}}分</li>
+                                    <li>开放性（openness）：{{opennessScore}}分</li>
+                                    <li>责任心（conscientiousness）：{{conscientiousnessScore}}分</li>
+                                    <li>外倾性（extraversion）：{{extraversionScore}}分</li>
+                                    <li>宜人性（agreeableness）：{{agreeablenessScore}}分</li>
+                                    <li>神经质性（neuroticism）：{{neuroticismScore}}分</li>
                                 </ul>
-                                <span>您的测评总分为：{{this.totalScore}}分</span>
+                                <span>您的测评总分为：{{totalScore}}分</span>
                             </div>
                         </el-col>
-                        <el-col :span="10">
-                            <div class="Echarts" id="resultEchart"></div>
+                        <el-col :span="12">
+                            <div id="radarChart" class="Echarts"></div>
                         </el-col>
                     </el-row>
                     <el-divider id="divider"></el-divider>
                     <el-row>
-                        <!-- <div class="introBox">
-                            <el-button id="startButton">开始测试</el-button>
-                        </div> -->
+                        <div class="ResultContent">
+                            <p>您的心理测评报告：</p>
+                            <p>&ensp;&ensp;&ensp;&ensp;根据您的选择，我们分析您的性格是{{personality}}。</p>
+                        </div>
+                    </el-row>
+                    <el-row>
+                        <div id="Link"><el-link @click="openDetails">查看详情</el-link></div>
+                    </el-row>
+                    <el-row>
+                        <div class="RateBlock">
+                            <el-col id="RateTitle" :span="12"><span>请您为本次测评打分：&ensp;&ensp;&ensp;&ensp;</span></el-col>
+                            <el-col id="Rateline" :span="12"><el-rate v-model="value1" show-score></el-rate></el-col>
+                        </div>
                     </el-row>
                 </el-col>
                 <el-col :span="10">
@@ -51,10 +61,96 @@
                     </el-row>
                 </el-col>
             </el-row>
+            <div class="Details" v-show="popshow">
+                <el-row>
+                    <el-col :span="14">
+                        <p id="userMessage">用户信息</p>
+                    </el-col>
+                    <el-col id="closeButton" :span="10">
+                        <el-button icon="el-icon-close" circle @click="closeDetails"></el-button>
+                    </el-col>
+                </el-row>
+                <el-divider></el-divider>
+                <el-row>
+                    <p>用户名：{{userName}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;测试时间：{{testTime}}</p>
+                    <ul>
+                        <li>开放性（openness）：{{opennessScore}}分</li>
+                        <li>责任心（conscientiousness）：{{conscientiousnessScore}}分</li>
+                        <li>外倾性（extraversion）：{{extraversionScore}}分</li>
+                        <li>宜人性（agreeableness）：{{agreeablenessScore}}分</li>
+                        <li>神经质性（neuroticism）：{{neuroticismScore}}分</li>
+                    </ul>
+                    <p>总分数：{{score}}分</p>
+                </el-row>
+            </div>
         </div>
     <!-- </el-main> -->
 </template>
 <style scoped>
+#closeButton {
+    text-align: right;
+}
+#userMessage {
+    font-size: 20px;
+    font-weight: 550;
+}
+.Details {
+    position: absolute;
+    left: 500px;
+    top: 150px;
+    width: 700px;
+    height: 500px;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    border-radius: 4px;
+    border: 1px solid #ebeef5;
+    background-color: #fff;
+    overflow: hidden;
+    color: #303133;
+    transition: .3s;
+    padding: 2% 4%;
+    text-align: left;
+}
+.Details li {
+    font-size: 18px;
+    line-height: 45px;
+    margin-left: 3%;
+}
+.Details p {
+    margin-top: 4%;
+}
+.Details ul {
+    list-style-type: circle;
+}
+#Link {
+    margin-top: 120px;
+    text-align: right;
+}
+.el-link {
+    font-size: 18px;
+    font-weight: 500;
+}
+.RateBlock {
+    margin-top: 30px;
+    font-size: 17px;
+    font-weight: 500;
+}
+#Rateline {
+    text-align: left;
+}
+#RateTitle {
+    text-align: right;
+}
+.ResultContent {
+    text-align: left;
+    margin-left: 8%;
+    line-height: 28px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.Echarts {
+    width: 500px;
+    height: 500px;
+}
 #resultEchart {
     width: auto;
     height: 400px;
@@ -113,30 +209,8 @@
     background: url('../assets/recommendGroup.png') no-repeat;
     background-size: 100% 100%;
 }
-#startButton {
-    width: 115px;
-    height: 50px;
-    border-color: rgb(54, 185, 255);
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: left;
-    font-weight: normal;
-    font-style: normal;
-    position: absolute;
-    left: 15%;
-    top: 65%;
-}
 #divider {
     margin-left: 3%;
-}
-.introBox {
-    height: 265px;
-    width: 865px;
-    background: url('../assets/4.png') no-repeat;
-    background-size: 100% 100%;
-    margin: 2% 7%;
 }
 .measureHomeHead {
     margin-top: 3%;
@@ -202,79 +276,160 @@
 </style>
 <script>
 export default {
-    name: 'PsychologyHome',
+    name: 'PsychologyResult',
     data() {
         return {
+            userName: '',
+            testTime: '',
+            popshow: 0,
+            value1: 3,
+            personality: '',
+            personalityScore: 0,
+            score: 0,
             totalScore: 0,
             opennessScore: 0,
             conscientiousnessScore: 0,
             extraversionScore: 0,
             agreeablenessScore: 0,
-            neuroticismScore: 0,
-            option: {
-                color: ['#67F9D8', '#FFE434', '#56A3F1', '#FF917C'],
-                title: {
-                    text: 'Customized Radar Chart'
-                },
-                legend: {},
-                radar: [{
-                    indicator: [
-                        { text: 'Indicator1', max: 150 },
-                        { text: 'Indicator2', max: 150 },
-                        { text: 'Indicator3', max: 150 },
-                        { text: 'Indicator4', max: 120 },
-                        { text: 'Indicator5', max: 108 },
-                        { text: 'Indicator6', max: 72 }
-                    ],
-                    center: ['75%', '50%'],
-                    radius: 120,
-                    axisName: {
-                        color: '#fff',
-                        backgroundColor: '#666',
-                        borderRadius: 3,
-                        padding: [3, 5]
-                    }
-                }],
-                series: [{
-                    type: 'radar',
-                    radarIndex: 1,
-                    data: [{
-                        value: [100, 93, 50, 90, 70, 60],
-                        name: 'Data D',
-                        areaStyle: {
-                            color: new echarts.graphic.RadialGradient(0.1, 0.6, 1, [
-                                {
-                                    color: 'rgba(255, 145, 124, 0.1)',
-                                    offset: 0
-                                },
-                                {
-                                    color: 'rgba(255, 145, 124, 0.9)',
-                                    offset: 1
-                                }
-                            ])
-                        }
-                    }]
-                }]
-            }
+            neuroticismScore: 0
         }
     },
     methods: {
-        myEcharts(){
-		  // 基于准备好的dom，初始化echarts实例
-		  var myChart = this.$echarts.init(document.getElementById('resultEchart'));
-		  myChart.setOption(this.option);
-		  }
+        closeDetails() {
+            console.log('close');
+            this.popshow = 0;
+        },
+        openDetails() {
+            console.log('open');
+            this.popshow = 1;
+        },
+        drawPie() {
+          let charts = this.$echarts.init(document.getElementById('radarChart'));
+                //charts.setOption(option);
+                this.$axios({
+                    method:"post",
+                    url: 'http://localhost:8888/psychology/getResult',
+                    headers:{
+                    token:window.sessionStorage.getItem("token")},
+                }).then(res=>{
+                    console.log(res.data.data);
+                    this.score = res.data.data.ResultScore.testScore
+                    charts.setOption({
+                    tooltip: {},//提示层
+                    legend: {
+                        data: ['name1']
+                    },
+                    radar: {
+                        name: {
+                            textStyle: {
+                                color: '#fff', //字体颜色
+                                backgroundColor: '#999', //背景色
+                                borderRadius: 3, //圆角
+                                padding: [3, 5] //padding
+                            }
+                        },
+                        center: ['47%', '40%'],
+                        radius: '65%',
+                        startAngle: 270,
+                        indicator: [{
+                                name: '神经质性',
+                                max: 100
+                            },
+                            {
+                                name: '外倾性',
+                                max: 100
+                            },
+                            {
+                                name: '开放性',
+                                max: 100
+                            },
+                            {
+                                name: '宜人性',
+                                max: 100
+                            },
+                            {
+                                name: '责任心',
+                                max: 100
+                            }
+                        ],
+                    },
+                    series: [{
+                        name: '测试标题名字',
+                        type: 'radar',
+                        areaStyle: {normal: {}},
+                        data: [{
+                            value: [res.data.data.ResultScore.neuroticism, res.data.data.ResultScore.extraversion, res.data.data.ResultScore.openness, res.data.data.ResultScore.agreeableness, res.data.data.ResultScore.conscientiousness],
+                            name: "测评得分"
+                        }]
+                    }]
+                    });
+                })
+        },
+        getResult() {
+            this.$axios({
+                method:"post",
+                url: 'http://localhost:8888/psychology/getResult',
+                headers:{token:window.sessionStorage.getItem("token")},
+                params:{
+                }
+            }).then(res=>{
+                console.log(res);
+                this.testTime = res.data.data.ResultScore.testTime;
+                this.totalScore = res.data.data.ResultScore.testScore;
+                this.neuroticismScore = res.data.data.ResultScore.neuroticism,
+                this.extraversionScore = res.data.data.ResultScore.extraversion;
+                this.opennessScore = res.data.data.ResultScore.openness;
+                this.agreeablenessScore = res.data.data.ResultScore.agreeableness;
+                this.conscientiousnessScore = res.data.data.ResultScore.conscientiousness;
+                this.max();
+                console.log(this.personalityScore);
+            },err=>{
+                console.log(err);
+            })
+        },
+        getUserName() {
+            this.$axios({
+                method:"get",
+                url: 'http://localhost:8888/user/getUserName',
+                headers:{token:window.sessionStorage.getItem("token")},
+                params:{
+                }
+            }).then(res=>{
+                console.log(res);
+                this.userName = res.data.data.userName;
+            })
+        },
+        max(){
+            if(this.opennessScore > this.personalityScore) {
+                this.personalityScore = this.opennessScore;
+            }
+            if(this.extraversionScore > this.personalityScore) {
+                this.personalityScore = this.extraversionScore;
+            }
+            if(this.conscientiousnessScore > this.personalityScore) {
+                this.personalityScore = this.conscientiousnessScore;
+            }
+            if(this.agreeablenessScore > this.personalityScore) {
+                this.personalityScore = this.agreeablenessScore;
+            }
+            if(this.neuroticismScore > this.personalityScore) {
+                this.personalityScore = this.neuroticismScore;
+            }
+            switch(this.personalityScore){
+                case(this.neuroticismScore):this.personality="神经质性（neuroticism）";break;
+                case(this.opennessScore):this.personality="开放性（openness）";break;
+                case(this.extraversionScore):this.personality="外倾性（extraversion）";break;
+                case(this.conscientiousnessScore):this.personality="责任心（conscientiousness）";break;
+                case(this.agreeablenessScore):this.personality="宜人性（agreeableness）";break;
+                    
+            }
+        }
     },
     mounted() {
-        console.log(this.$route.path),
-        // 在通过mounted调用即可
-        this.myEcharts();
-        this.totalScore = this.$route.query.totalScore,
-        this.neuroticismScore = this.$route.query.score1,
-        this.extraversionScore = this.$route.query.score2,
-        this.opennessScore = this.$route.query.score3,
-        this.agreeablenessScore = this.$route.query.score4,
-        this.conscientiousnessScore = this.$route.query.score5
+        console.log(this.$route.path)
+        this.getResult()
+        this.getUserName()
+        this.drawPie('radarChart')
     }
 }
 </script>
