@@ -21,15 +21,15 @@
                         <!-- 信用分数解读 -->
                         <div class="score_detail"> 
                             <el-row>
-                                <el-col :span="10"><el-card class="square" @click.native="gotodetail()"><div class="behavior">行为积累方面：{{behavior}}分</div></el-card></el-col>
-                                <el-col :span="10"><el-card class="square"><div class="credit_histort">信贷记录方面：{{credit_histort}}分</div></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotoBehavior()"><div class="behavior">行为积累方面：{{behavior}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotoLoan()"><div class="credit_histort" >信贷记录方面：{{credit_histort}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                             </el-row>  
                             <el-row>
-                                <el-col :span="10"><el-card class="square"><div class="asset">资产证明方面：{{asset}}分</div></el-card></el-col>
-                                <el-col :span="10"><el-card class="square"><div class="asset">身份证明方面：{{idfication}}分</div></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotoPossession()"><div class="asset" >资产证明方面：{{asset}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotoScoreDetail()"><div class="asset" >身份证明方面：{{idfication}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                             </el-row> 
                             <el-row>
-                                <el-col :span="10"><el-card class="square"><div class="asset">人脉圈方面：{{social}}分</div></el-card></el-col>
+                                <el-col :span="10"><el-card class="square" @click.native="gotoSocial()"><div class="asset">人脉圈方面：{{social}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                                 <el-col :span="10"><el-card class="square"><div class="asset">总分：{{score}}分</div></el-card></el-col>
                             </el-row>       
                         </div>
@@ -91,7 +91,7 @@
     name:'CreditReport',
    data(){  
          return{
-             quota:'不建议信用贷款',
+            quota:'暂无数据',
             dialogTableVisible: false,
             score:0,   
             gridData:[],
@@ -114,9 +114,21 @@
          }
      },
      methods:{
-        gotodetail(){// 前往详情页
-            this.$router.push('/ScoreDetail')
-         },
+        gotoScoreDetail(){
+            this.$router.push({path: '/ScoreDetail'});
+        },
+        gotoLoan(){
+            this.$router.push({path: '/Loan'});
+        },
+        gotoSocial(){
+            this.$router.push({path: '/Social'});
+        },
+        gotoPossession(){
+            this.$router.push({path: '/Possession'});
+        },
+        gotoBehavior(){
+            this.$router.push({path: '/Behavior'});
+        },
         // 雷达图作画
       drawPie() {
           let charts = this.$echarts.init(document.getElementById('leiDaTu'));
@@ -134,14 +146,19 @@
                         }
                         else if(this.score<=220){
                         this.poorhere=true
+                        this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=290){
                         this.fairhere=true
+                        this.quota=""
                         }else if(this.score<=360){
                         this.goodhere=true
+                        this.quota=""
                         }else if(this.score<=430){
                         this.verygoodhere=true
+                        this.quota=""
                         }else if(this.score<=500){
                         this.excellenthere=true
+                        this.quota=""
                         console.log(this.excellenthere);
                         }
                     this.behavior = res.data.data.behavior_score
@@ -360,5 +377,11 @@ h1{
 }
 .proportion{
     width: 1000px;
+}
+.right{
+    height:50px;
+    width: 50px;
+    margin-left: 70%;
+    cursor: pointer;
 }
 </style>

@@ -74,7 +74,7 @@ export default new Router({
           path: 'PersonalCenter', 
           name: 'PersonalCenter',
           components: {   
-            table: () => import('@/components/MyReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+            table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {
@@ -126,6 +126,31 @@ export default new Router({
           name: 'ScoreDetail',
           components: {
             table: () => import('@/components/ScoreDetail')
+          }
+        },
+        {
+          path: 'Possession',
+          name: 'Possession',
+          components: {
+            table: () => import('@/components/Possession')
+          }
+        },{
+          path: 'Loan',
+          name: 'Loan',
+          components: {
+            table: () => import('@/components/Loan')
+          }
+        },{
+          path: 'Behavior',
+          name: 'Behavior',
+          components: {
+            table: () => import('@/components/Behavior')
+          }
+        },{
+          path: 'Social',
+          name: 'Social',
+          components: {
+            table: () => import('@/components/Social')
           }
         }
       ]
