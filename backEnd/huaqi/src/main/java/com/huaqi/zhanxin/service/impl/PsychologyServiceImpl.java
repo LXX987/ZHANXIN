@@ -27,6 +27,11 @@ public class PsychologyServiceImpl implements PsychologyService {
     }
 
     @Override
+    public List<PsychologyBean> getResult(int userId){
+        return psychologyMapper.psychologyHistoryList(userId);
+    }
+
+    @Override
     public int recordScore(int userId, Timestamp testTime, int score1, int score2,int score3, int score4, int score5, int score){
         //计算分数
         return  psychologyMapper.recordScore(userId,testTime,score,score1,score2,score3,score4,score5);

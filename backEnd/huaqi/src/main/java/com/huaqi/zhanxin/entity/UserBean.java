@@ -14,6 +14,7 @@ public class UserBean {
     private String userEmail;
     private Integer userType;
     private LocalDateTime userRegisterTime;
+    private String userAvatar;
 
 //    public UserBean(Integer userID, String userPwd, String userName, String userEmail) {
 //        this.userID = userID;

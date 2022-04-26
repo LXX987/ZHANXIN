@@ -37,13 +37,48 @@ public class PsychologyController {
         return psychologyService.psychologyList();
     }
 
-    @ApiOperation(value = "获取历史心理测评记录")
-    @PostMapping("getHistory")
-    public Map<String, Object> getHistory(HttpServletRequest request){
+    @ApiOperation(value = "获取心理测试结果")
+    @PostMapping("getResult")
+    public Map<String, Object> getResult(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
         int userId = getInfo.getUserId();
-//        int userId = 1;
+        if (userId == 0) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        List<PsychologyBean> historyList = psychologyService.getResult(userId);
+        if (historyList == null) {
+            map.put("msg", "无作答测评记录");
+            return map;
+        }
+        historyList.sort((t1, t2) -> t2.getTestTime().compareTo(t1.getTestTime()));
+//        System.out.println("------------倒序后-----------------");
+//        for (PsychologyBean order : historyList) {
+//            System.out.println("Score=" + order.getTestScore() + ",Time=" + order.getTestTime());
+//        }
+
+        try {
+            map.put("ResultScore", historyList.get(0));
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } catch (Exception e) {
+            map.put("msg", e.getMessage());
+            helper.setMsg("Failure");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+
+    }
+
+    @ApiOperation(value = "获取历史心理测评记录")
+    @PostMapping("getHistory")
+    public Map<String, Object> getHistory(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userId = getInfo.getUserId();
+        //int userId = 1;
 
         if (userId == 0) {
             map.put("msg", "关键数据缺失");
@@ -78,14 +113,14 @@ public class PsychologyController {
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
         int userID = getInfo.getUserId();
-//        int userID =1;
+        //int userID =1;
         if (userID == 0){
             map.put("msg", "用户不存在");
             return  map;
         }
         Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
 
-        int result = psychologyService.recordScore(userID,currentTIme,totalScore,score1,score2,score3,score4,score5);
+        int result = psychologyService.recordScore(userID,currentTIme,score1,score2,score3,score4,score5,totalScore);
 
 
         map.put("computeResult", result);

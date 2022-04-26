@@ -22,8 +22,7 @@ public class VideoInfo implements Serializable {
 
     private String videoIntro;
 
-    private String videoTest;
+    private String videoCover;
 
-    private String videoAnswer;
-    
+    private String videoType;
 }

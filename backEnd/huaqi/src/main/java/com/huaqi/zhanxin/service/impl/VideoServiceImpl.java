@@ -5,6 +5,7 @@ import com.huaqi.zhanxin.entity.VideoInfo;
 import com.huaqi.zhanxin.mapper.VideoMapper;
 import com.huaqi.zhanxin.service.VideoService;
 import com.huaqi.zhanxin.tools.UploadUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,30 +19,37 @@ import java.util.List;
 @Service
 public class VideoServiceImpl implements VideoService {
 
-    private final String UPLOAD_PATH = "D:/opt/JavaEE/images/";
+
+    @Value("${path.video-upload-path}")
+    private String VIDEO_UPLOAD_PATH;
+
+    @Value("${path.picture-upload-path}")
+    private String COVER_UPLOAD_PATH;
 
     @Resource
     VideoMapper videoMapper;
 
     @Override
-    public String uploadVideo(MultipartFile file, String title, String intro, HttpServletRequest request)
+    public String uploadVideo(MultipartFile video, MultipartFile cover, String title, String intro, String type, HttpServletRequest request)
     {
-        String url;
+        String video_url;
+        String cover_url;
         try {
-            url = UploadUtil.upload(file, UPLOAD_PATH, request);
+            video_url = UploadUtil.upload(video, VIDEO_UPLOAD_PATH, request);
+            cover_url = UploadUtil.upload(cover, COVER_UPLOAD_PATH, request);
         } catch (Exception e) {
             e.printStackTrace();
             return "-1";
         }
-        videoMapper.insert(title, LocalDateTime.now(), url, intro, null, null);
-        return url;
+        videoMapper.insert(title, LocalDateTime.now(), video_url, intro, type, cover_url);
+        return video_url;
     }
 
     @Override
-    public List<JSONObject> getVideoList()
+    public List<JSONObject> getVideoList(String type)
     {
         List<JSONObject> jsonObjects = new ArrayList<>();
-        List<VideoInfo> videoInfos = videoMapper.selectAll();
+        List<VideoInfo> videoInfos = videoMapper.selectAllByType(type);
         if(videoInfos.isEmpty())
             return null;
         for (var videoInfo:videoInfos) {

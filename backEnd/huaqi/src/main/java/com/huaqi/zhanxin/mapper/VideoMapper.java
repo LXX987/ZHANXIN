@@ -11,13 +11,13 @@ import java.util.List;
 @Mapper
 @Repository
 public interface VideoMapper {
-    @Select("select * from Video_Info")
-    List<VideoInfo> selectAll();
+    @Select("select * from Video_Info where video_type=#{video_type}")
+    List<VideoInfo> selectAllByType(@Param("video_type") String type);
 
-    @Insert("insert into Video_Info(video_name,video_time,video_url,video_intro,video_test,video_answer)" +
-            " values (#{video_name},#{video_time},#{video_url},#{video_intro},#{video_test},#{video_answer})")
+    @Insert("insert into Video_Info(video_name,video_time,video_url,video_intro,video_cover,video_type)" +
+            " values (#{video_name},#{video_time},#{video_url},#{video_intro},#{video_cover},#{video_type})")
     void insert(@Param("video_name")String video_name, @Param("video_time")LocalDateTime video_time, @Param("video_url")String video_url,
-                @Param("video_intro")String video_intro, @Param("video_test")String video_test, @Param("video_answer")String video_answer);
+                @Param("video_intro")String video_intro, @Param("video_type") String video_type, @Param("video_cover") String video_cover);
 
     @Delete("delete from Video_Info where video_id=#{id}")
     Integer deleteOneById(Integer id);
