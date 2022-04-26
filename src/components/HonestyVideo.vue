@@ -25,7 +25,7 @@
                         <div class="videointro">视频介绍</div>
                         <div class="intro">
                             <h1 style="font-size:20px;margin-bottom:10px">借呗欠了5万半年没还会怎样？</h1>
-                            <span style="font-size:16px">借呗欠了5万半年没有还，贷款人的征信会受到影响，在征信报告上面会留下不良的贷款记录，逾期半年算比较严重的行为了，就算是结清了逾期贷款也会对贷款人以后的信贷活动造成影响。</span>
+                            <span style="font-size:16px">&emsp;&emsp;借呗欠了5万半年没有还，贷款人的征信会受到影响，在征信报告上面会留下不良的贷款记录，逾期半年算比较严重的行为了，就算是结清了逾期贷款也会对贷款人以后的信贷活动造成影响。</span>
                             <p style="font-size:16px">视频长度：5：25</p>
                             <p style="font-size:16px">发布时间：2022-2-5</p>
                             <span></span>
@@ -77,9 +77,9 @@ export default {
         }
     },
     methods:{
-        setvideoindex(){
-            console.log(this.$route.path)
-        },
+        // setvideoindex(){
+        //     console.log(this.$route.path)
+        // },
         setBannerH(){
 			this.bannerH=document.getElementsByClassName("bannertt")[0].height
 		},
@@ -106,10 +106,9 @@ export default {
             window.open(newUrl.href, "_blank");
             //this.$router.push({name:'Video', query:{videoUrl:this.videoUrl}})
         },
+        
         },
     mounted(){
-        this.setvideoindex(),
-        console.log(this.$route.path),
         this.setBannerH1()//初始值根据图片的缩放比率和屏幕大小来定，不然走马灯开始时候就会默认一个值
 		window.addEventListener('resize',()=>{
 			this.setBannerH()
@@ -171,32 +170,28 @@ li{
     padding-right: 120px;
 
 }
+.bannertt {
+    width: 100%;
+    height: auto;
+}
 .carousel {
     color: #000000;
     text-align: center;
     overflow: hidden;
     width: 100%;
 }
-.imageBlock{
-    margin-top: 20px;
-    height: 500px;
-}
->>>.el-carousel__container {
-    position: relative;
-    height: 480px;
-}
 .el-carousel__item h3 {
-    color: #F2E5D5;
+    color: #475669;
     font-size: 18px;
     opacity: 0.75;
     line-height: 500px;
     margin: 0;
 }
 .el-carousel__item:nth-child(2n) {
-    background-color: #F2E5D5;
+    background-color: #99a9bf;
 }
 .el-carousel__item:nth-child(2n+1) {
-    background-color: #F2E5D5;
+    background-color: #d3dce6;
 }
 body > .el-container {
     margin-bottom: 40px;
