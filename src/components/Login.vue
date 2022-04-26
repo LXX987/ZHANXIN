@@ -9,7 +9,7 @@
             <el-form-item prop="password"> <li><el-input placeholder="请输入密码" v-model="ruleForm.password" show-password class="input_box"></el-input></li></el-form-item>
             <li><el-button type="primary" round class="btn_login" @click="login">登录</el-button></li>
               <br>
-              <el-link type="primary">没有账号？点击注册</el-link>
+              <el-link type="primary" @click="register()">没有账号？点击注册</el-link>
           </el-form>
         </div>
       </div>
@@ -22,17 +22,17 @@ export default {
   name: 'Login',
   data () {
     var checkId = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('用户邮箱不能为空!'));
+      if (!value) {
+        return callback(new Error('用户邮箱不能为空!'));
+      }
+      };
+    var checkPass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('密码不能为空!'));
         }
-        };
-        var checkPass = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('密码不能为空!'));
-          }
-        };
-     return {
-       radio: '0',
+      };
+    return {
+      radio: '0',
       ruleForm: {
       userid: '',
       password:'',
@@ -49,31 +49,34 @@ export default {
   },
   methods:{ 
     login(){
-            this.$axios({
-            method:"post",
-            url: 'http://localhost:8888/user/login',
-            params:{
-                userEmail:this.ruleForm.userid,
-                userPassword:this.ruleForm.password,
-            }
-            }).then(res=>{
-                console.log(res.data.msg);
-                if(res.data.msg=="登录成功"){
-                    console.log(res);
-                    window.sessionStorage.setItem("token",res.data.token);
-                    this.$router.push('/HomePage')
-                }
-                else{
-                 this.$message({
-                    showClose: true,
-                    message: '登录失败!'
-                    });
-                }
-            },err=>{
-                console.log(err);
-            })
-        }
-   }
+      this.$axios({
+      method:"post",
+      url: 'http://localhost:8888/user/login',
+      params:{
+          userEmail:this.ruleForm.userid,
+          userPassword:this.ruleForm.password,
+      }
+      }).then(res=>{
+          console.log(res.data.msg);
+          if(res.data.msg=="登录成功"){
+              console.log(res);
+              window.sessionStorage.setItem("token",res.data.token);
+              this.$router.push('/HomePage')
+          }
+          else{
+            this.$message({
+              showClose: true,
+              message: '登录失败!'
+              });
+          }
+      },err=>{
+          console.log(err);
+      })
+    },
+    register() {
+      this.$router.push({path: '/Register'});
+    }
+  }
 }
 </script>
 

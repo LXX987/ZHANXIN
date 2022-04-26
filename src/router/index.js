@@ -77,6 +77,41 @@ export default new Router({
           }
         },
         {
+          path: 'AssetProof', 
+          name: 'AssetProof',
+          components: {   
+            table: () => import('@/components/AssetProof')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'HonestyProof', 
+          name: 'HonestyProof',
+          components: {   
+            table: () => import('@/components/HonestyProof')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'MyCreditRecord', 
+          name: 'MyCreditRecord',
+          components: {   
+            table: () => import('@/components/MyCreditRecord')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'MyReport', 
+          name: 'MyReport',
+          components: {   
+            table: () => import('@/components/MyReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'AccountSecurity', 
+          name: 'AccountSecurity',
+          components: {   
+            table: () => import('@/components/AccountSecurity')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
           path: 'PsychologyGuidebar', 
           name: 'PsychologyGuidebar',
           components: {   

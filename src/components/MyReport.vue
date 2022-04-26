@@ -4,19 +4,19 @@
       <el-row>
         <el-col :span="2">
           <div class="grid-content bg-purple">
-            <div class="nochoose-block">
+            <div class="nochoose-block" @click="personalCenter()">
               <img src='@/assets/pic_personalInfo.png'>
               <p class="txt-nochoose">基本资料</p>
             </div>
-            <div class="nochoose-block">
+            <div class="nochoose-block" @click="assetProof()">
               <img src='@/assets/pic_assets.png' class="icon">
               <p class="txt-nochoose">资产证明</p>
             </div>
-            <div class="nochoose-block">
+            <div class="nochoose-block" @click="honestyProof()">
               <img src='@/assets/pic_reputation.png' class="icon">
               <p class="txt-nochoose">声誉记录</p>
             </div>
-            <div class="nochoose-block">
+            <div class="nochoose-block" @click="myCreditRecord()">
               <img src='@/assets/pic_credit.png' class="icon">
               <p class="txt-nochoose">信贷记录</p>
             </div>
@@ -24,7 +24,7 @@
               <img src='@/assets/pic_report1.png' class="icon">
               <p class="txt-choose">信用报告</p>
             </div>
-            <div class="nochoose-block">
+            <div class="nochoose-block" @click="AccountSecurity()">
               <img src='@/assets/pic_account.png' class="icon">
               <p class="txt-nochoose">账号安全</p>
             </div>
@@ -102,92 +102,110 @@ export default {
     },
     methods: {
       drawPie() {
-          let charts = this.$echarts.init(document.getElementById('leiDaTu'));
-                //charts.setOption(option);
-                this.$axios({
-                    method:"get",
-                    url: 'http://localhost:8888/credit/userCredit',
-                    headers:{
-                    token:window.sessionStorage.getItem("token")},
-                }).then(res=>{
-                    console.log(res.data.data.asset_score);
-                    this.score=res.data.data.total_score
-                    if(this.score<=150){
-                        this.verybadhere = true
-                        }
-                        else if(this.score<=220){
-                        this.poorhere=true;
-                        this.level="较差";
-                        }else if(this.score<=290){
-                        this.fairhere=true;
-                        this.level="普通";
-                        }else if(this.score<=360){
-                        this.goodhere=true;
-                        this.level="良好";
-                        }else if(this.score<=430){
-                        this.verygoodhere=true;
-                        this.level="优秀";
-                        }else if(this.score<=500){
-                        this.excellenthere=true;
-                        this.level="极好";
-                        console.log(this.excellenthere);
-                        }
-                    this.behavior = res.data.data.behavior_score
-                    this.credit_histort = res.data.data.credit_score
-                    this.idfication =  res.data.data.identity_score
-                    this.asset = res.data.data.asset_score
-                    this.social = res.data.data.social_score
-                    charts.setOption({
-                    tooltip: {},//提示层
-                    legend: {
-                        data: ['name1']
+        let charts = this.$echarts.init(document.getElementById('leiDaTu'));
+        //charts.setOption(option);
+        this.$axios({
+            method:"get",
+            url: 'http://localhost:8888/credit/userCredit',
+            headers:{
+            token:window.sessionStorage.getItem("token")},
+        }).then(res=>{
+            console.log(res.data.data.asset_score);
+            this.score=res.data.data.total_score
+            if(this.score<=150){
+                this.verybadhere = true
+                }
+                else if(this.score<=220){
+                this.poorhere=true;
+                this.level="较差";
+                }else if(this.score<=290){
+                this.fairhere=true;
+                this.level="普通";
+                }else if(this.score<=360){
+                this.goodhere=true;
+                this.level="良好";
+                }else if(this.score<=430){
+                this.verygoodhere=true;
+                this.level="优秀";
+                }else if(this.score<=500){
+                this.excellenthere=true;
+                this.level="极好";
+                console.log(this.excellenthere);
+                }
+            this.behavior = res.data.data.behavior_score
+            this.credit_histort = res.data.data.credit_score
+            this.idfication =  res.data.data.identity_score
+            this.asset = res.data.data.asset_score
+            this.social = res.data.data.social_score
+            charts.setOption({
+            tooltip: {},//提示层
+            legend: {
+                data: ['name1']
+            },
+            radar: {
+                name: {
+                    textStyle: {
+                        color: '#fff', //字体颜色
+                        backgroundColor: '#999', //背景色
+                        borderRadius: 3, //圆角
+                        padding: [3, 5] //padding
+                    }
+                },
+                center: ['50%', '50%'],
+                radius: '60%',
+                startAngle: 270,
+                indicator: [{
+                        name: '身份证明',
+                        max: 100
                     },
-                    radar: {
-                        name: {
-                            textStyle: {
-                                color: '#fff', //字体颜色
-                                backgroundColor: '#999', //背景色
-                                borderRadius: 3, //圆角
-                                padding: [3, 5] //padding
-                            }
-                        },
-                        center: ['50%', '50%'],
-                        radius: '60%',
-                        startAngle: 270,
-                        indicator: [{
-                                name: '身份证明',
-                                max: 100
-                            },
-                            {
-                                name: '资产证明',
-                                max: 100
-                            },
-                            {
-                                name: '信贷记录',
-                                max: 100
-                            },
-                            {
-                                name: '行为积累',
-                                max: 100
-                            },
-                            {
-                                name: '人脉圈',
-                                max: 100
-                            }
-                        ],
+                    {
+                        name: '资产证明',
+                        max: 100
                     },
-                    series: [{
-                        name: '测试标题名字',
-                        type: 'radar',
-                        areaStyle: {normal: {}},
-                        data: [{
-                            value: [res.data.data.identity_score,res.data.data.asset_score,res.data.data.credit_score,res.data.data.behavior_score,res.data.data.social_score],
-                            name: "信用得分"
-                        }]
-                    }]
-                    });
-                })
-        },
+                    {
+                        name: '信贷记录',
+                        max: 100
+                    },
+                    {
+                        name: '行为积累',
+                        max: 100
+                    },
+                    {
+                        name: '人脉圈',
+                        max: 100
+                    }
+                ],
+            },
+            series: [{
+                name: '测试标题名字',
+                type: 'radar',
+                areaStyle: {normal: {}},
+                data: [{
+                    value: [res.data.data.identity_score,res.data.data.asset_score,res.data.data.credit_score,res.data.data.behavior_score,res.data.data.social_score],
+                    name: "信用得分"
+                }]
+            }]
+          });
+        })
+      },
+      personalCenter() {
+        this.$router.push({path: '/PersonalCenter'});
+      },
+      assetProof() {
+        this.$router.push({path: '/AssetProof'});
+      },
+      honestyProof() {
+        this.$router.push({path: '/HonestyProof'});
+      },
+      myCreditRecord() {
+        this.$router.push({path: '/MyCreditRecord'});
+      },
+      myReport() {
+        this.$router.push({path: '/MyReport'});
+      },
+      AccountSecurity() {
+        this.$router.push({path: '/AccountSecurity'});
+      },
     }
   }
 </script>
@@ -199,6 +217,7 @@ export default {
   background-size:100% 100%;
   background-attachment:fixed;
   padding-top: 40px;
+  padding-bottom: 40px;
 }
 #body {
   background-color:#ffffff;
@@ -245,6 +264,11 @@ export default {
   .nochoose-block {
     margin-top: 40px;
     margin-bottom: 40px;
+    cursor: pointer;
+  }
+  .nochoose-block:hover {
+    background-color: #186051;
+    border-radius: 20px;
   }
   .icon {
     height: 27px;
