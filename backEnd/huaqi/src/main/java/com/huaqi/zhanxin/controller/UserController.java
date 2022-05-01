@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -109,13 +110,27 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "获取用户姓名")
+    @GetMapping("getUserName")
+    public Map<String, Object> getUserName(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID = 4;
+        UserBean user = userService.selectName(userID);
+        map.put("userName", user.getUserName());
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
     @ApiOperation(value = "更新身份信息")
     @PostMapping("updateUserInfo")
     public Map<String, Object> resetName(HttpServletRequest request, String userName, String userEmail,int occupation, float annualIncome, int workingYears) {
 
-//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-//        int userID = getInfo.getUserId();
-        int userID =2;
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID =2;
         System.out.println(userID);
 
         Map<String, Object> map = new HashMap<>();
@@ -140,7 +155,7 @@ public class UserController {
 
     @ApiOperation(value = "注册")
     @PostMapping("registerUser")
-    public Map<String, Object> register(String userEmail,String userPwd){
+    public Map<String, Object> register(String userEmail, String userPwd, int userType){
         Map<String, Object> map = new HashMap<>();
 
         if (StringUtils.isEmpty(userEmail)||StringUtils.isEmpty(userPwd)) {
@@ -149,7 +164,8 @@ public class UserController {
         }
         UserBean user = userService.login(userEmail);
         if (user == null) {
-            userService.register(userEmail,userPwd);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            userService.register(userEmail,userPwd,userType,localDateTime);
             map.put("msg", "注册成功");
             helper.setMsg("Success");
             helper.setData(map);
@@ -226,11 +242,16 @@ public class UserController {
         Request request = new Request.Builder().url(url).addHeader("Authorization", "APPCODE " + appCode).build();
         Response response = client.newCall(request).execute();
         System.out.println("返回状态码" + response.code() + ",message:" + response.message());
-        String result = response.body().string();
-        JSONObject parseObject = JSONArray.parseObject(result);
-        JSONObject data = parseObject.getJSONObject("data");
-        String getResult=data.getString("result");
-        return getResult;
+        if(response.code()==200) {
+            String result = response.body().string();
+            JSONObject parseObject = JSONArray.parseObject(result);
+            JSONObject data = parseObject.getJSONObject("data");
+            String getResult=data.getString("result");
+            return getResult;
+        } else {
+            return "400";
+        }
+
     }
 
     public static String buildRequestUrl(Map<String, String> params) {
@@ -255,10 +276,10 @@ public class UserController {
         map.put("volunteer", honestyProof.getVolunteer());
         map.put("contribution", honestyProof.getContribution());
         map.put("criminal", honestyProof.getCriminal());
+        map.put("phoneCost", honestyProof.getPhoneCost());
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
-
     }
 
     @ApiOperation(value = "获取资产证明信息")
