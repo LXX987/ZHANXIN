@@ -19,8 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -45,15 +50,12 @@ public class UserController {
 
     @ApiOperation(value = "登录")
     @PostMapping("login")
-    public Map<String, Object> login(String userEmail, String userPassword) {
+    public Map<String, Object> login(String userEmail, String userPassword, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
-
         if (StringUtils.isEmpty(userEmail)) {
             map.put("msg", "关键数据缺失");
-
             return map;
         }
-
         UserBean user = userService.login(userEmail);
         if (user == null) {
             map.put("msg", "用户不存在");
@@ -67,16 +69,20 @@ public class UserController {
                 String token = JwtConfig.getToken(payload);
                 map.put("msg", "登录成功");
                 map.put("token", token);
+                HttpSession session=request.getSession();//session的创建
+                session.setAttribute("userEmail",userEmail);
+                session.setMaxInactiveInterval(15*60);
+                Cookie cookie = new Cookie("JSESSIONID", URLEncoder.encode(session.getId(), StandardCharsets.UTF_8));
+                cookie.setPath(request.getContextPath());
+                cookie.setMaxAge(48*60*60);//设置cookie有效期为2天
+                response.addCookie(cookie);
             } catch (Exception e) {
                 map.put("msg", e.getMessage());
             }
-
-            return map;
         } else {
             map.put("msg", "密码错误");
-            return map;
-
         }
+        return map;
     }
 
     @ApiOperation(value = "获取身份信息")
@@ -90,6 +96,7 @@ public class UserController {
         map.put("userName", user.getUserName());
         map.put("userEmail", user.getUserEmail());
         UserInfo userInfo=userService.getInfo(userID);
+        map.put("user_id", userInfo.getUserID());
         map.put("occupation", userInfo.getOccupation());
         map.put("annual_income", userInfo.getAnnualIncome());
         map.put("working_years", userInfo.getWorkingYears());
