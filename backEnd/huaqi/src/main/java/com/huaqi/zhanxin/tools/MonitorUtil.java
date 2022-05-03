@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 public class MonitorUtil {
 
-    @Resource
-    MetricsService metricsService;
+//    @Resource
+//    MetricsService metricsService;
 
-    @Scheduled(fixedDelay = 30*60*1000)
-    public void logSysInfo() {
-        metricsService.logSystemInfo();
-    }
+//    @Scheduled(fixedDelay = 30*60*1000)
+//    public void logSysInfo() {
+//        metricsService.logSystemInfo();
+//    }
 }

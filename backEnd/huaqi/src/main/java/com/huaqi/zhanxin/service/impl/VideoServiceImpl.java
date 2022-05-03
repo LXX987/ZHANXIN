@@ -41,6 +41,8 @@ public class VideoServiceImpl implements VideoService {
             e.printStackTrace();
             return "-1";
         }
+        if(video_url == null || cover_url == null)
+            return "-2";
         videoMapper.insert(title, LocalDateTime.now(), video_url, intro, type, cover_url);
         return video_url;
     }
