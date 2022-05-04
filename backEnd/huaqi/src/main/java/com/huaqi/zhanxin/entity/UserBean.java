@@ -1,5 +1,6 @@
 package com.huaqi.zhanxin.entity;
 
+import java.sql.Timestamp;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class UserBean {
     private String userName;
     private String userEmail;
     private Integer userType;
-    private LocalDateTime userRegisterTime;
+    private Timestamp userRegisterTime;
     private String userAvatar;
 
 }

@@ -28,4 +28,13 @@ public class AuditingServiceImpl implements AuditingService {
         }
         return jsonObjects;
     }
+
+    @Override
+    public Integer examineCertificate(Integer id, Integer state)
+    {
+        Integer count = auditingMapper.updateStateById(id, state);
+        if(count == 1)
+            return 1;
+        else return -1;
+    }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AuditingService {
     List<JSONObject> getCertificateList(String type, Integer pageNum, Integer pageSize);
+
+    Integer examineCertificate(Integer id, Integer state);
 }

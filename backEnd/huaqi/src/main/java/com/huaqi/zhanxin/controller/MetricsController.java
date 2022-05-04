@@ -29,8 +29,8 @@ public class MetricsController {
     public Result<?> displaySystemInfo(HttpServletRequest request)
     {
         JSONObject jsonObject = metricsService.displaySystemInfo();
-        Integer count = (Integer) request.getSession().getServletContext().getAttribute("count");
-        jsonObject.put("Online users", count);
+        Integer count = (Integer) request.getSession(false).getServletContext().getAttribute("count");
+        jsonObject.put("onlineUsers", count);
         return Result.success(jsonObject);
     }
 

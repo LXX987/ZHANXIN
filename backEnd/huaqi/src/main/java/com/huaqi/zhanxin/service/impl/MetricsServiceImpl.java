@@ -39,7 +39,7 @@ public class MetricsServiceImpl implements MetricsService {
     public void logSystemInfo()
     {
         JSONObject jsonObject = getSystemInfo();
-        metricsMapper.logSystemInfo((Integer) jsonObject.get("CPU core"), (String) jsonObject.get("CPU %"), (String) jsonObject.get("Memory"), (String) jsonObject.get("Memory %"), OnlineSessionListener.concurrent_user_count, LocalDateTime.now());
+        metricsMapper.logSystemInfo((Integer) jsonObject.get("cpuCore"), (String) jsonObject.get("cpuUsage"), (String) jsonObject.get("memory"), (String) jsonObject.get("memoryUsage"), OnlineSessionListener.concurrent_user_count, LocalDateTime.now());
     }
 
     @Override
@@ -64,10 +64,10 @@ public class MetricsServiceImpl implements MetricsService {
 
         log.info("CPU总数 = {},CPU利用率 ={}", processor.getLogicalProcessorCount(), new DecimalFormat("#.##%").format((100.0D - freeCPU)/100.0D));
         log.info("内存大小 = {},内存使用率 ={}", formatByte(totalByte), new DecimalFormat("#.##%").format((totalByte - acaliableByte) * 1.0 / totalByte));
-        jsonObject.put("CPU core", processor.getLogicalProcessorCount());
-        jsonObject.put("CPU %", new DecimalFormat("#.##%").format((100.0D - freeCPU)/100.0D));
-        jsonObject.put("Memory", formatByte(totalByte));
-        jsonObject.put("Memory %", new DecimalFormat("#.##%").format((totalByte - acaliableByte) * 1.0 / totalByte));
+        jsonObject.put("cpuCore", processor.getLogicalProcessorCount());
+        jsonObject.put("cpuUsage", new DecimalFormat("#.##%").format((100.0D - freeCPU)/100.0D));
+        jsonObject.put("memory", formatByte(totalByte));
+        jsonObject.put("memoryUsage", new DecimalFormat("#.##%").format((totalByte - acaliableByte) * 1.0 / totalByte));
         return jsonObject;
     }
 

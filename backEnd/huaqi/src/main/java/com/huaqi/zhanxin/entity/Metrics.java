@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,5 +25,5 @@ public class Metrics implements Serializable{
 
     private Integer concurrentUser;
 
-    private LocalDateTime logTime;
+    private Timestamp logTime;
 }

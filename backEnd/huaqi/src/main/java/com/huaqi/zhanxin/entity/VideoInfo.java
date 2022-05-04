@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +17,7 @@ public class VideoInfo implements Serializable {
 
     private String videoName;
 
-    private LocalDateTime videoTime;
+    private Timestamp videoTime;
 
     private String videoUrl;
 
