@@ -40,7 +40,7 @@
                 <div class="upload-btn">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://localhost:8888/picture/uploadCrime"
+                    action="http://localhost:8899/picture/uploadCrime"
                     :headers="headers"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -66,7 +66,7 @@
                 <div class="upload-btn">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://localhost:8888/picture/uploadBlood"
+                    action="http://localhost:8899/picture/uploadBlood"
                     :headers="headers"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -91,7 +91,7 @@
                 <div class="upload-btn">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://localhost:8888/picture/uploadVolunteer"
+                    action="http://localhost:8899/picture/uploadVolunteer"
                     :headers="headers"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -116,7 +116,7 @@
                 <div class="upload-btn">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://localhost:8888/picture/uploadDonation"
+                    action="http://localhost:8899/picture/uploadDonation"
                     :headers="headers"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -142,7 +142,7 @@
                 <div class="upload-btn">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://localhost:8888/picture/uploadPhoneCost"
+                    action="http://localhost:8899/picture/uploadPhoneCost"
                     :headers="headers"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -204,7 +204,7 @@ export default {
       getHonProof() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/user/getHonestyProof',
+          url: 'http://localhost:8899/user/getHonestyProof',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的信誉记录数据：', res.data);
@@ -246,7 +246,7 @@ export default {
       getCrime() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/picture/getCrime',
+          url: 'http://localhost:8899/picture/getCrime',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的无犯罪记录数据：', res.data);
@@ -262,7 +262,7 @@ export default {
       getBlood() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/picture/getBlood',
+          url: 'http://localhost:8899/picture/getBlood',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的献血记录数据：', res.data);
@@ -278,7 +278,7 @@ export default {
       getVolunteer() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/picture/getVolunteer',
+          url: 'http://localhost:8899/picture/getVolunteer',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的志愿服务记录数据：', res.data);
@@ -294,7 +294,7 @@ export default {
       getDonation() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/picture/getDonation',
+          url: 'http://localhost:8899/picture/getDonation',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的捐款记录数据：', res.data);
@@ -310,7 +310,7 @@ export default {
       getPhoneCost() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/picture/getPhoneCost',
+          url: 'http://localhost:8899/picture/getPhoneCost',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的无犯罪记录数据：', res.data);

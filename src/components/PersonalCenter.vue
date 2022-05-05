@@ -198,7 +198,7 @@ export default {
       getMyInfo() {
         this.$axios({
           method:"get",
-          url: 'http://localhost:8888/user/userInfo',
+          url: 'http://localhost:8899/user/userInfo',
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log('我的信息数据：', res.data);
@@ -290,7 +290,7 @@ export default {
         } else {
           this.$axios({
             method:"post",
-            url: 'http://localhost:8888/user/updateAuthentication',
+            url: 'http://localhost:8899/user/updateAuthentication',
             params:{
                 userName:this.idenForm.name,
                 IDcard:this.idenForm.IDcard,
@@ -325,7 +325,7 @@ export default {
         //console.log(this.infoForm.name+" "+this.infoForm.occupation+" "+this.infoForm.annual_income+" "+ this.infoForm.working_years);
         this.$axios({
           method:"post",
-          url: 'http://localhost:8888/user/updateUserInfo',
+          url: 'http://localhost:8899/user/updateUserInfo',
           params:{
               userName:this.infoForm.name,
               annualIncome:this.infoForm.annual_income,
