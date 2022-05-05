@@ -28,6 +28,21 @@ public class AuditingController {
         List<JSONObject> jsonObjects = auditingService.getCertificateList(type, pageNum, pageSize);
         if(jsonObjects == null)
             return Result.error("404", "暂无审核信息");
-        else return Result.success(jsonObjects);
+        else {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("listSize", jsonObjects.size());
+            jsonObject.put("data", jsonObjects);
+            return Result.success(jsonObject);
+        }
+    }
+
+    @ApiOperation(value = "审核")
+    @RequestMapping(value = "/certificates", method = RequestMethod.PUT)
+    public Result<?> examineCertificate(@RequestParam("id") Integer id, @RequestParam("state") Integer state)
+    {
+        Integer count = auditingService.examineCertificate(id, state);
+        if(count == 1)
+            return Result.success();
+        else return Result.error("500", "操作失败");
     }
 }

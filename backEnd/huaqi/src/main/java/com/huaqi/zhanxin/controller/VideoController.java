@@ -25,11 +25,12 @@ public class VideoController {
 
     @ApiOperation(value = "上传视频")
     @RequestMapping(value = "/admin/videos", method = RequestMethod.POST, consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result<?> uploadVideo(@RequestParam(name="video") MultipartFile video, @RequestParam(name="cover") MultipartFile cover, String title, String intro, String type, HttpServletRequest request)
-    {
+    public Result<?> uploadVideo(@RequestParam(name="video") MultipartFile video, @RequestParam(name="cover") MultipartFile cover, String title, String intro, String type, HttpServletRequest request) {
         String uploadInfo = videoService.uploadVideo(video, cover, title, intro, type, request);
-        if(uploadInfo.equals("-1"))
-            return Result.error("500","上传失败");
+        if (uploadInfo.equals("-1"))
+            return Result.error("500", "上传失败");
+        else if (uploadInfo.equals("-2"))
+            return Result.error("415", "文件类型错误");
         else return Result.success(uploadInfo);
     }
 

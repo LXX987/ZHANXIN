@@ -6,9 +6,17 @@ import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.service.AccountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +37,13 @@ public class AccountController {
         List<JSONObject> jsonObjects = accountService.getAccountList(type, pageNum, pageSize);
         if(jsonObjects == null)
             return Result.error("404", "暂无用户信息");
-        return Result.success(jsonObjects);
+        else
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("listSize", jsonObjects.size());
+            jsonObject.put("data", jsonObjects);
+            return Result.success(jsonObject);
+        }
     }
 
     @ApiOperation(value = "修改账号权限")

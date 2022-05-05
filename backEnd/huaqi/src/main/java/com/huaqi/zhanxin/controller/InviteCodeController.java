@@ -5,6 +5,7 @@ import com.huaqi.zhanxin.entity.RestControllerHelper;
 import com.huaqi.zhanxin.service.InviteCodeService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -63,9 +64,9 @@ public class InviteCodeController {
     public Map<String, Object> friendCode(HttpServletRequest request,String invitedCode) {
         Map<String, Object> map = new HashMap<>();
         Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
-//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-//        int userId = getInfo.getUserId();
-        int userId = 2;
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userId = getInfo.getUserId();
+//        int userId = 2;
         if (StringUtils.isEmpty(userId)||StringUtils.isEmpty(invitedCode)) {
             map.put("msg", "关键数据缺失");
             return map;

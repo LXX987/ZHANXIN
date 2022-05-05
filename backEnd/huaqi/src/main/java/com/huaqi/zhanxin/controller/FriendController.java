@@ -3,11 +3,13 @@ package com.huaqi.zhanxin.controller;
 import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.service.FriendService;
+import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -37,5 +39,19 @@ public class FriendController {
     public Result<?> sendFriendRequest()
     {
         return Result.success();
+    }
+
+    @ApiOperation(value = "获取我的邀请码")
+    @RequestMapping(value = "/codes", method = RequestMethod.GET)
+    public Result<?> getMyCode(HttpServletRequest request)
+    {
+        GetInformationFromRequest tokenInfo = new GetInformationFromRequest(request);
+        Integer user_id = tokenInfo.getUserId();
+//        Integer user_id = 1;
+        String code = friendService.getMyCode(user_id);
+        System.out.println(code);
+        if(code == null)
+            return Result.error("404", "暂未生成邀请码");
+        else return Result.success(code);
     }
 }
