@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @CrossOrigin
@@ -112,6 +115,9 @@ public class UserController {
         //int userID = 4;
         UserBean user = userService.selectName(userID);
         map.put("userName", user.getUserName());
+        map.put("userID", user.getUserID());
+        map.put("userEmail", user.getUserEmail());
+        map.put("userAvatar", user.getUserAvatar());
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
@@ -332,6 +338,84 @@ public class UserController {
             return helper.toJsonMap();
         } else{
             userService.updatePwd(userPwd,userEmail);
+            map.put("msg", "修改密码成功");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+    }
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(UserController.class);
+    @ApiOperation(value="上传头像")
+    @ResponseBody
+    @PostMapping("uploadAvatar")
+    public Map<String, Object> uploadAvatar(HttpServletRequest request, @RequestParam("file") MultipartFile file){
+
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if(file.isEmpty()){
+            map.put("success","0");
+            map.put("file","上传文件为空！");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+        try {
+            String result = userService.updateAvatar(userID,file,request);
+            LOGGER.info(result);
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("文件上传失败！");
+            map.put("success","0");
+            map.put("file","上传文件失败！");
+            helper.setMsg("Failed");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+    }
+
+    @ApiOperation(value = "修改密码")
+    @PostMapping("changePassword")
+    public Map<String, Object> changePassword(HttpServletRequest request, String oldPwd, String newPwd){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if (StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        UserBean user = userService.selectName(userID);
+        if (!oldPwd.equals(user.getUserPwd())) {
+            LOGGER.info(oldPwd);
+            LOGGER.info(user.getUserPwd());
+            map.put("msg", "原密码错误");
+            helper.setMsg("Fail");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else{
+            userService.changePwd(newPwd,userID);
             map.put("msg", "修改密码成功");
             helper.setMsg("Success");
             helper.setData(map);

@@ -55,4 +55,11 @@ public interface UserMapper {
     // 修改密码
     @Update("update User set user_pwd = #{userPwd} where user_email=#{userEmail}")
     int updatePwd(@Param("userPwd") String userPwd,@Param("userEmail") String userEmail);
+
+    @Update("update User set user_pwd = #{userPwd} where user_id=#{userID}")
+    int changePwd(@Param("userPwd") String userPwd,@Param("userID") int userID);
+
+    // 上传头像
+    @Update("update User set user_avatar = #{userAvatar} where user_id=#{userID}")
+    String updateAvatar(@Param("userAvatar") String userAvatar, @Param("userID") int userID);
 }
