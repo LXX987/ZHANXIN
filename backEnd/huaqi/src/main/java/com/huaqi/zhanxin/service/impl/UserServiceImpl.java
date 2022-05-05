@@ -75,4 +75,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectCreditRecord(userID);
     }
 
+    @Override
+    public int updatePwd(String userPwd, String userEmail) {
+        return userMapper.updatePwd(userPwd,userEmail);
+    }
+
 }

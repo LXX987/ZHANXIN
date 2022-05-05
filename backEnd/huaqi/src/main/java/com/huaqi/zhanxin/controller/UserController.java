@@ -1,16 +1,10 @@
 package com.huaqi.zhanxin.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.huaqi.zhanxin.entity.*;
-import com.huaqi.zhanxin.mapper.UserMapper;
 import com.huaqi.zhanxin.service.UserService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import com.huaqi.zhanxin.tools.JwtConfig;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.util.DigestUtils;
 
 @Slf4j
 @CrossOrigin
@@ -313,5 +306,29 @@ public class UserController {
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "重置密码")
+    @PostMapping("setPassword")
+    public Map<String, Object> setPassword(String userEmail, String userPwd){
+        Map<String, Object> map = new HashMap<>();
+
+        if (StringUtils.isEmpty(userEmail)||StringUtils.isEmpty(userPwd)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        UserBean user = userService.login(userEmail);
+        if (user == null) {
+            map.put("msg", "该邮箱暂未注册账号");
+            helper.setMsg("Fail");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else{
+            userService.updatePwd(userPwd,userEmail);
+            map.put("msg", "修改密码成功");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
     }
 }

@@ -51,4 +51,8 @@ public interface UserMapper {
     // 查询数据库中信贷记录信息
     @Select("select * from Credit_Record where user_id=#{userID}")
     CreditRecord selectCreditRecord(@Param("userID") int userID);
+
+    // 修改密码
+    @Update("update User set user_pwd = #{userPwd} where user_email=#{userEmail}")
+    int updatePwd(@Param("userPwd") String userPwd,@Param("userEmail") String userEmail);
 }

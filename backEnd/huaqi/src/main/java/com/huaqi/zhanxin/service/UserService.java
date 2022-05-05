@@ -20,4 +20,5 @@ public interface UserService {
     public HonestyProof selectHonestyProof(int userID);
     public Asset selectAsset(int userID);
     public CreditRecord selectCreditRecord(int userID);
+    int updatePwd(String userPwd,String userEmail);
 }
