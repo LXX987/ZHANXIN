@@ -27,10 +27,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.util.DigestUtils;
@@ -51,7 +49,7 @@ public class UserController {
 
     @ApiOperation(value = "登录")
     @PostMapping("login")
-    public Map<String, Object> login(String userEmail, String userPassword, HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> login(String userEmail, String userPassword, Integer userType, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isEmpty(userEmail)) {
             map.put("msg", "关键数据缺失");
@@ -63,23 +61,26 @@ public class UserController {
             return map;
         }
         if (userPassword.equals(user.getUserPwd())) {
-            try {
-                Map<String, String> payload = new HashMap<>();
-                payload.put("userEmail", userEmail);
-                payload.put("userId",String.valueOf(user.getUserID()));
-                String token = JwtConfig.getToken(payload);
-                map.put("msg", "登录成功");
-                map.put("token", token);
-                HttpSession session=request.getSession();//session的创建
-                session.setAttribute("userEmail",userEmail);
-                session.setMaxInactiveInterval(15*60);
-                Cookie cookie = new Cookie("JSESSIONID", URLEncoder.encode(session.getId(), StandardCharsets.UTF_8));
-                cookie.setPath(request.getContextPath());
-                cookie.setMaxAge(48*60*60);//设置cookie有效期为2天
-                response.addCookie(cookie);
-            } catch (Exception e) {
-                map.put("msg", e.getMessage());
+            if (Objects.equals(userType, user.getUserType())) {
+                try {
+                    Map<String, String> payload = new HashMap<>();
+                    payload.put("userEmail", userEmail);
+                    payload.put("userId", String.valueOf(user.getUserID()));
+                    String token = JwtConfig.getToken(payload);
+                    map.put("msg", "登录成功");
+                    map.put("token", token);
+                    HttpSession session = request.getSession();//session的创建
+                    session.setAttribute("userEmail", userEmail);
+                    session.setMaxInactiveInterval(15 * 60);
+                    Cookie cookie = new Cookie("JSESSIONID", URLEncoder.encode(session.getId(), StandardCharsets.UTF_8));
+                    cookie.setPath(request.getContextPath());
+                    cookie.setMaxAge(48 * 60 * 60);//设置cookie有效期为2天
+                    response.addCookie(cookie);
+                } catch (Exception e) {
+                    map.put("msg", e.getMessage());
+                }
             }
+            else map.put("msg", "账号权限错误");
         } else {
             map.put("msg", "密码错误");
         }
@@ -96,6 +97,7 @@ public class UserController {
         UserBean user = userService.selectName(userID);
         map.put("userName", user.getUserName());
         map.put("userEmail", user.getUserEmail());
+        map.put("userAvatar", user.getUserAvatar());
         UserInfo userInfo=userService.getInfo(userID);
         map.put("user_id", userInfo.getUserID());
         map.put("occupation", userInfo.getOccupation());

@@ -26,10 +26,11 @@ public class MetricsController {
 
     @ApiOperation(value = "系统状态信息")
     @RequestMapping(value = "/metrics/sysinfo", method = RequestMethod.GET)
-    public Result<?> displaySystemInfo(HttpServletRequest request)
-    {
+    public Result<?> displaySystemInfo(HttpServletRequest request) {
         JSONObject jsonObject = metricsService.displaySystemInfo();
-        Integer count = (Integer) request.getSession(false).getServletContext().getAttribute("count");
+        Integer count = (Integer) request.getServletContext().getAttribute("count");
+        if (count == null)
+            count = 0;
         jsonObject.put("onlineUsers", count);
         return Result.success(jsonObject);
     }

@@ -17,4 +17,10 @@ public interface AuditingMapper {
 
     @Update("update Asset_Verification set state=#{state} where certicficate_id=#{id}")
     Integer updateStateById(@Param("id") Integer id, @Param("state") Integer state);
+
+    @Select("select user_id from Asset_Verification where certicficate_id=#{id}")
+    Integer selectUserIdById(@Param("id") Integer id);
+
+    @Update("update Reputation set ${type}=${type}+#{num} where user_id=#{user_id}")
+    void updateReputation(@Param("user_id") Integer user_id, @Param("num") Integer num, @Param("type") String type);
 }
