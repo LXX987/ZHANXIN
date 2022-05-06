@@ -1,5 +1,6 @@
 package com.huaqi.zhanxin.controller;
 
+import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.*;
 import com.huaqi.zhanxin.service.PictureService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
@@ -38,83 +39,82 @@ public class PictureController {
     @Autowired
     private FileProperties fileProperties;
 
-    @ApiOperation(value="上传房产证")
-    @ResponseBody
-    @PostMapping("uploadHouse")
-    public Map<String, Object> uploadHouse(HttpServletRequest request,
-                                            @RequestParam("file") MultipartFile file){
-
-        Map<String, Object> map = new HashMap<>();
-        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-        int userID = getInfo.getUserId();
-
-        if(file.isEmpty()){
-            map.put("success","0");
-            map.put("file","上传文件为空！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        }
-        try {
-            String result = pictureService.uploadFile(userID,file,"house");
-            LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("文件上传失败！");
-            map.put("success","0");
-            map.put("file","上传文件失败！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        }
-    }
-
-    @ApiOperation(value="上传车产证明")
-    @ResponseBody
-    @PostMapping("uploadCar")
-    public Map<String, Object> uploadCar(HttpServletRequest request,
-                                            @RequestParam("file") MultipartFile file){
-
-        Map<String, Object> map = new HashMap<>();
-        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-        int userID = getInfo.getUserId();
-
-        if(file.isEmpty()){
-            map.put("success","0");
-            map.put("file","上传文件为空！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        }
-        try {
-            String result = pictureService.uploadFile(userID,file,"car");
-            LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("文件上传失败！");
-            map.put("success","0");
-            map.put("file","上传文件失败！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
-        }
-    }
+//    @ApiOperation(value="上传房产证")
+//    @ResponseBody
+//    @PostMapping("uploadHouse")
+//    public Map<String, Object> uploadHouse(HttpServletRequest request,
+//                                            @RequestParam("file") MultipartFile file){
+//
+//        Map<String, Object> map = new HashMap<>();
+//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+//        int userID = getInfo.getUserId();
+//
+//        if(file.isEmpty()){
+//            map.put("success","0");
+//            map.put("file","上传文件为空！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        }
+//        try {
+//            String result = pictureService.uploadFile(userID,file,"house");
+//            LOGGER.info(result);
+//            map.put("success","1");
+//            map.put("file","上传文件成功！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            LOGGER.error("文件上传失败！");
+//            map.put("success","0");
+//            map.put("file","上传文件失败！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        }
+//    }
+//
+//    @ApiOperation(value="上传车产证明")
+//    @ResponseBody
+//    @PostMapping("uploadCar")
+//    public Map<String, Object> uploadCar(HttpServletRequest request,
+//                                            @RequestParam("file") MultipartFile file){
+//
+//        Map<String, Object> map = new HashMap<>();
+//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+//        int userID = getInfo.getUserId();
+//
+//        if(file.isEmpty()){
+//            map.put("success","0");
+//            map.put("file","上传文件为空！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        }
+//        try {
+//            String result = pictureService.uploadFile(userID,file,"car");
+//            LOGGER.info(result);
+//            map.put("success","1");
+//            map.put("file","上传文件成功！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            LOGGER.error("文件上传失败！");
+//            map.put("success","0");
+//            map.put("file","上传文件失败！");
+//            helper.setMsg("Success");
+//            helper.setData(map);
+//            return helper.toJsonMap();
+//        }
+//    }
 
     @ApiOperation(value="上传银行流水")
     @ResponseBody
     @PostMapping("uploadBank")
-    public Map<String, Object> uploadBank(HttpServletRequest request,
-                                         @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadBank(HttpServletRequest request,@RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -128,19 +128,33 @@ public class PictureController {
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"bank");
+            String result = pictureService.uploadFile(userID,file,"bank",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
@@ -149,8 +163,7 @@ public class PictureController {
     @ApiOperation(value="上传无犯罪记录证明")
     @ResponseBody
     @PostMapping("uploadCrime")
-    public Map<String, Object> uploadCrime(HttpServletRequest request,
-                                          @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadCrime(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -159,24 +172,38 @@ public class PictureController {
         if(file.isEmpty()){
             map.put("success","0");
             map.put("file","上传文件为空！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"crime");
+            String result = pictureService.uploadFile(userID,file,"crime",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
@@ -185,8 +212,7 @@ public class PictureController {
     @ApiOperation(value="上传献血证明")
     @ResponseBody
     @PostMapping("uploadBlood")
-    public Map<String, Object> uploadBlood(HttpServletRequest request,
-                                           @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadBlood(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -200,19 +226,33 @@ public class PictureController {
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"blood");
+            String result = pictureService.uploadFile(userID,file,"blood",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
@@ -221,8 +261,7 @@ public class PictureController {
     @ApiOperation(value="上传志愿服务证明")
     @ResponseBody
     @PostMapping("uploadVolunteer")
-    public Map<String, Object> uploadVolunteer(HttpServletRequest request,
-                                           @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadVolunteer(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -236,19 +275,33 @@ public class PictureController {
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"volunteer");
+            String result = pictureService.uploadFile(userID,file,"volunteer",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
@@ -257,8 +310,7 @@ public class PictureController {
     @ApiOperation(value="上传捐款证明")
     @ResponseBody
     @PostMapping("uploadDonation")
-    public Map<String, Object> uploadDonation(HttpServletRequest request,
-                                               @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadDonation(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -272,19 +324,33 @@ public class PictureController {
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"donation");
+            String result = pictureService.uploadFile(userID,file,"donation",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
@@ -293,8 +359,7 @@ public class PictureController {
     @ApiOperation(value="上传话费证明")
     @ResponseBody
     @PostMapping("uploadPhoneCost")
-    public Map<String, Object> uploadPhoneCost(HttpServletRequest request,
-                                              @RequestParam("file") MultipartFile file){
+    public Map<String, Object> uploadPhoneCost(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
@@ -308,19 +373,33 @@ public class PictureController {
             return helper.toJsonMap();
         }
         try {
-            String result = pictureService.uploadFile(userID,file,"phoneCost");
+            String result = pictureService.uploadFile(userID,file,"phoneCost",request);
             LOGGER.info(result);
-            map.put("success","1");
-            map.put("file","上传文件成功！");
-            helper.setMsg("Success");
-            helper.setData(map);
-            return helper.toJsonMap();
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("文件上传失败！");
             map.put("success","0");
             map.put("file","上传文件失败！");
-            helper.setMsg("Success");
+            helper.setMsg("Failed");
             helper.setData(map);
             return helper.toJsonMap();
         }
