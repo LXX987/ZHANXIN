@@ -40,6 +40,9 @@ spring:
           starttls:
             enable: true
             required: true
+  thymeleaf:
+    check-template: false
+    check-template-location: false
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
