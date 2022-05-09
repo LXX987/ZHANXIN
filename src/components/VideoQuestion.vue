@@ -20,7 +20,7 @@
                 <div class="question">
                     <div v-for="(item) in questions" :key="item.questionId" class="text_item">
                         <p >{{item.testID}}&nbsp;{{item.questionText}}</p>
-                        <el-radio-group v-model="item.answer" class="option">
+                        <el-radio-group :disabled="able" v-model="item.answer" class="option">
                         <ul>
                         <li class="li" v-for="(option) in item.option" :key="option.optionID">
                             <el-radio :disabled="able" :label="option.optionID">{{option.text}}</el-radio>
@@ -85,7 +85,7 @@ export default {
                     this.score+=1
                 }
             }
-            this.able=true
+            this.able = true
         },
         commit(){
             // 跳转回诚信视频界面
@@ -99,10 +99,11 @@ export default {
             params:{
                 videoId:this.videoId,
                 score:this.score,
-            }
+                watch:1,
+                }
             }).then(res=>{
-
-            })
+                    console.log(res)
+                })
         },
         getVideoQuestion(){
         // 获取id对应的视频题目

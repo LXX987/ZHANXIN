@@ -94,8 +94,8 @@ export default {
             activeName: '1',
             bannerH: this.setBannerH1,
             images: [
-                { url: require("@/assets/1.png")},
-                { url: require("@/assets/4.png")},
+                { url: require("@/assets/9.png")},
+                { url: require("@/assets/8.png")},
                 { url: require("@/assets/5.png")},
          ]
         };
