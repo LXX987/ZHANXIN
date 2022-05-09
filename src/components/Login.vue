@@ -7,9 +7,11 @@
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
             <el-form-item prop="userid"> <li><el-input v-model="ruleForm.userid" placeholder="请输入邮箱" class="input_box"></el-input></li></el-form-item>
             <el-form-item prop="password"> <li><el-input placeholder="请输入密码" v-model="ruleForm.password" show-password class="input_box"></el-input></li></el-form-item>
-            <li><el-button type="primary" round class="btn_login" @click="login">登录</el-button></li>
-              <br>
-              <el-link type="primary" @click="register()">没有账号？点击注册</el-link>
+            <Vcode :show="isShow" @success="success" @close="close" />
+            <li><el-button type="primary" round class="btn_login" @click="submit">登录</el-button></li>
+            <br>
+            <el-link type="primary" @click="register()">没有账号？点击注册</el-link>
+            <el-link type="primary" @click="forgetPsw()" class="link-txt">忘记密码？点击找回</el-link>
           </el-form>
         </div>
       </div>
@@ -18,8 +20,12 @@
 </template>
 
 <script>
+import Vcode from "vue-puzzle-vcode";
 export default {
   name: 'Login',
+  components: {
+    Vcode
+  },
   data () {
     var checkId = (rule, value, callback) => {
       if (!value) {
@@ -33,29 +39,40 @@ export default {
       };
     return {
       radio: '0',
+      isShow: false, // 验证码模态框是否出现
       ruleForm: {
-      userid: '',
-      password:'',
+        userid: '',
+        password:'',
       },
       rules: {
-           userid: [
+          userid: [
           {validator: checkId,trigger: "blur"}
           ],
-           password: [
+          password: [
           {validator: checkPass,trigger: "blur"}
           ]
         }
       }  
   },
   methods:{ 
+    submit() {
+      this.isShow = true;
+    },
+    success(msg) { // 用户通过了验证
+      this.isShow = false; // 通过验证后，需要手动隐藏模态框
+      this.login();
+    },
+    close() { // 用户点击遮罩层，应该关闭模态框
+      this.isShow = false;
+    },
     login(){
       this.$axios({
-      method:"post",
-      url: 'http://localhost:8888/user/login',
-      params:{
-          userEmail:this.ruleForm.userid,
-          userPassword:this.ruleForm.password,
-      }
+        method:"post",
+        url: 'http://localhost:8899/user/login',
+        params:{
+            userEmail:this.ruleForm.userid,
+            userPassword:this.ruleForm.password,
+        }
       }).then(res=>{
           console.log(res.data.msg);
           if(res.data.msg=="登录成功"){
@@ -75,6 +92,9 @@ export default {
     },
     register() {
       this.$router.push({path: '/Register'});
+    },
+    forgetPsw() {
+      this.$router.push({path: '/ForgetPsw'});
     }
   }
 }
@@ -135,5 +155,8 @@ h1, h2 {
 }
 >>>.el-form-item__error{
   position:inherit;
+}
+.link-txt {
+  margin-left: 15%;
 }
 </style>

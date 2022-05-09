@@ -12,7 +12,8 @@
             </li></el-form-item>
             <el-form-item prop="password"> <li><el-input placeholder="请输入密码" v-model="ruleForm.password" show-password class="input_box"></el-input></li></el-form-item>
             <el-form-item prop="password"> <li><el-input placeholder="请确认密码" v-model="ruleForm.passwordAgain" show-password class="input_box"></el-input></li></el-form-item>
-            <li><el-button type="primary" round class="btn_login" @click="register">注册</el-button></li>
+            <Vcode :show="isShow" @success="success" @close="close" />
+            <li><el-button type="primary" round class="btn_login" @click="submit">注册</el-button></li>
             <br>
             <el-radio v-model="radio" label="1" id="protocol"><u @click="centerDialogVisible = true">用户隐私服务协议</u></el-radio>
             <el-dialog
@@ -48,8 +49,12 @@
 </template>
 
 <script>
+import Vcode from "vue-puzzle-vcode";
 export default {
   name: 'Register',
+  components: {
+    Vcode
+  },
   data () {
     var checkEmail = (rule, value, callback) => {
       if (!value) {
@@ -73,6 +78,7 @@ export default {
       }
     };
     return {
+      isShow: false, // 验证码模态框是否出现
       centerDialogVisible: false,
       radio: '0',
       vericode:'',
@@ -99,6 +105,16 @@ export default {
     }  
   },
   methods:{
+    submit() {
+      this.isShow = true;
+    },
+    success(msg) { // 用户通过了验证
+      this.isShow = false; // 通过验证后，需要手动隐藏模态框
+      this.register();
+    },
+    close() { // 用户点击遮罩层，应该关闭模态框
+      this.isShow = false;
+    },
     cancel() {
       this.radio="0";
       this.centerDialogVisible = false;
@@ -120,7 +136,7 @@ export default {
             }, 1000);
       this.$axios({
               method:"post",
-              url:'http://localhost:8888/mail/mail',
+              url:'http://localhost:8899/mail/mail',
               params:{email:this.ruleForm.useremail},
           }).then(res=>{
               this.vericode = res.data;
@@ -148,7 +164,7 @@ export default {
         }else {
             this.$axios({
             method:"post",
-            url: 'http://localhost:8888/user/registerUser',
+            url: 'http://localhost:8899/user/registerUser',
             params:{
                 userEmail:this.ruleForm.useremail,
                 userPwd:this.ruleForm.password,
@@ -168,7 +184,7 @@ export default {
                   confirmButtonText: '确定',
                 });
               }
-              this.$router.push('/Login')
+              this.$router.push('/')
             }
             else{
               this.$message({
@@ -183,7 +199,7 @@ export default {
         }
     },
     login() {
-      this.$router.push({path: '/Login'});
+      this.$router.push({path: '/'});
     }
   }
 }

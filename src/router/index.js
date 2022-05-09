@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import ForgetPsw from '@/components/ForgetPsw'
 import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
 import Video from '@/components/Video'
@@ -22,7 +23,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/Login',
+      path: '/',
       name: 'Login',
       component: Login
     },
@@ -30,6 +31,11 @@ export default new Router({
       path: '/Register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/ForgetPsw',
+      name: 'ForgetPsw',
+      component: ForgetPsw
     },
     {
       path: '/',

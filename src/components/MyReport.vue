@@ -106,7 +106,7 @@ export default {
         //charts.setOption(option);
         this.$axios({
             method:"get",
-            url: 'http://localhost:8888/credit/userCredit',
+            url: 'http://localhost:8899/credit/userCredit',
             headers:{
             token:window.sessionStorage.getItem("token")},
         }).then(res=>{
