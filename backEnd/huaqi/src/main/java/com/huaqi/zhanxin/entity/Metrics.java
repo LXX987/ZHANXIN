@@ -9,21 +9,21 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "视频")
-public class VideoInfo implements Serializable {
+public class Metrics implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    private Integer videoId;
+    private Integer logId;
 
-    private String videoName;
+    private Integer cpuCore;
 
-    private Timestamp videoTime;
+    private String cpuUsage;
 
-    private String videoUrl;
+    private String memorySize;
 
-    private String videoIntro;
+    private String memoryUsage;
 
-    private String videoCover;
+    private Integer concurrentUser;
 
-    private String videoType;
+    private Timestamp logTime;
 }
