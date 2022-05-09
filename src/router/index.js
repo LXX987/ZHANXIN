@@ -196,6 +196,13 @@ export default new Router({
           components: {
             table: () => import('@/components/FriendList')
           }
+        },
+        {
+          path: 'Chat',
+          name: 'Chat',
+          components: {
+            table: () => import('@/components/Chat')
+          }
         }
       ]
     },

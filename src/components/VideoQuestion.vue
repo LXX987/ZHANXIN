@@ -23,7 +23,7 @@
                         <el-radio-group v-model="item.answer" class="option">
                         <ul>
                         <li class="li" v-for="(option) in item.option" :key="option.optionID">
-                            <el-radio :label="option.optionID">{{option.text}}</el-radio>
+                            <el-radio :disabled="able" :label="option.optionID">{{option.text}}</el-radio>
                             </li>
                         </ul>
                         </el-radio-group>
@@ -44,6 +44,7 @@
 export default {
     data(){
         return{
+            able:false,
             answer:[],
             videoId:'',
             questions: [],
@@ -84,6 +85,7 @@ export default {
                     this.score+=1
                 }
             }
+            this.able=true
         },
         commit(){
             // 跳转回诚信视频界面
@@ -106,7 +108,7 @@ export default {
         // 获取id对应的视频题目
             this.$axios({
             method:"get",
-            url: 'http://localhost:8888/admin/questions'+'/'+this.videoId,
+            url: 'http://localhost:8888/common/questions'+'/'+this.videoId,
             }).then(res=>{
                 var i = 0
                 for(i = 0; i< res.data.data.length;i++){
