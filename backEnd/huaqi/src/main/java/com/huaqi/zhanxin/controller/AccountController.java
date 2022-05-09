@@ -40,8 +40,9 @@ public class AccountController {
         else
         {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("listSize", jsonObjects.size());
-            jsonObject.put("data", jsonObjects);
+            jsonObject.set("listSize", jsonObjects.get(jsonObjects.size()-1).get("count"));
+            jsonObjects.remove(jsonObjects.size()-1);
+            jsonObject.set("data", jsonObjects);
             return Result.success(jsonObject);
         }
     }
