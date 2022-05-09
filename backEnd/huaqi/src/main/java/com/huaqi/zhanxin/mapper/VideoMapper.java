@@ -14,6 +14,9 @@ public interface VideoMapper {
     @Select("select * from Video_Info where video_type=#{video_type}")
     List<VideoInfo> selectAllByType(@Param("video_type") String type);
 
+    @Select("select * from Video_Info where video_id=#{video_id}")
+    List<VideoInfo> selectAllById(@Param("video_type") Integer video_id);
+
     @Insert("insert into Video_Info(video_name,video_time,video_url,video_intro,video_cover,video_type)" +
             " values (#{video_name},#{video_time},#{video_url},#{video_intro},#{video_cover},#{video_type})")
     void insert(@Param("video_name")String video_name, @Param("video_time")LocalDateTime video_time, @Param("video_url")String video_url,
