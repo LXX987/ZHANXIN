@@ -103,7 +103,7 @@ export default {
         getMyInfo() {
             this.$axios({
                 method:"get",
-                url: 'http://localhost:8888/user/userInfo',
+                url: 'http://localhost:8899/user/userInfo',
                 headers: { token:window.sessionStorage.getItem("token")}
             }).then(res=>{
                 console.log('我的信息数据：', res.data);

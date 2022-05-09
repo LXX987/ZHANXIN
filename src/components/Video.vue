@@ -76,7 +76,7 @@ export default {
             // // 获取id对应的视频题目
             // this.$axios({
             // method:"get",
-            // url: 'http://localhost:8888/admin/questions'+'/'+this.videoId,
+            // url: 'http://localhost:8899/admin/questions'+'/'+this.videoId,
             // // params:{
             // //     id = this.videoId
             // // }

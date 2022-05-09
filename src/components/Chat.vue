@@ -111,7 +111,7 @@
           console.log("您的浏览器不支持WebSocket");
         } else {
           console.log("您的浏览器支持WebSocket");
-          let socketUrl = "ws://localhost:8888/socket/" + this.user;
+          let socketUrl = "ws://localhost:8899/socket/" + this.user;
           if (socket != null) {
             socket.close();
             socket = null;
@@ -166,7 +166,7 @@
     mounted() {
         this.$axios({
                 method:"get",
-                url: 'http://localhost:8888/user/getUserName',
+                url: 'http://localhost:8899/user/getUserName',
                 headers:{token:window.sessionStorage.getItem("token")},
                 params:{
                 }
