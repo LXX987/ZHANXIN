@@ -23,7 +23,7 @@
                         <el-radio-group :disabled="able" v-model="item.answer" class="option">
                         <ul>
                         <li class="li" v-for="(option) in item.option" :key="option.optionID">
-                            <el-radio :label="option.optionID">{{option.text}}</el-radio>
+                            <el-radio :disabled="able" :label="option.optionID">{{option.text}}</el-radio>
                             </li>
                         </ul>
                         </el-radio-group>

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GuideBar from '@/components/GuideBar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import ForgetPsw from '@/components/ForgetPsw'
 import Footer from '@/components/Footer'
 import PsychologyHome from '@/components/PsychologyHome'
 import Video from '@/components/Video'
@@ -13,6 +14,7 @@ import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
 import ScoreDetail from '@/components/ScoreDetail'
+import backgroundGuidebar from '@/components/background/backgroundGuidebar'
 
 import FriendList from '@/components/FriendList'
 
@@ -21,7 +23,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/Login',
+      path: '/',
       name: 'Login',
       component: Login
     },
@@ -29,6 +31,11 @@ export default new Router({
       path: '/Register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/ForgetPsw',
+      name: 'ForgetPsw',
+      component: ForgetPsw
     },
     {
       path: '/',
@@ -77,6 +84,41 @@ export default new Router({
           name: 'PersonalCenter',
           components: {   
             table: () => import('@/components/PersonalCenter')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'AssetProof', 
+          name: 'AssetProof',
+          components: {   
+            table: () => import('@/components/AssetProof')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'HonestyProof', 
+          name: 'HonestyProof',
+          components: {   
+            table: () => import('@/components/HonestyProof')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'MyCreditRecord', 
+          name: 'MyCreditRecord',
+          components: {   
+            table: () => import('@/components/MyCreditRecord')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'MyReport', 
+          name: 'MyReport',
+          components: {   
+            table: () => import('@/components/MyReport')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'AccountSecurity', 
+          name: 'AccountSecurity',
+          components: {   
+            table: () => import('@/components/AccountSecurity')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {
@@ -160,7 +202,21 @@ export default new Router({
           components: {
             table: () => import('@/components/FriendList')
           }
+        },
+        {
+          path: 'Chat',
+          name: 'Chat',
+          components: {
+            table: () => import('@/components/Chat')
+          }
         }
+      ]
+    },
+    {
+      path: '/background',
+      name: '/background',
+      component: backgroundGuidebar,
+      children: [  // 添加子路由
       ]
     },
     {
