@@ -20,7 +20,7 @@
                 <div class="question">
                     <div v-for="(item) in questions" :key="item.questionId" class="text_item">
                         <p >{{item.testID}}&nbsp;{{item.questionText}}</p>
-                        <el-radio-group v-model="item.answer" class="option">
+                        <el-radio-group :disabled="able" v-model="item.answer" class="option">
                         <ul>
                         <li class="li" v-for="(option) in item.option" :key="option.optionID">
                             <el-radio :label="option.optionID">{{option.text}}</el-radio>
@@ -44,6 +44,7 @@
 export default {
     data(){
         return{
+            able:false,
             answer:[],
             videoId:'',
             questions: [],
@@ -84,6 +85,7 @@ export default {
                     this.score+=1
                 }
             }
+            this.able = true
         },
         commit(){
             // 跳转回诚信视频界面
@@ -91,22 +93,23 @@ export default {
             
             // 分数提交到后端
             this.$axios({
-            method:"post",
-            url: 'http://localhost:8888/admin/questions',
-            headers: { token:window.sessionStorage.getItem("token")},
-            params:{
-                videoId:this.videoId,
+                method:"post",
+                url: 'http://localhost:8888/videoquestion',
+                headers: { token:window.sessionStorage.getItem("token")},
+                params:{
+                video_id:this.videoId,
                 score:this.score,
-            }
+                watch:1,
+                }
             }).then(res=>{
-
-            })
+                    console.log(res)
+                })
         },
         getVideoQuestion(){
         // 获取id对应的视频题目
             this.$axios({
             method:"get",
-            url: 'http://localhost:8888/admin/questions'+'/'+this.videoId,
+            url: 'http://localhost:8888/common/questions'+'/'+this.videoId,
             }).then(res=>{
                 var i = 0
                 for(i = 0; i< res.data.data.length;i++){
