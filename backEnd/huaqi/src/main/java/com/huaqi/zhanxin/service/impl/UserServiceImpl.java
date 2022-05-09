@@ -3,15 +3,22 @@ package com.huaqi.zhanxin.service.impl;
 import com.huaqi.zhanxin.entity.*;
 import com.huaqi.zhanxin.mapper.UserMapper;
 import com.huaqi.zhanxin.service.UserService;
+import com.huaqi.zhanxin.tools.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+    @Value("${path.picture-upload-path}")
+    private String PIC_UPLOAD_PATH;
 
     @Override
     public List<UserBean> userList() {
@@ -50,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     // 返回数据库注册结果
     @Override
-    public int register(String userEmail, String userPwd){return userMapper.registerUser(userEmail,userPwd);}
+    public int register(String userEmail, String userPwd, int userType,LocalDateTime userRegisterTime){return userMapper.registerUser(userEmail,userPwd,userType,userRegisterTime);}
 
     // 返回数据库实名结果
     @Override
@@ -73,5 +80,32 @@ public class UserServiceImpl implements UserService {
     public CreditRecord selectCreditRecord(int userID) {
         return userMapper.selectCreditRecord(userID);
     }
+
+    @Override
+    public int updatePwd(String userPwd, String userEmail) {
+        return userMapper.updatePwd(userPwd,userEmail);
+    }
+
+    @Override
+    public int changePwd(String userPwd, int userID) {
+        return userMapper.changePwd(userPwd, userID);
+    }
+
+    @Override
+    public String updateAvatar(int userID, MultipartFile file, HttpServletRequest request) {
+
+        String pic_url;
+        try {
+            pic_url = UploadUtil.upload(file, PIC_UPLOAD_PATH, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "-1";
+        }
+        if(pic_url == null)
+            return "-2";
+        userMapper.updateAvatar(pic_url,userID);
+        return pic_url;
+    }
+
 
 }

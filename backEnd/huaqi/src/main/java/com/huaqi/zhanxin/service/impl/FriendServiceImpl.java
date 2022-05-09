@@ -22,4 +22,10 @@ public class FriendServiceImpl implements FriendService {
             return null;
         return jsonObjects;
     }
+
+    @Override
+    public String getMyCode(Integer id)
+    {
+        return friendMapper.selectOneCodeById(id);
+    }
 }

@@ -28,6 +28,9 @@ public class AccountServiceImpl implements AccountService {
             JSONObject jsonObject = new JSONObject(userInfo);
             jsonObjects.add(jsonObject);
         }
+        JSONObject userCount = new JSONObject();
+        userCount.put("count", accountMapper.selectUserCountByState(type));
+        jsonObjects.add(userCount);
         return jsonObjects;
     }
 
