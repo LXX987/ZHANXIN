@@ -65,9 +65,9 @@ export default {
             videoUrl:'',
             bannerH: this.setBannerH1,
             images: [
-                { url: require("@/assets/1.png")},
-                { url: require("@/assets/4.png")},
-                { url: require("@/assets/5.png")},
+                { url: require("@/assets/video1.png")},
+                { url: require("@/assets/video2.png")},
+                { url: require("@/assets/video3.png")},
          ]
         }
     },

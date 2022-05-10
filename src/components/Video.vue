@@ -19,17 +19,31 @@
             <el-row>
                 <el-col :span="12" class="content">
                     <div class="videotitle">
-                        视频标题
+                        {{title}}
                     </div>
                     <video class="video" controls :src="videoUrl"></video>
                 </el-col>
 
                 <el-col :span="6" class="side">
                     <div class="videotitle">
-                        视频介绍
+                        推荐视频
                     </div>
                     <div class="videolist">
-                        下一集(获取视频列表得了)
+                        <div class="box">
+                            <ul>
+                                 <li v-for="item in list" :key="item.value" class="videoli">
+                                    <el-row>
+                                        <el-col :span="10">
+                                            <img class="cover" v-bind:src="item.videoCover" alt="" @click="onclick(item.videoId)">
+                                        </el-col>
+                                        <el-col :span="10">
+                                            <p class="subtitle" @click="onclick(item.videoId)">{{item.videoName}}</p>
+                                            <p class="subtitle">{{item.videoIntro}}</p>
+                                        </el-col>
+                                    </el-row>
+                                 </li>
+                            </ul>
+                        </div>
                     </div>
                     <div>
                         <el-button @click="gotoQuestion()">开始答题</el-button>
@@ -53,6 +67,7 @@
 </template>
  
 <script>
+import qs from 'qs'
 import Footer from '@/components/Footer'
 export default {
     name:'Video',
@@ -61,30 +76,87 @@ export default {
     },
     data(){
         return{
+            able:true,
+            title:'',
             videoUrl:'',
-            introduction:'cc',
+            introduction:'',
             videoId:'',
+            list:[],
         }
     },
     mounted:function(){
-        console.log(this.$route.query.videoId)
+        //console.log(this.$route.query.videoId)
         this.videoUrl = this.$route.query.videoUrl
         this.videoId = this.$route.query.videoId
+        this.getVideo()
+        this.getThisVideo()
+        this.getwatchvideo()
     },
     methods:{
         gotoQuestion(){
-            // // 获取id对应的视频题目
-            // this.$axios({
-            // method:"get",
-            // url: 'http://localhost:8888/admin/questions'+'/'+this.videoId,
-            // // params:{
-            // //     id = this.videoId
-            // // }
-            // }).then(res=>{
-            //     console.log(res.data.data)
-            //     this.list = res.data.data
-            // })
-             this.$router.push({path:'/VideoQuestion',query:{videoId:this.videoId}})
+            if(this.able==true){
+                this.$router.push({path:'/VideoQuestion',query:{videoId:this.videoId}})}
+             else{
+                this.$message.error('该视频已经完成作答，不可以再次作答哦');
+             }
+        },
+        getVideo(){
+            this.$axios({
+            method:"get",
+            url: 'http://localhost:8899/common/videos/fundamental'
+            }).then(res=>{
+                //console.log(res.data.data)
+                //var num = [];
+                for(var i=0;i<3;i++)
+                {
+                    //num.push(Math.floor(Math.random()*10));
+                    this.list.push(res.data.data[Math.floor(Math.random()*10)])
+                }
+                    
+                console.log(this.list)
+            })
+        },
+        getwatchvideo(){
+            this.$axios({
+            method:"post",
+            url: 'http://localhost:8899/videoScore',
+            headers: { token:window.sessionStorage.getItem("token")}
+            }).then(res=>{
+                console.log(res.data.videoScore)
+                for(var i=0;i<res.data.videoScore.length;i++){
+                    if(res.data.videoScore[i].video_id==this.videoId){
+                        this.able=false
+                        console.log(this.able)
+                    }
+                }
+            })
+        },
+        getThisVideo(){
+            this.$axios({
+                  method:"post",
+                  url:'http://localhost:8899/common/videos',
+                  params:{
+                    id_list:this.videoId,
+                  },
+                   paramsSerializer: params => {
+                    return qs.stringify(params, { indices: false })
+                    },
+                }).then(res=>{
+                    this.introduction = res.data.data[0].video_intro
+                    this.title =res.data.data[0].video_name
+                    console.log(res)
+                })
+        },
+        onclick(value){
+            for(let i in this.list){
+                if(this.list[i].videoId == value ){
+                    this.videoUrl = this.list[i].videoUrl
+                    this.videoId = value
+                    console.log(this.videoId)
+                }
+            }
+        let newUrl = this.$router.resolve({name:'Video', query:{videoUrl:this.videoUrl,videoId:this.videoId}});
+            window.open(newUrl.href, "_blank");
         }
     }
 }
@@ -106,6 +178,11 @@ export default {
 .video{
     width: 900px;
     height: 600px;
+}
+.cover{
+    margin-left: 20px;
+    height: 120px;
+    width: 220px;
 }
 .guidebar {
     height:100px;
@@ -191,5 +268,13 @@ export default {
 }
 .videolist{
     min-height: 500px;
+}
+.videoli{
+    padding-bottom: 30px;
+}
+.subtitle{
+  margin-left: 55px;
+  font-size: 20px;
+  padding-bottom:20px;
 }
 </style>

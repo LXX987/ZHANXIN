@@ -10,27 +10,27 @@
                         <!-- 雷达图 -->
                         <div class="grid-content bg-purple">
                             <el-tooltip class="item" effect="dark" content="总分" placement="right">
-                                <el-button type="text" @click="goto_detail" class="sub_score">{{score}}</el-button>
+                                <el-button type="text" @click="goto_detail" class="sub_score">信用分：{{score}}</el-button>
                             </el-tooltip>
                             <div id="leiDaTu" class="echart" style="width: 300px;height: 300px;">
                             </div>
-                            <el-button>下载报告</el-button>
+                            <el-button @click="gotoReport()" class="report">生成个人信用报告</el-button>
                         </div>
                     </el-col>
                     <el-col :span="12" style="padding-left:50px;padding-top:50px">
                         <!-- 信用分数解读 -->
                         <div class="score_detail"> 
                             <el-row>
-                                <el-col :span="10"><el-card class="square" @click.native="gotoBehavior()"><div class="behavior">行为积累方面：{{behavior}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
-                                <el-col :span="10"><el-card class="square" @click.native="gotoLoan()"><div class="credit_histort" >信贷记录方面：{{credit_histort}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="12"><el-card class="square" @click.native="gotoBehavior()"><div class="behavior">行为积累方面：{{behavior}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="12"><el-card class="square" @click.native="gotoLoan()"><div class="behavior" >信贷记录方面：{{credit_histort}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                             </el-row>  
                             <el-row>
-                                <el-col :span="10"><el-card class="square" @click.native="gotoPossession()"><div class="asset" >资产证明方面：{{asset}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
-                                <el-col :span="10"><el-card class="square" @click.native="gotoScoreDetail()"><div class="asset" >身份证明方面：{{idfication}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="12"><el-card class="square" @click.native="gotoPossession()"><div class="behavior" >资产证明方面：{{asset}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="12"><el-card class="square" @click.native="gotoScoreDetail()"><div class="behavior" >身份证明方面：{{idfication}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                             </el-row> 
                             <el-row>
-                                <el-col :span="10"><el-card class="square" @click.native="gotoSocial()"><div class="asset">人脉圈方面：{{social}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
-                                <el-col :span="10"><el-card class="square"><div class="asset">总分：{{score}}分</div></el-card></el-col>
+                                <el-col :span="12"><el-card class="square" @click.native="gotoSocial()"><div class="behavior">人脉圈方面：{{social}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
+                                <el-col :span="12"><el-card class="square"><div class="behavior">总分：{{score}}分</div></el-card></el-col>
                             </el-row>       
                         </div>
                     </el-col>
@@ -114,6 +114,9 @@
          }
      },
      methods:{
+        gotoReport(){
+            this.$router.push({path: '/Report'});
+         },
         gotoScoreDetail(){
             this.$router.push({path: '/ScoreDetail'});
         },
@@ -135,7 +138,7 @@
                 //charts.setOption(option);
                 this.$axios({
                     method:"get",
-                    url: 'http://localhost:8888/credit/userCredit',
+                    url: 'http://localhost:8899/credit/userCredit',
                     headers:{
                     token:window.sessionStorage.getItem("token")},
                 }).then(res=>{
@@ -276,6 +279,9 @@ li{
 .score_detail{
     text-align: left;
 }
+.behavior{
+    font-size: 22px;
+}
 .line{
  	background:#6969FC;/*背景色为浅灰色*/
 	width:112px;/*设置宽高*/
@@ -329,7 +335,7 @@ h1{
     margin-right: 15%;
     background-color: #BFDDE3;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 28px;
     text-align: left;
 }
 .creditSearch{
@@ -346,8 +352,8 @@ h1{
 }
 .square{
     font-size: 16px;
-    width: 200px;
-    height: 100px;
+    width: 220px;
+    height: 140px;
     background-color: #BFDDE3;
     margin-bottom: 20px;
 }
@@ -383,5 +389,12 @@ h1{
     width: 50px;
     margin-left: 70%;
     cursor: pointer;
+}
+.report{
+    background-color: #9DBDD1;
+    color: #fff;
+}
+#leiDaTu{
+    padding-left: 35px;
 }
 </style>

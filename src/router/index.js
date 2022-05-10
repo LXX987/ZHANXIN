@@ -209,6 +209,12 @@ export default new Router({
           components: {
             table: () => import('@/components/Chat')
           }
+        },{
+          path: '/Report',
+          name: 'Report',
+          components: {
+            table: () => import('@/components/Report')
+          }
         }
       ]
     },

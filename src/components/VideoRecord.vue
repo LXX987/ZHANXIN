@@ -17,18 +17,18 @@
         <div>
           <div class="body">
             <div class="content">
-              <h1>我的观看历史</h1>
-              <div class="tip"><p>&ensp;&ensp;&ensp;&ensp;我们的信用评级分为六个等级，分别是Excellent(极优秀)、VeryGood(很优秀)、Good(良好)、Fair(一般)、Poor(较差)、VeryBad(很差)。不同的信用等级可以进行不同额度的贷款。</p></div>
+              <h1 class="name">我的观看历史</h1>
+              <div class="tip">&ensp;&ensp;&ensp;&ensp;已经作答过测试题的视频会被计分，视频和得分会展示在下方列表当中。</div>
               <div class="box" id="">
                     <ul class="video">
                         <li v-for="item in watchList" :key="item.value" class="videoli">
                             <div class="illu" :style="backgroundDiv">
-                            <h4 class="title">视频标题：{{item.videoName}}</h4>
-                            <h4>视频简介：</h4>
-                            <h4>视频时长：</h4>
-                            <p class="score">得分{{item.question_score}}</p>
-                            <h4>已观看</h4>
-                            <div class="detail"><el-button type="text" v-on:click="onclick(item.videoId)">查看视频内容</el-button></div>
+                            <h4 class="title">视频标题：{{item.video_title}}</h4>
+                            <img class="cover" v-bind:src="item.video_cover" alt="">
+                            <h4 class="subtitle">视频简介：{{item.video_intro}}</h4>
+                            <h4 class="subtitle">发布时间：{{item.video_time}}</h4>
+                            <p class="subtitle">得分：{{item.question_score}}</p>
+                            <div class="detail"><el-button type="text" v-on:click="onclick(item.video_id)">查看视频内容</el-button></div>
                             </div>
                         </li>
                     </ul>
@@ -39,6 +39,7 @@
     </div>
 </template>
 <script>
+import qs from 'qs'
 export default ({
     data(){
       return{
@@ -46,27 +47,66 @@ export default ({
         num:'1',
         index: 1,
         videoUrl:'',
+        videoID:'',
         list:[],
         watchList:[],
         video_list:[],
+        tempList:[],
       }
     },
     methods:{
       getVideoScore(){
         this.$axios({
             method:"post",
-            url: 'http://localhost:8888/videoScore',
+            url: 'http://localhost:8899/videoScore',
             headers: { token:window.sessionStorage.getItem("token")}
             }).then(res=>{
-                console.log(res)
-                this.watchList = res.data.videoScore
-                for(var i = 0;i<this.watchList.length;i++){
-                  this.video_list[i] = this.watchList[i].video_id
+                //console.log(res)
+                this.tempList = res.data.videoScore
+                for(var i = 0;i<res.data.videoScore.length;i++){
+                  this.video_list[i] = res.data.videoScore[i].video_id
                 }
                 console.log(this.video_list)
-
+                this.$axios({
+                  method:"post",
+                  url:'http://localhost:8899/common/videos',
+                  params:{
+                    id_list:JSON.stringify(this.video_list),
+                  },
+                   paramsSerializer: params => {
+                    return qs.stringify(params, { indices: false })
+                    },
+                }).then(res=>{
+                    //console.log(res.data.data)
+                    this.watchList = this.tempList
+                    for(var i=0;i<this.watchList.length;i++){
+                      this.watchList[i].video_title = res.data.data[i].video_name
+                      this.watchList[i].video_time =  res.data.data[i].video_time
+                      this.watchList[i].video_intro = res.data.data[i].video_intro
+                      this.watchList[i].video_url = res.data.data[i].video_url
+                      this.watchList[i].video_cover = res.data.data[i].video_cover
+                    }
+                    //this.watchList.push(res.data.data)
+                    console.log(this.watchList)
+                })
+                // this.$axios.post('http://localhost:8899/common/videos',
+                // {id_list:this.video_list}
+                // ).then((res)=>{
+                //   console.log(res)
+                // })
 
             })
+      },
+      onclick(value){
+        for(let i in this.watchList){
+                if(this.watchList[i].video_id == value ){
+                    this.videoUrl = this.watchList[i].video_url
+                    this.videoId = value
+                    console.log(this.videoId)
+                }
+            }
+        let newUrl = this.$router.resolve({name:'Video', query:{videoUrl:this.videoUrl,videoId:this.videoId}});
+            window.open(newUrl.href, "_blank");
       }
     },
     mounted(){
@@ -118,12 +158,12 @@ export default ({
 }
 .body{
     background-image: url(../assets/background.png);
-    height: 850px;
+    min-height: 850px;
     width: 100%;
     background-size:100% 100%
 }
 .content{
-    height: 750px;
+    min-height: 750px;
     background-color: #fff;
     margin-left: 20%;
     margin-right: 20%;
@@ -133,19 +173,20 @@ export default ({
     box-shadow:0 0 0 15px  rgba(255, 255, 255, 0.286)
 }
 .illu{
-    height:350px;
+    height:280px;
     text-align: left;
     background-repeat:no-repeat;
-    background-size:100%;
+    background-size:160%;
 }
 .box {
     width:80%;
     margin-top:15px;
-    margin-left: 18%;
+    margin-left: 5%;
+    
 }
 .video{
     display:flex;
-    width:1200px;
+    width:1000px;
     list-style-type: none;
     flex-flow: wrap;
 }
@@ -160,16 +201,19 @@ export default ({
     margin-right: 25px;
 }
 .cover{
-    margin-left: 40px;
-    margin-top: 50px;
-    height: 160px;
-    width: 240px;
+    margin-left: 60px;
+    height: 103px;
+    width: 154px;
 }
 .title{
-    margin-top: 10px;
+    padding-top: 35px;
     font-weight: bold;
     font-size: 20px;
-    margin-left: 35px;
+    margin-left: 55px;
+    padding-bottom: 5px;
+}
+.subtitle{
+  margin-left: 55px;
 }
 .time{
     margin-left: 35px;
@@ -179,5 +223,17 @@ export default ({
 .el-button{
     font-size: 18px;
     color: #32BDFE;
+}
+.name{
+  font-size: 28px;
+  font-weight: bold;
+  text-align: left;
+  padding-left: 5%;
+  padding-bottom: 20px;
+}
+.tip{
+  font-size: 18px;
+  text-align: left;
+  padding-left: 5%;
 }
 </style>

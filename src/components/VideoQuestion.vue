@@ -94,7 +94,7 @@ export default {
             // 分数提交到后端
             this.$axios({
                 method:"post",
-                url: 'http://localhost:8888/videoquestion',
+                url: 'http://localhost:8899/videoquestion',
                 headers: { token:window.sessionStorage.getItem("token")},
                 params:{
                 video_id:this.videoId,
@@ -109,7 +109,7 @@ export default {
         // 获取id对应的视频题目
             this.$axios({
             method:"get",
-            url: 'http://localhost:8888/common/questions'+'/'+this.videoId,
+            url: 'http://localhost:8899/common/questions'+'/'+this.videoId,
             }).then(res=>{
                 var i = 0
                 for(i = 0; i< res.data.data.length;i++){

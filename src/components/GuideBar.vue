@@ -53,6 +53,7 @@ import Footer from '@/components/Footer'
             case"/PsychologyGuidebar/PsychologyQuestion":this.index="/PsychologyGuidebar/";
             case"/PsychologyGuidebar/History":this.index="/PsychologyGuidebar/";
             case"/ScoreDetail":this.index="/CreditReport";
+            case"/Report":this.index="/CreditReport";
             break;
           }
         }

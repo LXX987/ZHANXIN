@@ -72,6 +72,7 @@ export default {
         params:{
             userEmail:this.ruleForm.userid,
             userPassword:this.ruleForm.password,
+            userType:0
         }
       }).then(res=>{
           console.log(res.data.msg);
@@ -114,7 +115,7 @@ export default {
   margin-left: 35%;
   margin-right: 35%;
   border-radius: 20px;
-  box-shadow: 0px 0px 20px #8888887d;
+  box-shadow: 0px 0px 20px #8899887d;
   padding: 40px;
 }
 #headline {

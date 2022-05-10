@@ -98,7 +98,7 @@ export default ({
         getVideo(){
             this.$axios({
             method:"get",
-            url: 'http://localhost:8888/common/videos/fundamental'
+            url: 'http://localhost:8899/common/videos/fundamental'
             }).then(res=>{
                 console.log(res.data.data)
                 this.list = res.data.data
