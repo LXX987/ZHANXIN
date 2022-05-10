@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -52,6 +53,16 @@ public class VideoController {
         if(count == -1)
             return Result.error("500", "删除失败");
         else return Result.success();
+    }
+
+    @ApiOperation(value = "通过id列表获取视频信息")
+    @RequestMapping(value = "/common/videos", method = RequestMethod.GET)
+    public Result<?> getVideoInfo(@RequestParam ArrayList<Integer> id_list)
+    {
+        List<JSONObject> jsonObjects = videoService.getVideoInfo(id_list);
+        if(jsonObjects.isEmpty())
+            return Result.error("404", "暂无数据");
+        else return Result.success(jsonObjects);
     }
 
 

@@ -70,4 +70,12 @@ public class VideoServiceImpl implements VideoService {
         else return -1;
     }
 
+    @Override
+    public List<JSONObject> getVideoInfo(ArrayList<Integer> id_list)
+    {
+        String ids = id_list.toString().replace("[", "(").replace("]", ")");
+
+        return videoMapper.selectVideoById(ids);
+    }
+
 }

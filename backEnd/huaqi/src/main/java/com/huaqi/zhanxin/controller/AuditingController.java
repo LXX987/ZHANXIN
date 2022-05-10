@@ -38,9 +38,9 @@ public class AuditingController {
 
     @ApiOperation(value = "审核")
     @RequestMapping(value = "/certificates", method = RequestMethod.PUT)
-    public Result<?> examineCertificate(@RequestParam("id") Integer id, @RequestParam("state") Integer state)
+    public Result<?> examineCertificate(@RequestParam("id") Integer id, @RequestParam("state") Integer state, @RequestParam("num") Integer num, @RequestParam("type") String type)
     {
-        Integer count = auditingService.examineCertificate(id, state);
+        Integer count = auditingService.examineCertificate(id, state, num, type);
         if(count == 1)
             return Result.success();
         else return Result.error("500", "操作失败");

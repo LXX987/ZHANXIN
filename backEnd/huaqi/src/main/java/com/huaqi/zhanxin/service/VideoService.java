@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface VideoService {
@@ -13,4 +14,6 @@ public interface VideoService {
     List<JSONObject> getVideoList(String type);
 
     Integer deleteVideo(Integer id);
+    
+    List<JSONObject> getVideoInfo(ArrayList<Integer> id_list);
 }

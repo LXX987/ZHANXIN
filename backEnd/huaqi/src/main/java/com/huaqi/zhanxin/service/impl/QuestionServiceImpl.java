@@ -2,6 +2,7 @@ package com.huaqi.zhanxin.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.entity.Question;
+import com.huaqi.zhanxin.entity.VideoScore;
 import com.huaqi.zhanxin.mapper.QuestionMapper;
 import com.huaqi.zhanxin.service.QuestionService;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,19 @@ public class QuestionServiceImpl implements QuestionService {
             return 1;
         else return -1;
     }
+
+    public Integer submitQuestion(Integer userID, Integer video_id, Integer watch, Integer questionScore) {
+        Integer count = questionMapper.insertAnswer(userID,video_id,watch,questionScore);
+        if(count == 1)
+            return 1;
+        else return -1;
+    }
+
+    @Override
+    public List<VideoScore> getVideoScore(Integer userId) {
+        List<VideoScore> scoreList = questionMapper.selectAllByUserId(userId);
+        if(scoreList.isEmpty()) return null;
+        return scoreList;
+    }
+
 }
