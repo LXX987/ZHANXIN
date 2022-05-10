@@ -8,7 +8,7 @@
     <el-menu-item index="/PsychologyGuidebar" @click="saveIndex('/PsychologyGuidebar')">心理测试</el-menu-item>
     <el-menu-item index="/HonestyVideo" @click="saveIndex('/HonestyVideo')">金融教育</el-menu-item>
     <el-menu-item index="23" @click="saveIndex('/HonestyVideo')">好友人脉</el-menu-item>
-    <el-menu-item index="23" @click="saveIndex('/HonestyVideo')">意见反馈</el-menu-item>
+    <el-menu-item index="/Chat" @click="saveIndex('/Chat')">意见反馈</el-menu-item>
     <el-menu-item index="/PersonalCenter" @click="saveIndex('/PersonalCenter')">
       <img src='@/assets/avatar.png' class="avatar">
     </el-menu-item>
@@ -44,7 +44,7 @@ import Footer from '@/components/Footer'
       },
       getIndex(){
         var index_temp = this.$route.path
-        if(index_temp=="/HomePage"||index_temp=="/CreditReport"||index_temp=="/PsychologyGuidebar"||index_temp=="/HonestyVideo"||index_temp=="/HonestyVideo"||index_temp=="/PersonalCenter"){
+        if(index_temp=="/HomePage"||index_temp=="/CreditReport"||index_temp=="/PsychologyGuidebar"||index_temp=="/HonestyVideo"||index_temp=="/HonestyVideo"||index_temp=="/PersonalCenter"||index_temp=="/Chat"){
           this.index = index_temp
         }
         else{

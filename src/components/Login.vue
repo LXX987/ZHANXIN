@@ -72,6 +72,7 @@ export default {
         params:{
             userEmail:this.ruleForm.userid,
             userPassword:this.ruleForm.password,
+            userType: 0
         }
       }).then(res=>{
           console.log(res.data.msg);

@@ -26,7 +26,7 @@ export default {
     getFriendList() {
       this.$axios({
         method:"get",
-        url: 'http://localhost:8888/user/friends',
+        url: 'http://localhost:8899/user/friends',
         // headers:{token:window.sessionStorage.getItem("token")},
         params:{
           id: '5'

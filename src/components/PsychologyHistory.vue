@@ -264,7 +264,7 @@ export default {
             // console.log(roseCharts.length);
             this.$axios({
                     method:"post",
-                    url: 'http://localhost:8888/psychology/getHistory',
+                    url: 'http://localhost:8899/psychology/getHistory',
                     headers:{
                     token:window.sessionStorage.getItem("token")},
                 }).then(res=>{
@@ -327,7 +327,7 @@ export default {
         getHistoryRecord() {
             this.$axios({
                 method:"post",
-                url: 'http://localhost:8888/psychology/getHistory',
+                url: 'http://localhost:8899/psychology/getHistory',
                 headers:{token:window.sessionStorage.getItem("token")},
                 params:{
                 }

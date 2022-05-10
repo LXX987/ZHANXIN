@@ -308,7 +308,7 @@ export default {
                 //charts.setOption(option);
                 this.$axios({
                     method:"post",
-                    url: 'http://localhost:8888/psychology/getResult',
+                    url: 'http://localhost:8899/psychology/getResult',
                     headers:{
                     token:window.sessionStorage.getItem("token")},
                 }).then(res=>{
@@ -368,7 +368,7 @@ export default {
         getResult() {
             this.$axios({
                 method:"post",
-                url: 'http://localhost:8888/psychology/getResult',
+                url: 'http://localhost:8899/psychology/getResult',
                 headers:{token:window.sessionStorage.getItem("token")},
                 params:{
                 }
@@ -390,7 +390,7 @@ export default {
         getUserName() {
             this.$axios({
                 method:"get",
-                url: 'http://localhost:8888/user/getUserName',
+                url: 'http://localhost:8899/user/getUserName',
                 headers:{token:window.sessionStorage.getItem("token")},
                 params:{
                 }

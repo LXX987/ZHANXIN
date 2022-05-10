@@ -332,7 +332,7 @@ export default {
               location.reload();
             }
           });
-        },500);
+        },2000);
       },
       personalCenter() {
         this.$router.push({path: '/PersonalCenter'});
