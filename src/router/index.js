@@ -14,7 +14,9 @@ import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
 import ScoreDetail from '@/components/ScoreDetail'
-import backgroundGuidebar from '@/components/background/backgroundGuidebar'
+import customerservice from '@/components/customerservice'
+import cs from '@/components/cs'
+import csLogin from '@/components/csLogin'
 
 import FriendList from '@/components/FriendList'
 
@@ -36,6 +38,16 @@ export default new Router({
       path: '/ForgetPsw',
       name: 'ForgetPsw',
       component: ForgetPsw
+    },
+    {
+      path: '/csLogin',
+      name: 'csLogin',
+      component: csLogin
+    },
+    {
+      path: '/cs',
+      name: 'cs',
+      component: cs
     },
     {
       path: '/',
@@ -119,6 +131,13 @@ export default new Router({
           name: 'AccountSecurity',
           components: {   
             table: () => import('@/components/AccountSecurity')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'CreditAppeal', 
+          name: 'CreditAppeal',
+          components: {   
+            table: () => import('@/components/CreditAppeal')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
           }
         },
         {
@@ -219,9 +238,9 @@ export default new Router({
       ]
     },
     {
-      path: '/background',
-      name: '/background',
-      component: backgroundGuidebar,
+      path: '/customerservice',
+      name: '/customerservice',
+      component: customerservice,
       children: [  // 添加子路由
       ]
     },
