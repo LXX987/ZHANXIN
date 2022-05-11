@@ -14,7 +14,9 @@ import PsychologyResult from '@/components/PsychologyResult'
 import PsychologyHistory from '@/components/PsychologyHistory'
 import PsychologyGuidebar from '@/components/PsychologyGuidebar'
 import ScoreDetail from '@/components/ScoreDetail'
-import backgroundGuidebar from '@/components/background/backgroundGuidebar'
+import customerservice from '@/components/customerservice'
+import cs from '@/components/cs'
+import csLogin from '@/components/csLogin'
 
 import FriendList from '@/components/FriendList'
 
@@ -36,6 +38,16 @@ export default new Router({
       path: '/ForgetPsw',
       name: 'ForgetPsw',
       component: ForgetPsw
+    },
+    {
+      path: '/csLogin',
+      name: 'csLogin',
+      component: csLogin
+    },
+    {
+      path: '/cs',
+      name: 'cs',
+      component: cs
     },
     {
       path: '/',
@@ -213,9 +225,9 @@ export default new Router({
       ]
     },
     {
-      path: '/background',
-      name: '/background',
-      component: backgroundGuidebar,
+      path: '/customerservice',
+      name: '/customerservice',
+      component: customerservice,
       children: [  // 添加子路由
       ]
     },

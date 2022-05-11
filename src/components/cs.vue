@@ -1,5 +1,6 @@
 <template>
   <div class="customerService">
+    <customerservice></customerservice>
     <div class="hideBoard"></div>
     <div class="chatBoard">
       <br>
@@ -11,6 +12,26 @@
           </div>
         </el-row>
         <el-row>
+          <!--      用户列表-->
+          <el-col :span="6">
+            <el-card class="talkList">
+              <el-row>
+                <p>用户列表</p>
+              </el-row>
+              <el-row>
+              <div class="numberlist">
+                <div v-for="(item,index) in userList" :key="index" class="numberitem">
+                  <div v-if="index/2 === 1" class="itemstyle1">
+                  {{item}}
+                  </div>
+                  <div v-else class="itemstyle2">
+                    {{item}}
+                  </div>
+                </div>
+              </div>
+              </el-row>
+            </el-card>
+          </el-col>
           <!--      聊天室-->
           <el-col :span="18">
             <div class="talkBox">
@@ -42,49 +63,7 @@
               </el-card>
             </div>
           </el-col>
-          <!--      用户列表-->
-          <el-col :span="6">
-            <el-row>
-            <el-card class="talkList">
-              <ul>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>我想知道如何查看信用分？</span></li>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>我的信用分数算高还是低？</span></li>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>如何评信用分？</span></li>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>我想咨询相关问题（以下）</span></li>
-                <el-row>
-                  <el-col :span="8"><el-button class="choicebox" @click="creditScore">信用分数</el-button></el-col>
-                  <el-col :span="8"><el-button class="choicebox" @click="videoEducation">视频教育</el-button></el-col>
-                  <el-col :span="8"><el-button class="choicebox" @click="psychologyMeasure">心理测评</el-button></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><el-button class="choicebox" @click="social">好友人脉</el-button></el-col>
-                  <el-col :span="8"><el-button class="choicebox" @click="dimend">评分维度</el-button></el-col>
-                  <el-col :span="8"><el-button class="choicebox" @click="updateScore">提升分数</el-button></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8"><div class="choicebox"></div></el-col>
-                  <el-col :span="8"><div class="choicebox"></div></el-col>
-                  <el-col :span="8"><div class="choicebox"></div></el-col>
-                </el-row>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>心理测试对分数的影响？</span></li>
-                <li><img src="@/assets/circle.png"/>&ensp;&ensp;<span>看视频的方式？</span></li>
-              </ul>
-              <!-- <div class="numberlist">
-                <div v-for="(item,index) in userList" :key="index" class="numberitem">
-                  {{item}}
-                </div>
-              </div> -->
-            </el-card>
-            </el-row>
-            <el-row>
-              <el-card class="connect">
-                <div class="connectTitle"></div>
-                <el-col :span="8" id="message"><p @click="messagebutton">留言</p></el-col>
-                <el-col :span="8" id="complaint"><p @click="complaintbutton">投诉</p></el-col>
-                <el-col :span="8" id="call"><p @click="callbutton">电话</p></el-col>
-              </el-card>
-            </el-row>
-          </el-col>
+          
         </el-row>
       </div>
       <br>
@@ -92,9 +71,11 @@
   </div>
 </template>
 <script>
+import Customerservice from './customerservice.vue';
   let socket;
   export default {
-    name: 'chat',
+  components: { Customerservice },
+    name: 'cs',
     data() {
       return {
         // 登录用户
@@ -234,9 +215,6 @@
   }
 </script>
 <style scoped>
-.customerService {
-   
-}
 #message {
   margin: 25px 10px 20px 25px;
   width: 60px;
@@ -349,7 +327,7 @@ li {
   height: 45px;
   text-align: center;
   font-size: 22px;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
   margin-top: 15px;
 }
 .talkCard {
@@ -360,12 +338,21 @@ li {
   width: 100%;
 }
 .numberitem {
-  padding: 10px;
-  margin-top: 10px;
+  height: 65px;
+  line-height: 65px;
   font-size: 20px;
+  border: 2px solid #9ab2cb;
+  border-radius: 8px 8px 0px 0px;
+  text-indent: 50px;
+}
+.itemstyle1 {
+  background-color: #ffffff;
+}
+.itemstyle2 {
+  background-color: #dee8f3;
 }
 .numberlist {
-  height: 700px;
+  height: 646px;
   overflow-y:auto;
   border:1px solid #000000;
   border-radius: 5px;
@@ -378,14 +365,19 @@ li {
 .talkList {
   text-align: left;
   width: 100%;
-  height: 570px;
-  background: url('../assets/csguiderbar.png') no-repeat;
-  background-size: 125% 105%;
+  height: 800px;
+  /* background: url('../assets/csguiderbar.png') no-repeat; */
+  /* background-size: 125% 105%; */
+}
+.talkList p {
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0px 20px 0px;
 }
 .chatBoard {
   width: 70%;
   margin-left: 15%;
-  margin-top: 3%;
+  margin-top: 1%;
   border-radius: 25px;
   text-align: center;
   background-color: #afafaf30;
@@ -403,8 +395,9 @@ li {
   height: 970px;
   left: 0px;
   top: 100px;
-  /* background-color: #a5a5a543; */
-  background: url('../assets/chatbackground.png') no-repeat;
+  /* background-color: #ffffff43; */
+  background: url('../assets/background.png') no-repeat;
+  opacity: 0.9;
   background-size: 100% 100%;
 }
 </style>
