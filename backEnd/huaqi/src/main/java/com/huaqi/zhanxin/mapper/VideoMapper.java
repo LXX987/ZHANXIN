@@ -1,11 +1,13 @@
 package com.huaqi.zhanxin.mapper;
 
 
+import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.entity.VideoInfo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -24,4 +26,7 @@ public interface VideoMapper {
 
     @Delete("delete from Video_Info where video_id=#{id}")
     Integer deleteOneById(Integer id);
+
+    @Select("select * from Video_Info where video_id in ${id_list}")
+    List<JSONObject> selectVideoById(@Param("id_list") String id_list);
 }

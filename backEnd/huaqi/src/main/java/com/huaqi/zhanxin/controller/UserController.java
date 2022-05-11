@@ -283,23 +283,6 @@ public class UserController {
         return helper.toJsonMap();
     }
 
-    @ApiOperation(value = "获取资产证明信息")
-    @GetMapping("getAsset")
-    public Map<String, Object> getAsset(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-        int userID = getInfo.getUserId();
-        //int userID =1;
-        Asset asset = userService.selectAsset(userID);
-        map.put("house", asset.getHouse());
-        map.put("car", asset.getCar());
-        CreditRecord creditRecord=userService.selectCreditRecord(userID);
-        map.put("DebtRatio", creditRecord.getDebtRatio());
-        helper.setMsg("Success");
-        helper.setData(map);
-        return helper.toJsonMap();
-    }
-
     @ApiOperation(value = "获取信贷记录信息")
     @GetMapping("getCreditRecord")
     public Map<String, Object> getCreditRecord(HttpServletRequest request) {
