@@ -16,5 +16,4 @@ public class UserBean {
     private Integer userType;
     private Timestamp userRegisterTime;
     private String userAvatar;
-
 }
