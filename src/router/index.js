@@ -122,6 +122,13 @@ export default new Router({
           }
         },
         {
+          path: 'CreditAppeal', 
+          name: 'CreditAppeal',
+          components: {   
+            table: () => import('@/components/CreditAppeal')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
           path: 'PsychologyGuidebar',
           name: 'PsychologyGuidebar',
           components: {

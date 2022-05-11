@@ -35,15 +35,15 @@
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-white">
-                  <p class="txt-title">信用分<el-button type="text" class="btn-text" @click="dialogVisible = true">编辑</el-button></p>
+                  <p class="txt-title">信用分</p>
                   <el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">
-                      <el-button type="text" @click="goto_detail" class="sub_score">总分：{{score}}</el-button></el-tooltip>
-                      <div id="leiDaTu" class="echart"></div>
+                  <el-button type="text" @click="goto_detail" class="sub_score">总分：{{score}}</el-button></el-tooltip>
+                  <div id="leiDaTu" class="echart"></div>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-white mar-left">
-                  <p class="txt-title">信用分解读<el-button type="text" class="btn-text" @click="shimingDialogVisible = true">有疑问？点击申诉</el-button></p>
+                  <p class="txt-title">信用分解读<el-button type="text" class="btn-text" @click="CreditAppeal()">有疑问？点击申诉</el-button></p>
                   <el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">
                       <el-button type="text" @click="goto_detail" class="sub_score">总分：{{score}}</el-button></el-tooltip>
                   <p class="txt-score">身份证明：{{idfication}}</p>
@@ -205,6 +205,9 @@ export default {
       },
       AccountSecurity() {
         this.$router.push({path: '/AccountSecurity'});
+      },
+      CreditAppeal() {
+        this.$router.push({path: '/CreditAppeal'});
       },
     }
   }
