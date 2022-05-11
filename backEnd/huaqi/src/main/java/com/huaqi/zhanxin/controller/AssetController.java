@@ -72,4 +72,30 @@ public class AssetController {
         helper.setData(map);
         return helper.toJsonMap();
     }
+
+    @ApiOperation(value = "删除银行账户")
+    @PostMapping("deleteAsset")
+    public Map<String, Object> deleteAsset(HttpServletRequest request, Timestamp addTime){
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        Map<String, Object> map = new HashMap<>();
+        assetService.deleteAsset(userID,addTime);
+        map.put("msg", "删除成功");
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "管理银行账户")
+    @PostMapping("updateAsset")
+    public Map<String, Object> updateAsset(HttpServletRequest request, String bank, int money, Timestamp addTime){
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        Map<String, Object> map = new HashMap<>();
+        assetService.updateAsset(userID, bank, money, addTime);
+        map.put("msg", "编辑成功");
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
 }

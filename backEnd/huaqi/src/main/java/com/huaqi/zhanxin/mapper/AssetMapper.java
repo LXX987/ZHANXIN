@@ -2,10 +2,7 @@ package com.huaqi.zhanxin.mapper;
 
 import com.huaqi.zhanxin.entity.Asset;
 import com.huaqi.zhanxin.entity.UserBean;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -23,4 +20,10 @@ public interface AssetMapper {
 
     @Select("select sum(money) from Asset where user_id=#{userID}")
     int getMoney(@Param("userID") int userID);
+
+    @Delete("delete from Asset where user_id = #{userID} and add_time = #{addTime}")
+    int deleteAsset(@Param("userID") int userID,@Param("addTime") Timestamp addTime);
+
+    @Update("update Asset set bank = #{bank},money = #{money} where user_id = #{userID} and add_time = #{addTime}")
+    int updateAsset(@Param("userID") int userID,@Param("bank") String bank,@Param("money") int money,@Param("addTime") Timestamp addTime);
 }

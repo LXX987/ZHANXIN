@@ -10,4 +10,6 @@ public interface AssetService {
     List<Asset> assetList(int userID);
     int insertAsset(int userID, String bank, int money, Timestamp addTime);
     int getMoney(int userID);
+    int deleteAsset(int userID,Timestamp addTime);
+    int updateAsset(int userID, String bank, int money, Timestamp addTime);
 }

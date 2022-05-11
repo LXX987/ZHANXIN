@@ -29,4 +29,14 @@ public class AssetServiceImpl implements AssetService {
     public int getMoney(int userID) {
         return assetMapper.getMoney(userID);
     }
+
+    @Override
+    public int deleteAsset(int userID, Timestamp addTime) {
+        return assetMapper.deleteAsset(userID,addTime);
+    }
+
+    @Override
+    public int updateAsset(int userID, String bank, int money, Timestamp addTime) {
+        return assetMapper.updateAsset(userID,bank,money,addTime);
+    }
 }
