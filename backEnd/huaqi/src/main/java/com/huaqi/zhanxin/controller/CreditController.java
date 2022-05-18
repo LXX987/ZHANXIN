@@ -42,4 +42,8 @@ public class CreditController {
         return helper.toJsonMap();
     }
 
+    public int calculateCredit(){
+
+        return 1;
+    }
 }
