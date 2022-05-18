@@ -93,11 +93,11 @@ export default {
             
             // 分数提交到后端
             this.$axios({
-            method:"post",
-            url: 'http://localhost:8899/admin/questions',
-            headers: { token:window.sessionStorage.getItem("token")},
-            params:{
-                videoId:this.videoId,
+                method:"post",
+                url: 'http://localhost:8899/videoquestion',
+                headers: { token:window.sessionStorage.getItem("token")},
+                params:{
+                video_id:this.videoId,
                 score:this.score,
                 watch:1,
                 }
