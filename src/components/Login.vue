@@ -7,7 +7,7 @@
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
             <el-form-item prop="userid"> <li><el-input v-model="ruleForm.userid" placeholder="请输入邮箱" class="input_box"></el-input></li></el-form-item>
             <el-form-item prop="password"> <li><el-input placeholder="请输入密码" v-model="ruleForm.password" show-password class="input_box"></el-input></li></el-form-item>
-            <Vcode :show="isShow" @success="success" @close="close" />
+            <Vcode :show="isShow" @success="success" @close="close" @fail="fail" />
             <li><el-button type="primary" round class="btn_login" @click="submit">登录</el-button></li>
             <br>
             <el-link type="primary" @click="register()">没有账号？点击注册</el-link>
@@ -40,6 +40,7 @@ export default {
     return {
       radio: '0',
       isShow: false, // 验证码模态框是否出现
+      failTime:0,
       ruleForm: {
         userid: '',
         password:'',
@@ -65,6 +66,29 @@ export default {
     close() { // 用户点击遮罩层，应该关闭模态框
       this.isShow = false;
     },
+    fail() {
+      this.failTime=this.failTime+1;
+      if(this.failTime>=5){
+        this.$axios({
+          method:"post",
+          url: 'http://localhost:8899/user/loginException',
+          params:{
+              userEmail:this.ruleForm.userid
+          }
+        }).then(res=>{
+            console.log(res.data.msg);
+            if(res.data.msg=="登录异常"){
+                console.log(res);
+                this.$message({
+                  showClose: true,
+                  message: '登录异常!'
+                });
+            }
+        },err=>{
+            console.log(err);
+        })
+      }
+    },
     login(){
       this.$axios({
         method:"post",
@@ -72,7 +96,7 @@ export default {
         params:{
             userEmail:this.ruleForm.userid,
             userPassword:this.ruleForm.password,
-            userType: 0
+            userType: 1
         }
       }).then(res=>{
           console.log(res.data.msg);

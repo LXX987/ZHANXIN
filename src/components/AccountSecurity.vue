@@ -68,26 +68,32 @@
             <el-row class="bg-white mar-top">
               <p class="txt-title">账号安全</p>
               <div class="grid-content">
-                <p class="txt-content mar-top2">账号：{{userID}}</p>
-                <p class="txt-content">绑定邮箱：{{userEmail}}</p>
-                <p class="txt-content mar-bot">密码：*<el-button type="text" class="btn-pwd" @click="pwdDialogVisible = true">修改</el-button></p>
-                <el-dialog title="修改密码" :visible.sync="pwdDialogVisible" width="30%">
-                  <el-form :model="pwdForm" :rules="rules" ref="pwdForm" label-width="80px">
-                    <el-form-item label="请输入原密码" prop="oldPwd">
-                      <el-input type="password" v-model="pwdForm.oldPwd"></el-input>
-                    </el-form-item>
-                    <el-form-item label="请输入新密码" prop="newPwd">
-                      <el-input type="password" v-model="pwdForm.newPwd"></el-input>
-                    </el-form-item>
-                    <el-form-item label="请确认新密码" prop="newPwdAgain">
-                      <el-input type="password" v-model="pwdForm.newPwdAgain"></el-input>
-                    </el-form-item>
-                  </el-form>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="submitForm('pwdForm')">提交</el-button>
-                    <el-button @click="resetForm('pwdForm')">重置</el-button>
-                  </span>
-                </el-dialog>
+                <el-col :span="16">
+                  <p class="txt-content mar-top2">账号：{{userID}}</p>
+                  <p class="txt-content">绑定邮箱：{{userEmail}}</p>
+                  <p class="txt-content mar-bot">密码：*<el-button type="text" class="btn-pwd" @click="pwdDialogVisible = true">修改</el-button></p>
+                  <el-dialog title="修改密码" :visible.sync="pwdDialogVisible" width="30%">
+                    <el-form :model="pwdForm" :rules="rules" ref="pwdForm" label-width="80px">
+                      <el-form-item label="请输入原密码" prop="oldPwd">
+                        <el-input type="password" v-model="pwdForm.oldPwd"></el-input>
+                      </el-form-item>
+                      <el-form-item label="请输入新密码" prop="newPwd">
+                        <el-input type="password" v-model="pwdForm.newPwd"></el-input>
+                      </el-form-item>
+                      <el-form-item label="请确认新密码" prop="newPwdAgain">
+                        <el-input type="password" v-model="pwdForm.newPwdAgain"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
+                      <el-button type="primary" @click="submitForm('pwdForm')">提交</el-button>
+                      <el-button @click="resetForm('pwdForm')">重置</el-button>
+                    </span>
+                  </el-dialog>
+                </el-col>
+                <el-col :span="8">
+                  <p class="txt-content mar-top2">身份验证问题：{{question}}</p>
+                  <p class="txt-content"><el-button type="text" class="btn-que" @click="SecurityQuestion()" v-if="question=='暂未设置'">点击设置身份验证问题</el-button></p>
+                </el-col>
               </div>
             </el-row>
           </div>
@@ -145,13 +151,29 @@ export default {
           oldPwd: [{validator: checkOldPwd,trigger: "blur"}],
           newPwd: [{validator: checkNewPwd,trigger: "blur"}],
           newPwdAgain: [{validator: checkNewPwdAgain,trigger: "blur"}]
-        }
+        },
+        question:'暂未设置',
       };
     },
     mounted:function(){
-      this.getUserInfo()
+      this.getUserInfo();
+      this.selectSecurityQuestion();
     },
     methods: {
+      selectSecurityQuestion() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/user/selectSecurityQuestion',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的安全问题数据：', res.data);
+          if(res.data.data.msg==1) {
+            this.question='已设置'
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
       changePwd() {
         this.$axios({
           method:"post",
@@ -241,6 +263,9 @@ export default {
       AccountSecurity() {
         this.$router.push({path: '/AccountSecurity'});
       },
+      SecurityQuestion() {
+        this.$router.push({path: '/SecurityQuestion'});
+      }
     },
   }
 </script>
@@ -389,5 +414,9 @@ export default {
   }
   .mar-bot {
     margin-bottom: 10px;
+  }
+  .btn-que {
+    padding:0px;
+    font-size: 16px;
   }
 </style>

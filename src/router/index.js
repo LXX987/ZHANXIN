@@ -129,6 +129,20 @@ export default new Router({
           }
         },
         {
+          path: 'SecurityQuestion', 
+          name: 'SecurityQuestion',
+          components: {   
+            table: () => import('@/components/SecurityQuestion')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
+          path: 'AnswerSecQue', 
+          name: 'AnswerSecQue',
+          components: {   
+            table: () => import('@/components/AnswerSecQue')  // 这里的table跟首页的router-view标签的name一致，才会在首页的路由视图进行跳转，看3.2
+          }
+        },
+        {
           path: 'PsychologyGuidebar',
           name: 'PsychologyGuidebar',
           components: {
