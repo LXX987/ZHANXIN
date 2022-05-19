@@ -110,7 +110,7 @@ public class UserController {
         if(userInfo.getAuthentication())
         {
             int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-            creditService.updateIdentityScore(indentityScore);
+            creditService.updateIdentityScore(indentityScore,userID);
         }
         helper.setMsg("Success");
         helper.setData(map);
@@ -184,7 +184,7 @@ public class UserController {
             if(userInfo.getAuthentication())
             {
                 int indentityScore = calculateIdentity(occupation,annualIncome,workingYears);
-                creditService.updateIdentityScore(indentityScore);
+                creditService.updateIdentityScore(indentityScore,userID);
             }
         } else {
             map.put("msg", "修改失败，未查找到该账号数据");
@@ -263,7 +263,7 @@ public class UserController {
                 if(userInfo.getAuthentication())
                 {
                     int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-                    creditService.updateIdentityScore(indentityScore);
+                    creditService.updateIdentityScore(indentityScore,userID);
                 }
                 map.put("msg", "数据库修改成功");
                 map.put("success", "1");
