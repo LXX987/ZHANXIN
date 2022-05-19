@@ -1,5 +1,6 @@
 package com.huaqi.zhanxin.controller;
 
+import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.*;
 import com.huaqi.zhanxin.service.CreditService;
 import com.huaqi.zhanxin.service.UserService;
@@ -46,6 +47,22 @@ public class UserController {
     @RequestMapping("show")
     public List<UserBean> userList(){
         return userService.userList();
+    }
+
+    @ApiOperation(value = "验证身份")
+    @RequestMapping(value = "verify", method = RequestMethod.GET)
+    public Result<?> verifyIdentity(@RequestParam String userEmail, @RequestParam String userPassword)
+    {
+        UserBean user = userService.login(userEmail);
+        if(user==null)
+            return Result.error("404", "用户不存在");
+        else {
+            if(userPassword.equals(user.getUserPwd()) && user.getUserType().equals(1))
+            {
+                return Result.success();
+            }
+            else return Result.error("403", "验证失败");
+        }
     }
 
     @ApiOperation(value = "登录")
@@ -111,7 +128,7 @@ public class UserController {
         if(userInfo.getAuthentication())
         {
             int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-            creditService.updateIdentityScore(indentityScore);
+            creditService.updateIdentityScore(indentityScore,userID);
         }
         helper.setMsg("Success");
         helper.setData(map);
@@ -185,7 +202,7 @@ public class UserController {
             if(userInfo.getAuthentication())
             {
                 int indentityScore = calculateIdentity(occupation,annualIncome,workingYears);
-                creditService.updateIdentityScore(indentityScore);
+                creditService.updateIdentityScore(indentityScore,userID);
             }
         } else {
             map.put("msg", "修改失败，未查找到该账号数据");
@@ -264,7 +281,7 @@ public class UserController {
                 if(userInfo.getAuthentication())
                 {
                     int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-                    creditService.updateIdentityScore(indentityScore);
+                    creditService.updateIdentityScore(indentityScore,userID);
                 }
                 map.put("msg", "数据库修改成功");
                 map.put("success", "1");
