@@ -14,6 +14,6 @@ public interface VideoService {
     List<JSONObject> getVideoList(String type);
 
     Integer deleteVideo(Integer id);
-    
+
     List<JSONObject> getVideoInfo(ArrayList<Integer> id_list);
 }

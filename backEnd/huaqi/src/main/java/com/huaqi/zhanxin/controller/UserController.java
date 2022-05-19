@@ -1,5 +1,6 @@
 package com.huaqi.zhanxin.controller;
 
+import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.*;
 import com.huaqi.zhanxin.service.CreditService;
 import com.huaqi.zhanxin.service.UserService;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -45,6 +47,22 @@ public class UserController {
     @RequestMapping("show")
     public List<UserBean> userList(){
         return userService.userList();
+    }
+
+    @ApiOperation(value = "验证身份")
+    @RequestMapping(value = "verify", method = RequestMethod.GET)
+    public Result<?> verifyIdentity(@RequestParam String userEmail, @RequestParam String userPassword)
+    {
+        UserBean user = userService.login(userEmail);
+        if(user==null)
+            return Result.error("404", "用户不存在");
+        else {
+            if(userPassword.equals(user.getUserPwd()) && user.getUserType().equals(1))
+            {
+                return Result.success();
+            }
+            else return Result.error("403", "验证失败");
+        }
     }
 
     @ApiOperation(value = "登录")
@@ -458,5 +476,86 @@ public class UserController {
             helper.setData(map);
             return helper.toJsonMap();
         }
+    }
+
+    @ApiOperation(value = "登录异常")
+    @PostMapping("loginException")
+    public Map<String, Object> loginException(String userEmail){
+        Map<String, Object> map = new HashMap<>();
+
+        if (StringUtils.isEmpty(userEmail)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        UserBean user = userService.login(userEmail);
+        int userID=user.getUserID();
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        userService.insertException(userID,d);
+        map.put("msg", "登录异常");
+        return map;
+    }
+
+    @ApiOperation(value = "设置安全问题")
+    @PostMapping("insertSecurityQuestion")
+    public Map<String, Object> insertSecurityQuestion(HttpServletRequest request, String teacher, String city){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if (StringUtils.isEmpty(teacher) || StringUtils.isEmpty(city)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        userService.insertSecurityQuestion(userID,teacher,city);
+        map.put("msg", "安全问题设置成功");
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "查询安全问题")
+    @GetMapping("selectSecurityQuestion")
+    public Map<String, Object> selectSecurityQuestion(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        SecurityQuestion securityQuestion=userService.selectSecurityQuestion(userID);
+        if(securityQuestion==null){
+            map.put("msg", "0");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else {
+            map.put("msg", "1");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+    }
+
+    @ApiOperation(value = "回答安全问题")
+    @PostMapping("answerSecurityQuestion")
+    public Map<String, Object> answerSecurityQuestion(HttpServletRequest request, String teacher, String city){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if (StringUtils.isEmpty(teacher) || StringUtils.isEmpty(city)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        SecurityQuestion securityQuestion=userService.selectSecurityQuestion(userID);
+        if(teacher.equals(securityQuestion.getTeacher())&&city.equals(securityQuestion.getCity())) {
+            map.put("msg", "正确");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else {
+            map.put("msg", "错误");
+            helper.setMsg("Fail");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+
     }
 }
