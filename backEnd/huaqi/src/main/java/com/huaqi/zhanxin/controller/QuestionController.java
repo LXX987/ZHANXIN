@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,9 @@ public class QuestionController {
 
             } else {
                 map.put("videoScore", questionList);
+                for(int i=0;i<questionList.size();i++){
+                    ArrayList<Integer> video_list = new ArrayList<>();
+                }
                 System.out.println(questionList);
                 map.put("msg", "获取成功");
             }

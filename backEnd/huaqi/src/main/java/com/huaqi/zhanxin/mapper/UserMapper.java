@@ -4,6 +4,7 @@ import com.huaqi.zhanxin.entity.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -62,4 +63,15 @@ public interface UserMapper {
     // 上传头像
     @Update("update User set user_avatar = #{userAvatar} where user_id=#{userID}")
     String updateAvatar(@Param("userAvatar") String userAvatar, @Param("userID") int userID);
+
+    // 登录异常
+    @Insert("insert into Login_Exception values(#{userID},#{exceptionTime})")
+    int insertException(@Param("userID") int userID, @Param("exceptionTime") Timestamp exceptionTime);
+
+    // 安全问题
+    @Insert("insert into Security_Question values(#{userID},#{teacher},#{city})")
+    int insertSecurityQuestion(@Param("userID") int userID, @Param("teacher") String teacher, @Param("city") String city);
+
+    @Select("select * from Security_Question where user_id=#{userID}")
+    SecurityQuestion selectSecurityQuestion(@Param("userID") int userID);
 }

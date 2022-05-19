@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -105,6 +106,21 @@ public class UserServiceImpl implements UserService {
             return "-2";
         userMapper.updateAvatar(pic_url,userID);
         return pic_url;
+    }
+
+    @Override
+    public int insertException(int userID, Timestamp exceptionTime) {
+        return userMapper.insertException(userID,exceptionTime);
+    }
+
+    @Override
+    public int insertSecurityQuestion(int userID, String teacher, String city) {
+        return userMapper.insertSecurityQuestion(userID,teacher,city);
+    }
+
+    @Override
+    public SecurityQuestion selectSecurityQuestion(int userID) {
+        return userMapper.selectSecurityQuestion(userID);
     }
 
 

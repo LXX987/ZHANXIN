@@ -14,4 +14,39 @@ public class CreditServiceImpl implements CreditService {
     // 获取用户信用分数
     @Override
     public Credit selectScore(int userID){return creditMapper.selectScore(userID);}
+
+    @Override
+    public int insertScore(int userID,int a,int b,int c, int d, int e, int f) {
+        return creditMapper.insertInfo(userID,0,0,0,0,0,0);
+    }
+
+    @Override
+    public int updateIdentityScore(int indentityScore) {
+        return creditMapper.updateIdentityScore(indentityScore);
+    }
+
+    @Override
+    public int updateTotalScore(int totalScore) {
+        return creditMapper.updateTotalScore(totalScore);
+    }
+
+    @Override
+    public int updateAssetScore(int assetScore) {
+        return creditMapper.updateAssetScore(assetScore);
+    }
+
+    @Override
+    public int updateCreditScore(int credit_score) {
+        return creditMapper.updateCreditScore(credit_score);
+    }
+
+    @Override
+    public int updateBehaviorScore(int behavior_score) {
+        return creditMapper.updateBehaviorScore(behavior_score);
+    }
+
+    @Override
+    public int updateSocialScore(int social_score) {
+        return creditMapper.updateSocialScore(social_score);
+    }
 }
