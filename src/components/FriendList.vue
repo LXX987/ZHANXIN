@@ -1,12 +1,32 @@
 <template>
   <div class="rate">
     <div class="body">
+      <div class="my-code">
+        <i class="el-icon-star-on"></i>
+        我的邀请码：{{my_code}}
+      </div>
+      <div class="tool-bar">
+        <div class="invite-code">
+          <i class="el-icon-edit"></i>
+        <input type="text" placeholder="在此处填写他人的邀请码" v-model="invite_code">
+        <button @click="inputInviteCode()">提交</button>
+        </div>
+      </div>
 
-        <ul>
-          <li v-for="(friend) in friends">
-            姓名：{{friend.user_name}} , 邮箱：{{friend.user_email}} , 信用分{{friend.total_score}}
-          </li>
-        </ul>
+        <div class="friend-list">
+          <div class="hint" v-if="!friends">
+            暂无好友
+          </div>
+            <el-card class="friend-card" v-for="(friend) in friends">
+              <el-row class="avatar">
+                    <el-avatar :size="50" :src="friend.user_avatar"></el-avatar>
+                <el-button type="danger" icon="el-icon-delete" class="delete_friend" circle></el-button>
+              </el-row>
+              <div class="text item">
+                姓名：{{friend.user_name}} , 邮箱：{{friend.user_email}} , 信用分{{friend.total_score}}
+              </div>
+            </el-card>
+        </div>
     </div>
   </div>
 </template>
@@ -16,55 +36,108 @@ export default {
   name: "FriendList",
   data() {
     return {
-      friends: []
+      friends: [],
+      user_id: -1,
+      invite_code: "",
+      my_code: "",
+      circleUrl: ""
     }
   },
+  created(){
+
+  },
   mounted(){
-    this.getFriendList()
+    this.getUserId();
   },
   methods: {
+    getUserId() {
+      this.$axios({
+        method: "get",
+        url: 'http://localhost:8899/user/userInfo',
+        headers: {token: window.sessionStorage.getItem("token")},
+      }).then(res => {
+        console.log(res);
+        this.user_id = res.data.data.user_id;
+        this.getFriendList();
+        this.getMyCode();
+      }, err => {
+        console.log(err);
+      })
+    },
     getFriendList() {
       this.$axios({
         method:"get",
         url: 'http://localhost:8899/user/friends',
         // headers:{token:window.sessionStorage.getItem("token")},
         params:{
-          id: '5'
+          id: this.user_id
         }
-      }).then(res=>{
+      }).then(res => {
         console.log(res);
-        this.friends=res.data.data;
-      },err=>{
+        this.friends = res.data.data;
+      }, err => {
+        console.log(err);
+      })
+    },
+    inputInviteCode() {
+      this.$axios({
+        method: "post",
+        url: 'http://localhost:8899/InviteCode/friendCode',
+        headers: {
+          token: window.sessionStorage.getItem("token")
+        },
+        params: {
+          invitedCode: this.invite_code
+        },
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '填写成功!'
+        });
+        this.invite_code = ''
+      }, err => {
+        console.log(err);
+        this.$message({
+          type: 'success',
+          message: '填写失败!'
+        });
+      })
+    },
+    getMyCode(){
+      this.$axios({
+        method: "get",
+        url: 'http://localhost:8899/user/codes',
+        headers: {token: window.sessionStorage.getItem("token")},
+      }).then(res => {
+        console.log(res);
+        this.my_code=res.data.data
+      }, err => {
         console.log(err);
       })
     }
-  }
 
+  }
 }
 </script>
 
 <style scoped>
-.illu{
-  height:150px;
-  text-align: left;
+
+.my-code{
+  padding-right: 40%;
+  font-size: 18px;
 }
-.title{
-  color:#fff;
-  font-size: 48px;
+.hint{
+  font-size: 30px;
   font-weight:bold;
-  margin-top: 0px;
-  margin-left: 220px;
-  line-height:150px;
+  padding-right: 18%;
+  padding-top: 18%;
 }
-.video{
-  width: 900px;
-  height: 600px;
-}
-.guidebar {
-  height:100px;
+.friend-list{
   padding-left: 18%;
-  padding-right: 250px;
-  float:center;
+  height:800px;
+}
+.invite-code {
+  padding-left: 65%;
   display:flex;
   align-items:center;/*所有子元素都垂直居中了*/
 }
@@ -85,13 +158,23 @@ export default {
   color: #fff;
   background-color: #409EFF;
 }
-.el-menu-item:hover{
-  border-bottom-style:solid;
-  border-color: #6969FC;
+
+/*.el-icon-edit{*/
+/*  */
+/*}*/
+.text {
+  font-size: 14px;
 }
-.logo{
-  height: 100px
+
+.item {
+  padding: 18px 0;
 }
+
+.friend-card {
+  width: 480px;
+  margin-top: 40px;
+}
+
 .el-menu{
   height: 100px;
 }
@@ -104,22 +187,10 @@ export default {
 .body{
   background-color: #F7F9FB;
 }
-.content{
-  background-color: #fff;
-  margin-left: 15%;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.side{
-  background-color: #fff;
-  margin-left: 50px;
-  padding-left: 20px;
-}
-.videotitle{
-  font-size: 24px;
-  font-weight: bold;
-  text-align: left;
-  margin-top: 20px;
+.delete_friend{
+  position: relative;
+  left: 130px;
+  bottom: 40px;
 }
 
 </style>
