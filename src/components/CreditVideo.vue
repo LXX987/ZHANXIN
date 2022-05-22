@@ -5,7 +5,7 @@
                 <li v-for="item in list" :key="item.value">
                     <div class="illu" :style="backgroundDiv">
                     <img class="cover" v-bind:src="item.src" alt="">
-                    <h4 class="title">视频标题：{{item.des}}</h4>
+                    <h4 class="title">{{item.des}}</h4>
                     <p class="time">时长：{{item.price}}</p>
                     <div class="detail"><el-button type="text" v-on:click="onclick(item.value)">查看详情</el-button></div>
                     </div>

@@ -23,10 +23,9 @@
                     <ul class="video">
                         <li v-for="item in watchList" :key="item.value" class="videoli">
                             <div class="illu" :style="backgroundDiv">
-                            <h4 class="title">视频标题：{{item.video_title}}</h4>
+                            <h4 class="title">{{item.video_title}}</h4>
                             <img class="cover" v-bind:src="item.video_cover" alt="">
-                            <h4 class="subtitle">视频简介：{{item.video_intro}}</h4>
-                            <h4 class="subtitle">发布时间：{{item.video_time}}</h4>
+                            <h4 class="subtitle">{{item.video_time}}</h4>
                             <p class="subtitle">得分：{{item.question_score}}</p>
                             <div class="detail"><el-button type="text" v-on:click="onclick(item.video_id)">查看视频内容</el-button></div>
                             </div>
