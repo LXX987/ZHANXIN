@@ -1,6 +1,8 @@
 package com.huaqi.zhanxin.controller;
 
+import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.*;
+import com.huaqi.zhanxin.service.CreditService;
 import com.huaqi.zhanxin.service.UserService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import com.huaqi.zhanxin.tools.JwtConfig;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -36,11 +39,30 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private CreditService creditService;
     RestControllerHelper helper = new RestControllerHelper();
+
 
     @RequestMapping("show")
     public List<UserBean> userList(){
         return userService.userList();
+    }
+
+    @ApiOperation(value = "验证身份")
+    @RequestMapping(value = "verify", method = RequestMethod.GET)
+    public Result<?> verifyIdentity(@RequestParam String userEmail, @RequestParam String userPassword)
+    {
+        UserBean user = userService.login(userEmail);
+        if(user==null)
+            return Result.error("404", "用户不存在");
+        else {
+            if(userPassword.equals(user.getUserPwd()) && user.getUserType().equals(1))
+            {
+                return Result.success();
+            }
+            else return Result.error("403", "验证失败");
+        }
     }
 
     @ApiOperation(value = "登录")
@@ -102,10 +124,40 @@ public class UserController {
         map.put("authentication", userInfo.getAuthentication());
         map.put("IDtype", userInfo.getIDtype());
         map.put("IDcard", userInfo.getIDcard());
+        //计算身份得分并更新
+        if(userInfo.getAuthentication())
+        {
+            int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
+            creditService.updateIdentityScore(indentityScore,userID);
+        }
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
 
+    }
+
+    // 计算身份得分的函数
+    public int calculateIdentity(int occupation,float annual_income,int working_years){
+        //  归一化
+        int identityScore = 0;
+        int k1 = 100/140000;
+        int k2 = 100/100000;
+        int k3 = 100/5;
+        int occupationScore,incomeScore,workingScore;
+        occupationScore=k1*(occupation-55000);
+        if(annual_income>=100000){
+            incomeScore=100;
+        }else{
+            incomeScore=k2*(int)annual_income;
+        }
+        if(working_years>=5){
+            workingScore = 100;
+        }else{
+            workingScore=k3*working_years;
+        }
+        double identityScore1 = 0.4*occupationScore + 0.12*incomeScore + 0.48*workingScore;
+        identityScore=(int)identityScore1;
+        return identityScore;
     }
 
     @ApiOperation(value = "获取用户姓名")
@@ -145,6 +197,13 @@ public class UserController {
 
         if(resultName==1&&resultInfo==1) {
             map.put("msg", "修改成功");
+            //计算身份得分并更新
+            UserInfo userInfo=userService.getInfo(userID);
+            if(userInfo.getAuthentication())
+            {
+                int indentityScore = calculateIdentity(occupation,annualIncome,workingYears);
+                creditService.updateIdentityScore(indentityScore,userID);
+            }
         } else {
             map.put("msg", "修改失败，未查找到该账号数据");
         }
@@ -170,6 +229,11 @@ public class UserController {
             map.put("msg", "注册成功");
             helper.setMsg("Success");
             helper.setData(map);
+            // 向分数表插入数据
+            user = userService.login(userEmail);
+            int user_id = user.getUserID();
+            creditService.insertScore(user_id,0,0,0,0,0,0);
+
             return helper.toJsonMap();
         }
         else{
@@ -213,6 +277,12 @@ public class UserController {
             map.put("result", "实名认证成功");
             int sqlResult=userService.updateAuthentication(userID,authentication,IDtype,IDcard);
             if(sqlResult==1) {
+                UserInfo userInfo=userService.getInfo(userID);
+                if(userInfo.getAuthentication())
+                {
+                    int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
+                    creditService.updateIdentityScore(indentityScore,userID);
+                }
                 map.put("msg", "数据库修改成功");
                 map.put("success", "1");
             } else {
@@ -406,5 +476,86 @@ public class UserController {
             helper.setData(map);
             return helper.toJsonMap();
         }
+    }
+
+    @ApiOperation(value = "登录异常")
+    @PostMapping("loginException")
+    public Map<String, Object> loginException(String userEmail){
+        Map<String, Object> map = new HashMap<>();
+
+        if (StringUtils.isEmpty(userEmail)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        UserBean user = userService.login(userEmail);
+        int userID=user.getUserID();
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        userService.insertException(userID,d);
+        map.put("msg", "登录异常");
+        return map;
+    }
+
+    @ApiOperation(value = "设置安全问题")
+    @PostMapping("insertSecurityQuestion")
+    public Map<String, Object> insertSecurityQuestion(HttpServletRequest request, String teacher, String city){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if (StringUtils.isEmpty(teacher) || StringUtils.isEmpty(city)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        userService.insertSecurityQuestion(userID,teacher,city);
+        map.put("msg", "安全问题设置成功");
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "查询安全问题")
+    @GetMapping("selectSecurityQuestion")
+    public Map<String, Object> selectSecurityQuestion(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        SecurityQuestion securityQuestion=userService.selectSecurityQuestion(userID);
+        if(securityQuestion==null){
+            map.put("msg", "0");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else {
+            map.put("msg", "1");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+    }
+
+    @ApiOperation(value = "回答安全问题")
+    @PostMapping("answerSecurityQuestion")
+    public Map<String, Object> answerSecurityQuestion(HttpServletRequest request, String teacher, String city){
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if (StringUtils.isEmpty(teacher) || StringUtils.isEmpty(city)) {
+            map.put("msg", "关键数据缺失");
+            return map;
+        }
+        SecurityQuestion securityQuestion=userService.selectSecurityQuestion(userID);
+        if(teacher.equals(securityQuestion.getTeacher())&&city.equals(securityQuestion.getCity())) {
+            map.put("msg", "正确");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        } else {
+            map.put("msg", "错误");
+            helper.setMsg("Fail");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+
     }
 }

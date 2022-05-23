@@ -2,10 +2,12 @@ package com.huaqi.zhanxin.controller;
 
 
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.service.VideoService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -56,15 +59,34 @@ public class VideoController {
     }
 
     @ApiOperation(value = "通过id列表获取视频信息")
-    @RequestMapping(value = "/common/videos", method = RequestMethod.GET)
-    public Result<?> getVideoInfo(@RequestParam ArrayList<Integer> id_list)
+    @RequestMapping(value = "/common/videos", method = RequestMethod.POST)
+    public Result<?> getVideoInfo(@RequestParam String id_list)
     {
-        List<JSONObject> jsonObjects = videoService.getVideoInfo(id_list);
+        System.out.println(id_list);
+        id_list = id_list.replace("[","");
+        id_list = id_list.replace("]","");
+        System.out.println(id_list);
+        ArrayList<String> list = new ArrayList<String>(Arrays.asList(id_list.split(",")));
+        ArrayList<Integer> resultList = getIntegerArray(list);
+        List<JSONObject> jsonObjects = videoService.getVideoInfo(resultList);
+
         if(jsonObjects.isEmpty())
             return Result.error("404", "暂无数据");
         else return Result.success(jsonObjects);
     }
-
+    private ArrayList<Integer> getIntegerArray(ArrayList<String> stringArray) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        for(String stringValue : stringArray) {
+            try {
+                //Convert String to Integer, and store it into integer array list.
+                result.add(Integer.parseInt(stringValue));
+            } catch(NumberFormatException nfe) {
+                System.out.println("Could not parse " + nfe);
+                //Log.w("NumberFormat", "Parsing failed! " + stringValue + " can not be an integer");
+            }
+        }
+        return result;
+    }
 
 
 }
