@@ -58,6 +58,7 @@ export default {
      },
     data(){
         return{
+            videoId:5,
             video_index:'/HonestyVideo/BasicVideo',
             num:'1',
             watched:require('@/assets/unwatch.png'),
@@ -93,16 +94,10 @@ export default {
            this.$router.push('/VideoAnswer')
         },
         gotoVideo(){
-            switch(this.index){
-                case 1:this.videoUrl = "https://cmsvideo.csai.cn/6c9b4bdavodcq1500007119/7bd55f31387702297167054251/unrmykY7bwAA.mp4";break;
-                case 2:this.videoUrl = "https://cmsvideo.csai.cn/6c9b4bdavodcq1500007119/7b79cbcd387702297167002245/7wxAa9zuY4UA.mp4";break;
-                case 3:this.videoUrl = "https://cmsvideo.csai.cn/6c9b4bdavodcq1500007119/3c7d65cb387702297166600141/ZCmgEvI3zs0A.mp4";break;
-                default:break;
-            }
-            this.num = 2
+            this.videoUrl = "https://cmsvideo.csai.cn/6c9b4bdavodcq1500007119/7bd55f31387702297167054251/unrmykY7bwAA.mp4"
             this.watched = require('@/assets/watched.png')
             this.watch = '已观看'
-            let newUrl = this.$router.resolve({name:'Video', query:{videoUrl:this.videoUrl}});
+            let newUrl = this.$router.resolve({name:'Video', query:{videoUrl:this.videoUrl,videoId:5}});
             window.open(newUrl.href, "_blank");
             //this.$router.push({name:'Video', query:{videoUrl:this.videoUrl}})
         },
