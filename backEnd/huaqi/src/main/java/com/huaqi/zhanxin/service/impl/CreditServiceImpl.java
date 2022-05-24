@@ -7,6 +7,8 @@ import com.huaqi.zhanxin.service.CreditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CreditServiceImpl implements CreditService {
     @Autowired
@@ -48,5 +50,10 @@ public class CreditServiceImpl implements CreditService {
     @Override
     public int updateSocialScore(int social_score,int userID) {
         return creditMapper.updateSocialScore(social_score,userID);
+    }
+
+    @Override
+    public List<Credit> getAllCredit() {
+        return creditMapper.selectAllCredit();
     }
 }

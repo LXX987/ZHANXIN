@@ -12,4 +12,6 @@ import java.util.List;
 
 public interface SystemMessageService {
     public int insetSystemMessage(String messageTitle, String messageContent, Timestamp testTime);
+
+    public List<SystemMessageBean> getMessage();
 }

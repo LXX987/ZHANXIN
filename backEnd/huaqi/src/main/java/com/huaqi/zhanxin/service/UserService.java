@@ -29,4 +29,5 @@ public interface UserService {
     int insertException(int userID, Timestamp exceptionTime);
     int insertSecurityQuestion(int userID, String teacher, String city);
     SecurityQuestion selectSecurityQuestion(int userID);
+    List<AgeScoreBean> selectAllAges();
 }

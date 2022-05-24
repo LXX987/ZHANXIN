@@ -40,6 +40,16 @@ public class SystemMessageController {
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
+    }
 
+    @ApiOperation(value = "查看信息")
+    @PostMapping("getMessage")
+    public Map<String, Object> getMessage() {
+        Map<String, Object> map = new HashMap<>();
+        List<SystemMessageBean> messageList = systemMessageService.getMessage();
+        map.put("messageList", messageList);
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
     }
 }

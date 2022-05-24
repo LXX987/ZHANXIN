@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class SystemMessageServiceImpl implements SystemMessageService {
@@ -20,5 +21,10 @@ public class SystemMessageServiceImpl implements SystemMessageService {
     @Override
     public int insetSystemMessage(String messageTitle, String messageContent, Timestamp testTime){
         return systemMessageMapper.releaseMessage(messageTitle, messageContent, testTime);
+    }
+
+    @Override
+    public List<SystemMessageBean> getMessage() {
+        return systemMessageMapper.selectAllMessage();
     }
 }
