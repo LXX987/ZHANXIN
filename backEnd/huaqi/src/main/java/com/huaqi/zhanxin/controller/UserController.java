@@ -570,13 +570,14 @@ public class UserController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
         Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
         String nowTime = df.format(now);
+        nowTime = nowTime.substring(0,4) + nowTime.substring(5, 7) + nowTime.substring(8, 10);
         System.out.println(nowTime);
         System.out.println(identityInfoList);
         //计算年龄，得到userId->userAge
         for (AgeScoreBean ageScoreBean : identityInfoList) {
             if (ageScoreBean.getIDcard() != null && !ageScoreBean.getIDcard().isEmpty()) {
                 String Idcard = ageScoreBean.getIDcard();
-                int age = (20220524 - Integer.parseInt(Idcard.substring(6, 14))) / 10000;
+                int age = (Integer.parseInt(nowTime) - Integer.parseInt(Idcard.substring(6, 14))) / 10000;
                 System.out.println(age);
                 ageScoreBean.setAge(age);
             } else {
