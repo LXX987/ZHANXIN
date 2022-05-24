@@ -152,16 +152,16 @@
                         this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=290){
                         this.fairhere=true
-                        this.quota=""
+                        this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=360){
                         this.goodhere=true
-                        this.quota=""
+                        this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到1000元之间"
                         }else if(this.score<=430){
                         this.verygoodhere=true
-                        this.quota=""
+                        this.quota="目前您的信用分优秀，推荐您的消费贷款额度在1000元到5000元之间"
                         }else if(this.score<=500){
                         this.excellenthere=true
-                        this.quota=""
+                        this.quota="您的信用等级为极优秀，您的推荐贷款额度为5000及以上"
                         console.log(this.excellenthere);
                         }
                     this.behavior = res.data.data.behavior_score
