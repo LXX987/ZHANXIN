@@ -30,8 +30,8 @@ public interface UserMapper {
     @Update("update Identity_Info set occupation = #{occupation},annual_income = #{annualIncome},working_years = #{workingYears} where user_id = #{userID}")
     int updateInfo(@Param("userID") int userID,@Param("occupation") int occupation,@Param("annualIncome") float annualIncome,@Param("workingYears") int workingYears);
 
-    @Insert("insert into Identity_Info(occupation,annual_income,working_years,user_id) values (#{occupation},#{annualIncome},#{workingYears},#{userID})")
-    int insertInfo(@Param("occupation") int occupation,@Param("annualIncome") float annualIncome,@Param("workingYears") int workingYears,@Param("userID") int userID);
+    @Insert("insert into Identity_Info(occupation,annual_income,working_years,user_id,phone) values (#{occupation},#{annualIncome},#{workingYears},#{userID},#{phone})")
+    int insertInfo(@Param("occupation") int occupation,@Param("annualIncome") float annualIncome,@Param("workingYears") int workingYears,@Param("userID") int userID,@Param("phone") String phone);
 
     // 注册向数据库插入数据
     @Insert("insert into User(user_email,user_pwd,user_type,user_register_time) values (#{userEmail},#{userPwd},#{userType},#{userRegisterTime})")

@@ -52,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insertInfo(int occupation, float annualIncome, int workingYears, int userID) {
-        return userMapper.insertInfo(occupation,annualIncome,workingYears,userID);
+    public int insertInfo(int occupation, float annualIncome, int workingYears, int userID, String phone) {
+        return userMapper.insertInfo(occupation,annualIncome,workingYears,userID,phone);
     }
 
     // 返回数据库注册结果

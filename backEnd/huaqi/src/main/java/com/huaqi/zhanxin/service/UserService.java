@@ -17,7 +17,7 @@ public interface UserService {
     public UserInfo getInfo(int userID);
     public int updateName(int userID,String userName,String userEmail);
     public int updateInfo(int userID,int occupation,float annualIncome,int workingYears);
-    int insertInfo(int occupation,float annualIncome,int workingYears,int userID);
+    int insertInfo(int occupation,float annualIncome,int workingYears,int userID,String phone);
     public int register(String userEmail, String userPwd, int userType,LocalDateTime userRegisterTime);
     public int updateAuthentication(int userID,boolean authentication,int IDtype,String IDcard);
     public HonestyProof selectHonestyProof(int userID);
