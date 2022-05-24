@@ -13,7 +13,18 @@
         <el-col :span="20">
           <div class="grid-content">
             <el-row class="bg-purple">
-              用户统计
+              <el-col :span=20>
+                <p class="title-txt">概率统计</p>
+              </el-col>
+              <el-col :span=4>
+                <p class="tip-txt">数据每日00:00更新</p>
+              </el-col>
+            </el-row>
+            <el-row class="bg-purple">
+              
+            </el-row>
+            <el-row class="bg-purple">
+              
             </el-row>
           </div>
         </el-col>
@@ -42,6 +53,24 @@ export default {
 </script>
 
 <style scoped>
+  .title-txt {
+    text-align: left;
+    font-size: 24px;
+    color: #101010;
+    margin: 20px;
+    padding-left: 60px;
+    border-left-style:solid;
+    border-left-color:#0079FE;
+  }
+  .tip-txt {
+    font-size: 14px;
+    color: #039BE5;
+    margin-top: 25px;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
 .body {
   background-color: #f2f2f2;
 }
@@ -56,10 +85,6 @@ export default {
   }
   .bg-purple {
     background: #ffffff;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
   }
   .left {
     height:750px;

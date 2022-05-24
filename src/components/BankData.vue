@@ -14,39 +14,27 @@
           <div class="grid-content">
             <el-row class="bg-purple">
               <el-col :span=20>
-                <p class="title-txt">搜索列表</p>
+                <p class="title-txt">信用数据</p>
               </el-col>
               <el-col :span=4>
                 <p class="tip-txt">数据每日00:00更新</p>
               </el-col>
             </el-row>
             <el-row class="bg-purple">
-              <p class="content-txt">
-                用户ID：
-                <el-input v-model="searchID" placeholder="请输入内容"></el-input>
-                用户姓名：
-                <el-input v-model="searchName" placeholder="请输入内容"></el-input>
-              </p>
-              <div class="btn-div">
-                <el-button @click="clear()">清空</el-button>
-                <el-button type="primary" class="btn-mar-left" @click="searchUserID()">搜索</el-button>
-              </div>
+              <!-- 用户数量-->
+              <!-- 总体信用变化情况（上升多少）-->
+              <el-col :span="12">
+                <el-row><h1>用户数量</h1></el-row>
+                <el-row><p>{{NumberOfPerple}}</p></el-row>
+              </el-col>
+              <el-col :span="12">
+                <el-row><h1>分数变动</h1></el-row>
+                <el-row><p>{{change}}</p></el-row>
+              </el-col>
             </el-row>
             <el-row class="bg-purple">
-              <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe class="table">
-                <el-table-column prop="userID" label="用户ID"></el-table-column>
-                <el-table-column prop="userName" label="用户姓名"></el-table-column>
-                <el-table-column prop="idcard" label="身份证号"></el-table-column>
-                <el-table-column label="操作">
-                  <template slot-scope="scope">
-                    <el-button @click="handleClick(scope.row)" type="text">查看详细信息</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[1,5,10,20]" :page-size="pageSize" 
-                layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
-              </el-pagination>
+              <el-col :span="12"><div id="PieChart"></div></el-col>
+              <el-col :span="12"><div id="BarChart"></div></el-col>
             </el-row>
           </div>
         </el-col>
@@ -57,75 +45,155 @@
 
 <script>
 import BankGuideBar from './BankGuideBar.vue';
+import * as echarts from 'echarts';
 export default {
   name: 'BankData',
   components: { BankGuideBar },
   data() {
     return {
-      tableData: [{
-        userID: '2016-05-02',
-        userName: '王小虎',
-        idcard: '上海市普陀区金沙江路 1518 弄'
-      }],
-      currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 10, // 每页的数据条数
-      searchID:null,
-      searchName:null,
+      num1822: 0,
+      num2225: 0,
+      num2530: 0,
+      num30: 0,
+      unauthentication: 0,
+      NumberOfPerple: 0,
+      change: 0,
+       excellentCount: 0,
+       veryGoodCount: 0,
+       goodCount: 0,
+       fairCount: 0,
+       poorCount: 0,
+       veryBadCount: 0
     }
   },
-  mounted:function(){
-      this.getUserList();
-    },
+  mounted:function() {
+    this.getPie();
+    this.getBar();
+    this.getScoreData();
+  },
   methods: {
-    //每页条数改变时触发 选择一页显示多少行
-    handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-        this.currentPage = 1;
-        this.pageSize = val;
+    getBar() {
+      var myChart = echarts.init(document.getElementById('BarChart'))
+      this.$axios({
+          method:"post",
+          url: 'http://localhost:8899/user/getUsersAges',
+        }).then(res=>{
+          console.log(res);
+          this.unauthentication = res.data.data.unauthentication;
+          this.num1822 = res.data.data.num1822;
+          this.num2225 = res.data.data.num2225;
+          this.num2530 = res.data.data.num2530;
+          this.num30 = res.data.data.num30;
+          myChart.setOption({
+			title: { 
+        text: '年龄分布情况', 
+        x: 'center', 
+      },
+			tooltip: {},
+			xAxis: {
+			data: ["18-22岁","22-25岁","25-30岁","30岁以上","未实名认证"]
+			},
+			yAxis: {},
+			series: [{
+			name: '人数',
+			type: 'bar',
+			data: [this.num1822, this.num2225, this.num2530, this.num30, this.unauthentication]
+			}]
+			});})
     },
-    //当前页改变时触发 跳转其他页
-    handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.currentPage = val;
-    },
-    getUserList() {
+    getPie() {
+      // 绘制图表
+      var myChart = echarts.init(document.getElementById('PieChart'))
       this.$axios({
           method:"get",
-          url: 'http://localhost:8899/bank/bankSearchList',
+          url: 'http://localhost:8899/credit/getAllCredit',
         }).then(res=>{
           console.log(res.data);
-          this.tableData=res.data;
-        },err=>{
-          console.log(err);
-        })
-    },
-    searchUserID() {
-      if(this.searchID==null&&this.searchName==null) {
-        this.$message({
-              message: '请输入查询信息!',
-              type: 'error'
-            })
-      } else {
-        this.$axios({
-          method:"post",
-          url: 'http://localhost:8899/bank/bankSearchID',
-          params:{
-            userID:this.searchID,
-            userName:this.searchName,
+          this.NumberOfPerple = res.data.data.totalCount;
+          this.excellentCount = res.data.data.excellentCount;
+          this.veryGoodCount = res.data.data.veryGoodCount;
+          this.goodCount = res.data.data.goodCount;
+          this.fairCount = res.data.data.fairCount;
+          this.poorCount = res.data.data.poorCount;
+          this.veryBadCount = res.data.data.veryBadCount;
+      // 指定图表的配置项和数据
+      var option = {
+        //标题
+        title: {
+          text: '信用分数统计',
+          x: 'center' ,              //标题位置
+          // textStyle: { //标题内容的样式
+          //   color: '#000',
+          //   fontStyle: 'normal',
+          //   fontWeight: 100,
+          //   fontSize: 16 //主题文字字体大小，默认为18px
+          // },
+        },
+        stillShowZeroSum: true,
+        //鼠标划过时饼状图上显示的数据
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a}<br/>{b}:{c} ({d}%)'
+        },
+        //图例
+        legend: {//图例  标注各种颜色代表的模块
+          // orient: 'vertical',//图例的显示方式  默认横向显示
+          bottom: 10,//控制图例出现的距离  默认左上角
+          left: 'center',//控制图例的位置
+          // itemWidth: 16,//图例颜色块的宽度和高度
+          // itemHeight: 12,
+          textStyle: {//图例中文字的样式
+            color: '#000',
+            fontSize: 16
           },
+          data: ['excellent', 'veryGood', 'good', 'fair', 'poor', 'veryBad']//图例上显示的饼图各模块上的名字
+          /* excellent430~500  * veryGood360~430   * good290~360   * fair220~290
+        * poor150~220   * veryBad小于150*/
+        },
+        //饼图中各模块的颜色
+        color: ['#32dadd', '#b6a2de', '#5ab1ef'],
+        // 饼图数据
+        series: {
+          // name: 'bug分布',
+          type: 'pie',             //echarts图的类型   pie代表饼图
+          radius: '70%',           //饼图中饼状部分的大小所占整个父元素的百分比
+          center: ['50%', '50%'],  //整个饼图在整个父元素中的位置
+          // data:''               //饼图数据
+          data: [                  //每个模块的名字和值
+            { name: 'excellent', value: this.excellentCount },
+            { name: 'veryGood', value: this.veryGoodCount },
+            { name: 'good', value: this.goodCount },
+            { name: 'fair', value: this.fairCount },
+            { name: 'poor', value: this.poorCount },
+            { name: 'veryBad', value: this.veryBadCount }
+          ],
+          itemStyle: {
+              label: {
+                show: true,//饼图上是否出现标注文字 标注各模块代表什么  默认是true
+                // position: 'inner',//控制饼图上标注文字相对于饼图的位置  默认位置在饼图外
+              },
+              labelLine: {
+                show: true//官网demo里外部标注上的小细线的显示隐藏    默认显示
+              }
+          },
+        }
+      }
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+      },err=>{
+          console.log(err);
+        })
+    },
+    getScoreData() {
+      this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/credit/getAllCredit',
         }).then(res=>{
           console.log(res.data);
-          this.tableData=res.data;
+          this.NumberOfPerple = res.data.data.totalCount;
         },err=>{
           console.log(err);
         })
-      }
-      
-    },
-    clear() {
-      this.searchID=null;
-      this.searchName=null;
     },
     BankMain() {
       this.$router.push({path: '/BankMain'});
@@ -141,89 +209,68 @@ export default {
 </script>
 
 <style scoped>
+#BarChart {
+  width:100%;
+  height:500px;
+}
+#PieChart {
+  width:100%;
+  height:500px;
+}
 .body {
   background-color: #f2f2f2;
 }
 .main {
   padding: 50px;
 }
- .el-row {
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple {
-    background: #ffffff;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .left {
-    height:750px;
-  }
-  .choose-txt {
-    color: #0079FE;
-    font-size: 28px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-weight: bold;
-    background: #E6F2FF;
-    border-right-style:solid;
-    border-right-color:#0079FE;
-  }
-  .nochoose-txt {
-    color: #101010;
-    font-size: 28px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-weight: bold;
-  }
-  .nochoose-txt:hover {
-    background: #f2f8ff;
-  }
-  .title-txt {
-    text-align: left;
-    font-size: 24px;
-    color: #101010;
-    margin: 20px;
-    padding-left: 60px;
-    border-left-style:solid;
-    border-left-color:#0079FE;
-  }
-  .tip-txt {
-    font-size: 14px;
-    color: #039BE5;
-    margin-top: 25px;
-  }
-  .content-txt {
-    font-size: 18px;
-    margin-top: 50px;
-  }
-  .el-input{
-    width:250px;
-    margin-left: 50px;
-    margin-right: 80px;
-  }
-  .btn-div {
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
-  .btn-mar-left {
-    margin-left: 60px;
-  }
-  >>>.el-table th.el-table__cell>.cell {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  >>>.el-table .cell {
-    font-size: 18px;
-    text-align: center;
-  }
-  .table {
-    width: 100%;
-    margin-top: 10px;
-  }
+.el-row {
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple {
+  background: #ffffff;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.left {
+  height:750px;
+}
+.choose-txt {
+  color: #0079FE;
+  font-size: 28px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  background: #E6F2FF;
+  border-right-style:solid;
+  border-right-color:#0079FE;
+}
+.nochoose-txt {
+  color: #101010;
+  font-size: 28px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+}
+.nochoose-txt:hover {
+  background: #f2f8ff;
+}
+.title-txt {
+  text-align: left;
+  font-size: 24px;
+  color: #101010;
+  margin: 20px;
+  padding-left: 60px;
+  border-left-style:solid;
+  border-left-color:#0079FE;
+}
+.tip-txt {
+  font-size: 14px;
+  color: #039BE5;
+  margin-top: 25px;
+}
 </style>
