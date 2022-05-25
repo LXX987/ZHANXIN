@@ -35,18 +35,10 @@
                         <div class="tip"><p>资产证明是指你自主提交的资产相关数据，包括房产、车产等。该维度对信贷记录以及行为积累较少的用户的评分较为重要。</p></div>
                     </div>
                     <div>
-                        <p class="subtitle-txt">房产信息</p>
-                        <el-descriptions title="">
-                            <el-descriptions-item label="所有房屋数量">{{house}}</el-descriptions-item>
-                        </el-descriptions>
-                        <p class="subtitle-txt">车产信息</p>
-                        <el-descriptions title="">
-                            <el-descriptions-item label="所有车辆数量">{{car}}</el-descriptions-item>
-                        </el-descriptions>
-                        <p class="subtitle-txt">流水</p>
-                        <el-descriptions title="">
-                            <el-descriptions-item label="月流水">{{bill}}</el-descriptions-item>
-                        </el-descriptions>
+                        <el-table :data="tableData" height="227" stripe class="table">
+                          <el-table-column prop="bank" label="开户行" width="180"></el-table-column>
+                          <el-table-column prop="money" label="资产数额" width="180"></el-table-column>
+                        </el-table>
                     </div>
                 </div>
             </el-row>
@@ -62,6 +54,12 @@ export default {
     name:'PersonalCenter',
     data() {
       return {
+        tableData: [{
+          userID: '',
+          bank: '',
+          money: '',
+          addTime: ''
+        }],
         userName:'',
         userName:'',
         userEmail:'',
@@ -75,7 +73,7 @@ export default {
       };
     },
      mounted:function(){
-    this.getMyInfo()
+     this.getAsset()
     },
     methods:{
         gotoFinish(){
@@ -96,6 +94,29 @@ export default {
         gotoBehavior(){
             this.$router.push({path: '/Behavior'});
         },
+        getAsset() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/asset/assetList',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log(res.data);
+          this.tableData=res.data;
+          for(var i=0;i<res.data.length;i++) {
+            if(this.tableData[i].money==500) { this.tableData[i].money=="0-1000元"; }
+            else if (this.tableData[i].money==2500) { this.tableData[i].money="1000-5000元"; }
+            else if (this.tableData[i].money==7500) { this.tableData[i].money="5000-10000元"; }
+            else if (this.tableData[i].money==25000) { this.tableData[i].money="1万-5万元"; }
+            else if (this.tableData[i].money==75000) { this.tableData[i].money="5万-10万元"; }
+            else if (this.tableData[i].money==150000) { this.tableData[i].money="10万-20万元"; }
+            else if (this.tableData[i].money==350000) { this.tableData[i].money="20万-50万元"; }
+            else if (this.tableData[i].money==750000) { this.tableData[i].money="50万-100万元"; }
+            else if (this.tableData[i].money==1000000) { this.tableData[i].money="100万元及以上"; }
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
     }
   }
 </script>

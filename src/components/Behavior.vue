@@ -52,7 +52,7 @@
 
                             <p class="subtitle-txt">公益</p>
                             <el-descriptions title="" border>
-                            <el-descriptions-item label="献血">{{bloodDonation}}次</el-descriptions-item>
+                            <el-descriptions-item label="献血">{{blood}}次</el-descriptions-item>
                             <el-descriptions-item label="志愿服务">{{volunteer}}小时</el-descriptions-item>
                             <el-descriptions-item label="捐款">{{donation}}元</el-descriptions-item>
                             <el-descriptions-item label="其他">暂无</el-descriptions-item>
@@ -91,6 +91,11 @@ export default {
     name:'PersonalCenter',
     data() {
       return {
+        crime:'',
+        blood:'',
+        volunteer:'',
+        donation:'',
+        phoneCost:'',
         userName:'',
         userName:'',
         userEmail:'',
@@ -104,7 +109,12 @@ export default {
       };
     },
      mounted:function(){
-    this.getMyInfo()
+      this.getHonProof();
+      this.getCrime();
+      this.getBlood();
+      this.getVolunteer();
+      this.getDonation();
+      this.getPhoneCost();
     },
     methods:{
         gotoFinish(){
@@ -125,6 +135,129 @@ export default {
         gotoBehavior(){
             this.$router.push({path: '/Behavior'});
         },
+        getHonProof() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/user/getHonestyProof',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的信誉记录数据：', res.data);
+          if(res.data.data.criminal==0) {
+            this.crime="无犯罪记录";
+          } else if(res.data.data.criminal==1){
+            this.crime="有犯罪记录";
+          } else {
+            this.crime="暂无数据";
+          }
+          console.log('crime',  this.crime);
+          if(res.data.data.bloodDonation!=null) {
+            this.blood=res.data.data.bloodDonation;
+          } else {
+            this.blood="暂无数据";
+          }
+          if(res.data.data.volunteer!=null) {
+            this.volunteer=res.data.data.volunteer;
+          } else {
+            this.volunteer="暂无数据";
+          }
+          if(res.data.data.contribution!=null) {
+            this.donation=res.data.data.contribution;
+          } else {
+            this.donation="暂无数据";
+          }
+          if(res.data.data.phoneCost!=null) {
+            if(res.data.data.phoneCost==0) {
+              this.phoneCost="已按时缴费";
+            } else {
+              this.phoneCost="逾期"+res.data.data.phoneCost+"次";
+            }
+          } else {
+            this.phoneCost="暂无数据";
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getCrime() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getCrime',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的无犯罪记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.crime=1;
+          } else if(res.data.data.picState==1) {
+            this.crime=3;
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getBlood() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getBlood',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的献血记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.blood=1;
+          } else if(res.data.data.picState==1) {
+            this.blood=3;
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getVolunteer() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getVolunteer',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的志愿服务记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.volunteer=1;
+          } else if(res.data.data.picState==1) {
+            this.volunteer=3;
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getDonation() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getDonation',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的捐款记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.donation=1;
+          } else if(res.data.data.picState==1) {
+            this.donation=3;
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getPhoneCost() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getPhoneCost',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的无犯罪记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.phoneCost=1;
+          } else if(res.data.data.picState==1) {
+            this.phoneCost=3;
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
     }
   }
 </script>
