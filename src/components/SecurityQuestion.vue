@@ -107,6 +107,7 @@ export default {
                 message: '安全问题设置成功！',
                 type: 'success'
               });
+              this.$router.push({path: '/AccountSecurity'});
             }
           } else{
             this.$message({

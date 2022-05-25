@@ -68,10 +68,10 @@ export default {
       this.$axios({
         method:"get",
         url: 'http://localhost:8899/user/friends',
-        // headers:{token:window.sessionStorage.getItem("token")},
-        params:{
-          id: this.user_id
-        }
+        headers:{token:window.sessionStorage.getItem("token")}
+        // params:{
+        //   id: this.user_id
+        // }
       }).then(res => {
         console.log(res);
         this.friends = res.data.data;

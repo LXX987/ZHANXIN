@@ -1,6 +1,18 @@
 <template>
 <div>
-   <div class="content">  
+   <div class="content"> 
+       <div class="ratelevel">
+            <h1>评分依据</h1>
+            <el-card class="bodycard">
+                <div class="proportion">
+                    <img style="width:110%" src="@/assets/proportion.png"/>
+                </div>
+                <div class="instruction">
+                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网融合多学科领域交叉知识，分析普惠金融市场现状，制定针对20~25岁金融弱势信贷白户群体的创新评估指标，降低普惠金融对信用背书的依赖。在传统信用评估指标的基础上，加入以下创新性指标。</div>
+                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网采用目前最新的信用评估手段——“大数据风控”，将多维度不同角度的信息数据引入到信贷信用风险评估中，利用统计学计算，分析不同数据特征与信贷信用风险评估目标存在的数据关联关系，说明关联背后的因果关系，确立数据使用的合理性和合规性。</div>
+                </div>
+            </el-card>
+        </div> 
         <!-- 信用分部分 -->
       <div class="creditSearch">
         <div><h1>我目前的信用分</h1></div>
@@ -30,7 +42,7 @@
                             </el-row> 
                             <el-row>
                                 <el-col :span="12"><el-card class="square" @click.native="gotoSocial()"><div class="behavior">人脉圈方面：{{social}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
-                                <el-col :span="12"><el-card class="square"><div class="behavior">总分：{{score}}分</div></el-card></el-col>
+                                <el-col :span="12"><el-card class="square"><div class="behavior">评级:{{rank}}</div></el-card></el-col>
                             </el-row>       
                         </div>
                     </el-col>
@@ -38,18 +50,7 @@
             </el-card>
         </div>
 
-        <div class="ratelevel">
-            <h1>评分依据</h1>
-            <el-card class="bodycard">
-                <div class="proportion">
-                    <img style="width:110%" src="@/assets/proportion.png"/>
-                </div>
-                <div class="instruction">
-                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网融合多学科领域交叉知识，分析普惠金融市场现状，制定针对20~25岁金融弱势信贷白户群体的创新评估指标，降低普惠金融对信用背书的依赖。在传统信用评估指标的基础上，加入以下创新性指标。</div>
-                    <div>&ensp;&ensp;&ensp;&ensp;瞻信网采用目前最新的信用评估手段——“大数据风控”，将多维度不同角度的信息数据引入到信贷信用风险评估中，利用统计学计算，分析不同数据特征与信贷信用风险评估目标存在的数据关联关系，说明关联背后的因果关系，确立数据使用的合理性和合规性。</div>
-                </div>
-            </el-card>
-        </div>
+        
         <!-- 信用等级部分 -->
          
         <div class="ratelevel">
@@ -91,6 +92,7 @@
     name:'CreditReport',
    data(){  
          return{
+             rank:'',
             quota:'暂无数据',
             dialogTableVisible: false,
             score:0,   
@@ -115,7 +117,7 @@
      },
      methods:{
         gotoReport(){
-            this.$router.push({path: '/Report'});
+            this.$router.push({path: '/AnswerSecQue'});
          },
         gotoScoreDetail(){
             this.$router.push({path: '/ScoreDetail'});
@@ -146,22 +148,29 @@
                     this.score=res.data.data.total_score
                     if(this.score<=150){
                         this.verybadhere = true
+                         this.rank = 'VeryBad(很差)'
+                         this.quota="目前您的信用分较低，不建议您进行贷款"
                         }
                         else if(this.score<=220){
                         this.poorhere=true
+                        this.rank = 'Poor(较差)'
                         this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=290){
                         this.fairhere=true
-                        this.quota=""
+                        this.rank = 'Fair(一般)'
+                        this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到500元之间"
                         }else if(this.score<=360){
                         this.goodhere=true
-                        this.quota=""
+                        this.rank = 'Good(良好)'
+                        this.quota="目前您的信用分良好，推荐您的消费贷款额度在500元到1000元之间"
                         }else if(this.score<=430){
                         this.verygoodhere=true
-                        this.quota=""
+                        this.rank = 'VeryGood(很优秀)'
+                        this.quota="目前您的信用分优秀，推荐您的消费贷款额度在1000元到5000元之间"
                         }else if(this.score<=500){
                         this.excellenthere=true
-                        this.quota=""
+                        this.rank = 'Excellent(极优秀)'
+                        this.quota="您的信用等级为极优秀，您的推荐贷款额度为5000及以上"
                         console.log(this.excellenthere);
                         }
                     this.behavior = res.data.data.behavior_score
