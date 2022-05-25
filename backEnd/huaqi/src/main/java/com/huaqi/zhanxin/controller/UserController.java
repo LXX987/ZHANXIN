@@ -192,7 +192,7 @@ public class UserController {
         if( userService.getInfo(userID)==null) {
             resultInfo=userService.insertInfo(occupation,annualIncome,workingYears,userID,phone);
         } else {
-            resultInfo=userService.updateInfo(userID, occupation,annualIncome,workingYears);
+            resultInfo=userService.updateInfo(userID, occupation,annualIncome,workingYears,phone);
         }
         int resultName=userService.updateName(userID, userName, userEmail);
 
@@ -235,6 +235,9 @@ public class UserController {
             int user_id = user.getUserID();
             creditService.insertScore(user_id,0,0,0,0,0,0);
 
+            userService.insertNewInfo(user_id); //用户信息表插入数据
+            userService.insertNewReputation(user_id); //用户信誉表插入数据
+            userService.insertCreditRecord(user_id,0,0,0,0,0,0,0,0,0,0);
             return helper.toJsonMap();
         }
         else{
