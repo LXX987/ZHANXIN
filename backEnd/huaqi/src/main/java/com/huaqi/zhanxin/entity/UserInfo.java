@@ -14,7 +14,9 @@ public class UserInfo {
     private Integer IDtype;
     private String IDcard;
 
-    public UserInfo(Integer occupation, Float annualIncome, Integer workingYears, Boolean authentication, Integer userID, Integer IDtype, String IDcard) {
+    private String phone;
+
+    public UserInfo(Integer occupation, Float annualIncome, Integer workingYears, Boolean authentication, Integer userID, Integer IDtype, String IDcard, String phone) {
         this.occupation = occupation;
         this.annualIncome = annualIncome;
         this.workingYears = workingYears;
@@ -22,6 +24,7 @@ public class UserInfo {
         this.userID = userID;
         this.IDtype = IDtype;
         this.IDcard = IDcard;
+        this.phone = phone;
     }
 
     public Integer getOccupation() {
