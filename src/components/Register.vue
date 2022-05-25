@@ -180,7 +180,7 @@ export default {
                   type: 'warning'
                 });
               } else {
-                this.$alert(res.data.userId, '请牢记您的账号密码', {
+                this.$alert(res.data.userId, '请牢记您的注册邮箱和密码', {
                   confirmButtonText: '确定',
                 });
               }

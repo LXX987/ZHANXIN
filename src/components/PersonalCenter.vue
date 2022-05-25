@@ -71,6 +71,9 @@
                         <el-form-item label="就业年限">
                           <el-input v-model="infoForm.working_years"></el-input>
                         </el-form-item>
+                        <el-form-item label="联系电话">
+                          <el-input v-model="infoForm.phone"></el-input>
+                        </el-form-item>
                       </el-form>
                       <span slot="footer" class="dialog-footer">
                         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -93,6 +96,7 @@
                     <el-descriptions-item label="职业">&emsp;&emsp;{{occupation_str}}</el-descriptions-item>
                     <el-descriptions-item label="年收入">&emsp;{{annual_income}}元</el-descriptions-item>
                     <el-descriptions-item label="就业年限">{{working_years}}</el-descriptions-item>
+                    <el-descriptions-item label="联系电话">{{phone}}</el-descriptions-item>
                   </el-descriptions>
                 </div>
               </el-col>
@@ -173,16 +177,18 @@ export default {
         userEmail:'',
         occupation:'',
         occupation_str:'',
-        annual_income:'',
+        annual_income:0,
         working_years:'',
         authentication:'',
         IDtype:'',
         IDcard:'',
+        phone:'',
         infoForm: {
           name: '',
           occupation: '',
           annual_income: '',
           working_years: '',
+          phone:'',
         },
         idenForm: {
           name: '',
@@ -214,6 +220,8 @@ export default {
               }
               this.name=this.name+this.userName.substr(len-1,1);
             }
+          } else {
+            this.name='暂无数据';
           }
           this.userEmail=res.data.data.userEmail;
           this.occupation=res.data.data.occupation;
@@ -252,7 +260,9 @@ export default {
           } else if(this.occupation==110000){
             this.occupation_str='采矿业';
           }
-          this.annual_income=res.data.data.annual_income;
+          if (res.data.data.annual_income!=null) {
+            this.annual_income=res.data.data.annual_income;
+          }
           this.working_years=res.data.data.working_years;
           if(res.data.data.IDtype==1) {
             this.IDtype='身份证';
@@ -269,10 +279,12 @@ export default {
           } else {
             this.authentication="未实名";
           }
+          this.phone=res.data.data.phone;
           this.infoForm.name=this.userName;
           this.infoForm.occupation=this.occupation_str;
           this.infoForm.annual_income=this.annual_income;
           this.infoForm.working_years=this.working_years;
+          this.infoForm.phone=this.phone;
           this.idenForm.name=this.userName;
           this.idenForm.type=this.IDtype;
           this.idenForm.IDcard=this.IDcard;
@@ -332,6 +344,7 @@ export default {
               workingYears:this.infoForm.working_years,
               occupation:this.infoForm.occupation,
               userEmail:this.userEmail,
+              phone:this.infoForm.phone,
           },
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
@@ -409,6 +422,7 @@ export default {
     background: #1f7c69;
     padding-top: 20px;
     padding-bottom: 20px;
+    height: 788px;
   }
   .bg-purple-light {
     background: #F1F6F9;
