@@ -19,6 +19,12 @@ import cs from '@/components/cs'
 import csLogin from '@/components/csLogin'
 
 import FriendList from '@/components/FriendList'
+import BankLogin from '@/components/BankLogin'
+import BankGuideBar from '@/components/BankGuideBar'
+import BankMain from '@/components/BankMain'
+import BankSearch from '@/components/BankSearch'
+import BankUser from '@/components/BankUser'
+import BankData from '@/components/BankData'
 
 Vue.use(Router)
 
@@ -48,6 +54,36 @@ export default new Router({
       path: '/cs',
       name: 'cs',
       component: cs
+    },
+    {
+      path: '/BankLogin',
+      name: 'BankLogin',
+      component: BankLogin
+    },
+    {
+      path: '/BankGuideBar',
+      name: 'BankGuideBar',
+      component: BankGuideBar
+    },
+    {
+      path: '/BankMain',
+      name: 'BankMain',
+      component: BankMain
+    },
+    {
+      path: '/BankSearch',
+      name: 'BankSearch',
+      component: BankSearch
+    },
+    {
+      path: '/BankUser',
+      name: 'BankUser',
+      component: BankUser
+    },
+    {
+      path: '/BankData',
+      name: 'BankData',
+      component: BankData
     },
     {
       path: '/',

@@ -40,9 +40,9 @@
               </el-descriptions>
               <h2 class="subheadline">好友平均信用得分</h2>
               <el-descriptions title="" :column="1">
-                <el-descriptions-item label="好友平均信用分">&emsp;{{annual_income}}</el-descriptions-item>
+                <el-descriptions-item label="好友平均信用分">&emsp;{{avgScore}}</el-descriptions-item>
               </el-descriptions>
-              <h2 class="subheadline">我的好友</h2>
+              <!-- <h2 class="subheadline">我的好友</h2> -->
               <!-- <el-row>
                 <el-col :span="4">
                   <div >
@@ -84,6 +84,8 @@ export default {
     name:'PersonalCenter',
     data() {
       return {
+        num:'暂无信息',
+        avgScore:'暂无信息',
         userName:'',
         userName:'',
         userEmail:'',

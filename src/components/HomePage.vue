@@ -75,6 +75,24 @@
             <div class="homeGroup">
                 <img id="homeGroup" src="@/assets/HomeGroup.png">
             </div>
+            <div class="systemMessage">
+                <div class="toAsk" :class="[ !transition ? 'fixed-transition' : '']">
+                    <img src='@/assets/systemicon.png' alt="" @click="showmessage">
+                </div>
+            </div>
+            <el-card class="messageBox" v-show="showBox" style="overflow-y:scroll;overflow-x:hidden;height:100%">
+                <img @click="closeMessage" src="@/assets/close.png" />
+                <h1>系统通知</h1>
+                <el-divider></el-divider>
+                <el-card class="message" shadow="hover" v-for="item in messages" :key="item.messageId">
+                    <div class="messageitem">
+                        <h2>&ensp;&ensp;&ensp;&ensp;{{item.messageTitle}}</h2>
+                        <p>&ensp;&ensp;&ensp;&ensp;{{item.messageContent}}</p>
+                        <h3>{{item.releaseTime}}</h3>
+                        <el-divider></el-divider>
+                    </div>
+                </el-card>
+            </el-card>
         </el-main>
     </el-container>
 </template>
@@ -83,24 +101,30 @@ export default {
     name: 'HomePage',
     data() {
         return {
+            messages: [],
+            showBox: 0,
+            transition: true,
+            timer: null,
             eleindex: 0,
-        piclist: [
-          {text: '播放/录制页面', bg: require('../assets/aliyun.jpg'), img:  require('../assets/aliyun.jpg')},
-          {text: '播放/录制页面', bg: require('../assets/kaggle.jpg'), img:  require('../assets/kaggle.jpg')},
-          {text: '播放/录制页面', bg: require('../assets/git.png'), img:  require('../assets/git.png')},
-          {text: '播放/录制页面', bg: require('../assets/CSDN.jpeg'), img:  require('../assets/CSDN.jpeg')}
-
-        ],
+            piclist: [
+            {text: '播放/录制页面', bg: require('../assets/aliyun.jpg'), img:  require('../assets/aliyun.jpg')},
+            {text: '播放/录制页面', bg: require('../assets/kaggle.jpg'), img:  require('../assets/kaggle.jpg')},
+            {text: '播放/录制页面', bg: require('../assets/git.png'), img:  require('../assets/git.png')},
+            {text: '播放/录制页面', bg: require('../assets/CSDN.jpeg'), img:  require('../assets/CSDN.jpeg')}
+            ],
             activeName: '1',
             bannerH: this.setBannerH1,
             images: [
                 { url: require("@/assets/9.png")},
                 { url: require("@/assets/8.png")},
                 { url: require("@/assets/5.png")},
-         ]
+            ]
         };
     },
     methods: {
+        closeMessage() {
+            this.showBox = 0;
+        },
         enter: function (i) {
         // console.log(i)
         this.eleindex = i
@@ -121,17 +145,91 @@ export default {
 			var bheight=document.getElementsByClassName("bannertt")[0].height;
 			var ssss=document.body.clientWidth;
 			this.bannerH=ssss*(bheight/bwidth);
-		}
+		},
+        handleScroll() { 
+                this.transition = false;
+                if (this.timer) { // 判断是否已存在定时器
+                    clearTimeout(this.timer);
+                }
+                this.timer = setTimeout(() => { // 创建定时器，1.4s后图标回归原位置
+                    this.transition = true;
+                }, 1000);
+        },
+        showmessage() {
+            this.$axios({
+            method:"post",
+            url: 'http://localhost:8899/systemMessage/getMessage'
+            }).then(res=>{
+                console.log(res);
+                this.messages = res.data.data.messageList;
+                console.log(this.messages);
+            })
+            if(this.showBox == 0) {
+                this.showBox = 1;
+            } else {
+                this.showBox = 0;
+            }
+            
+        }
     },
     mounted(){
 	    this.setBannerH1()//初始值根据图片的缩放比率和屏幕大小来定，不然走马灯开始时候就会默认一个值
 		window.addEventListener('resize',()=>{
 			this.setBannerH()
 		},false)
+        window.addEventListener('scroll', this.handleScroll);
+        
 	},
 }
 </script>
 <style lang="css" scoped>
+.messageBox img {
+    width: 30px;
+    height: 30px;
+    margin-left: -555px;
+    margin-bottom: -20px;
+}
+.messageitem h3 {
+    text-align: right;
+    font-size: 15px;
+    margin-right: 150px;
+}
+.messageitem h2 {
+    font-size: 20px;
+    text-align: left;
+    margin: 10px 0px 10px 20px;
+}
+.messageitem p {
+    font-size: 18px;
+    text-align: left;
+    margin: 10px 0px 20px 40px;
+}
+.messageBox h1 {
+    font-size: 25px;
+}
+.messageBox {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    left: 550px;
+    top: 1200px;
+    z-index: 999
+}
+.toAsk {
+    width: 88px;
+    position: fixed;
+    right: 10px;
+    bottom: 40vh;
+    transition: 0.5s ease-in-out;
+}
+.systemMessage    .fixed-transition {
+    right: -60px;
+     opacity: 0.4;
+    transition: 0.5s ease-in-out;
+}
+.systemMessage img {
+    max-width: 100%;
+}
 #homeGroup {
     width: 100%;
 }

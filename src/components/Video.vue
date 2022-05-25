@@ -38,7 +38,7 @@
                                         </el-col>
                                         <el-col :span="10">
                                             <p class="subtitle" @click="onclick(item.videoId)">{{item.videoName}}</p>
-                                            <p class="subtitle">{{item.videoIntro}}</p>
+                                            <p class="subtitle">{{item.videoTime}}</p>
                                         </el-col>
                                     </el-row>
                                  </li>
@@ -105,15 +105,15 @@ export default {
             method:"get",
             url: 'http://localhost:8899/common/videos/fundamental'
             }).then(res=>{
-                //console.log(res.data.data)
+                console.log("推荐视频",res.data.data)
                 //var num = [];
                 for(var i=0;i<3;i++)
                 {
                     //num.push(Math.floor(Math.random()*10));
-                    this.list.push(res.data.data[Math.floor(Math.random()*10)])
+                    this.list.push(res.data.data[Math.floor(Math.random()*3)+1])
                 }
                     
-                console.log(this.list)
+                console.log("推荐视频",this.list)
             })
         },
         getwatchvideo(){

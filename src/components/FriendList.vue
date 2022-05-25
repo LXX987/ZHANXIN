@@ -17,7 +17,7 @@
           <div class="hint" v-if="!friends">
             暂无好友
           </div>
-            <el-card class="friend-card" v-for="(friend) in friends">
+            <el-card class="friend-card" v-for="(friend) in friends"  :key="friend.id" >
               <el-row class="avatar">
                     <el-avatar :size="50" :src="friend.user_avatar"></el-avatar>
                 <el-button type="danger" icon="el-icon-delete" class="delete_friend" circle></el-button>

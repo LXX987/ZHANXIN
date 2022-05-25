@@ -4,10 +4,10 @@
             <ul>
                 <li v-for="item in list" :key="item.value">
                     <div class="illu" :style="backgroundDiv">
-                    <img class="cover" v-bind:src="item.src" alt="">
-                    <h4 class="title">视频标题：{{item.des}}</h4>
-                    <p class="time">时长：{{item.price}}</p>
-                    <div class="detail"><el-button type="text" v-on:click="onclick(item.value)">查看详情</el-button></div>
+                    <img class="cover" v-bind:src="item.videoCover" alt="">
+                    <h4 class="title">{{item.videoName}}</h4>
+                    <p class="time">时长：{{item.videoIntro}}</p>
+                    <div class="detail"><el-button type="text" v-on:click="onclick(item.videoId)">查看详情</el-button></div>
                     </div>
                 </li>
             </ul>
@@ -24,7 +24,8 @@ export default ({
             num:'1',
             index: 1,
             videoUrl:'',
-            list:[]
+            list:[],
+            videoId:'',
         }
     },
     methods:{
@@ -44,10 +45,13 @@ export default ({
         getVideo(){
             this.$axios({
             method:"get",
-            url: 'http://localhost:8899/common/videos/cultural'
+            url: 'http://localhost:8899/common/videos/honesty'
             }).then(res=>{
                 console.log(res.data.data)
                 this.list = res.data.data
+                 for(var i=0;i<this.list.length;i++){
+                    this.list[i].videoIntro = this.list[i].videoIntro.substring(0,15)+'...'
+                }
             })
         }
     },

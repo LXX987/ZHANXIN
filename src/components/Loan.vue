@@ -73,6 +73,16 @@ export default {
     name:'PersonalCenter',
     data() {
       return {
+        house:'0',
+        DebtRatio:'0',
+        MonthlyIncome:'0',
+        NumberOfOpenCreditLinesAndLoans:'0',
+        RevolvingUtilizationOfUnsecuredLines:'0',
+        NumberOfTime30To59DaysPastDueNotWorse:'0',
+        seriousDlqin2yrs:'0',
+        NumberOfTime90DaysLate:'0',
+        NumberOfTime60To89DaysPastDueNotWorse:'0',
+        NumberOfDependents:'0',
         userName:'',
         userName:'',
         userEmail:'',
@@ -87,6 +97,7 @@ export default {
     },
      mounted:function(){
     this.getMyInfo()
+    this.getCreditRecord()
     },
     methods:{
         gotoFinish(){
@@ -107,6 +118,27 @@ export default {
         gotoBehavior(){
             this.$router.push({path: '/Behavior'});
         },
+        getCreditRecord() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/user/getCreditRecord',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('信用记录数据：', res.data);
+          if(res.data.data.numberRealEstateLoansOrLines!=null) {this.house=res.data.data.numberRealEstateLoansOrLines;}
+          if(res.data.data.DebtRatio!=null) {this.DebtRatio=res.data.data.DebtRatio;}
+          if(res.data.data.monthlyIncome!=null) {this.MonthlyIncome=res.data.data.monthlyIncome;}
+          if(res.data.data.numberOfOpenCreditLinesAndLoans!=null) {this.NumberOfOpenCreditLinesAndLoans=res.data.data.numberOfOpenCreditLinesAndLoans;}
+          if(res.data.data.revolvingUtilizationOfUnsecuredLines!=null) {this.RevolvingUtilizationOfUnsecuredLines=res.data.data.revolvingUtilizationOfUnsecuredLines;}
+          if(res.data.data.numberOfTime30To59DaysPastDueNotWorse!=null) {this.NumberOfTime30To59DaysPastDueNotWorse=res.data.data.numberOfTime30To59DaysPastDueNotWorse;}
+          if(res.data.data.seriousDlqin2yrs!=null) {this.seriousDlqin2yrs=res.data.data.seriousDlqin2yrs;}
+          if(res.data.data.numberOfTime90DaysLate!=null) {this.NumberOfTime90DaysLate=res.data.data.numberOfTime90DaysLate;}
+          if(res.data.data.numberOfTime60To89DaysPastDueNotWorse!=null) {this.NumberOfTime60To89DaysPastDueNotWorse=res.data.data.numberOfTime60To89DaysPastDueNotWorse;}
+          if(res.data.data.numberOfDependents!=null) {this.NumberOfDependents=res.data.data.numberOfDependents;}
+        },err=>{
+          console.log(err);
+        })
+      },
     }
   }
 </script>
