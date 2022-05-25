@@ -126,6 +126,7 @@ public class UserController {
             map.put("authentication", userInfo.getAuthentication());
             map.put("IDtype", userInfo.getIDtype());
             map.put("IDcard", userInfo.getIDcard());
+            map.put("phone", userInfo.getPhone());
             //计算身份得分并更新
             if (userInfo.getAuthentication()) {
                 int indentityScore = calculateIdentity(userInfo.getOccupation(), userInfo.getAnnualIncome(), userInfo.getWorkingYears());
