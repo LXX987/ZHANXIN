@@ -21,32 +21,32 @@ public class CreditServiceImpl implements CreditService {
     }
 
     @Override
-    public int updateIdentityScore(int indentityScore) {
-        return creditMapper.updateIdentityScore(indentityScore);
+    public int updateIdentityScore(int indentityScore,int userID) {
+        return creditMapper.updateIdentityScore(indentityScore,userID);
     }
 
     @Override
-    public int updateTotalScore(int totalScore) {
-        return creditMapper.updateTotalScore(totalScore);
+    public int updateTotalScore(int totalScore,int userID) {
+        return creditMapper.updateTotalScore(totalScore,userID);
     }
 
     @Override
-    public int updateAssetScore(int assetScore) {
-        return creditMapper.updateAssetScore(assetScore);
+    public int updateAssetScore(int assetScore,int userID) {
+        return creditMapper.updateAssetScore(assetScore,userID);
     }
 
     @Override
-    public int updateCreditScore(int credit_score) {
-        return creditMapper.updateCreditScore(credit_score);
+    public int updateCreditScore(int credit_score,int userID) {
+        return creditMapper.updateCreditScore(credit_score,userID);
     }
 
     @Override
-    public int updateBehaviorScore(int behavior_score) {
-        return creditMapper.updateBehaviorScore(behavior_score);
+    public int updateBehaviorScore(int behavior_score,int userID) {
+        return creditMapper.updateBehaviorScore(behavior_score,userID);
     }
 
     @Override
-    public int updateSocialScore(int social_score) {
-        return creditMapper.updateSocialScore(social_score);
+    public int updateSocialScore(int social_score,int userID) {
+        return creditMapper.updateSocialScore(social_score,userID);
     }
 }

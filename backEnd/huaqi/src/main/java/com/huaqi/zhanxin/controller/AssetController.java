@@ -3,10 +3,14 @@ package com.huaqi.zhanxin.controller;
 import com.huaqi.zhanxin.entity.Asset;
 import com.huaqi.zhanxin.entity.RestControllerHelper;
 import com.huaqi.zhanxin.entity.UserBean;
+import com.huaqi.zhanxin.entity.UserInfo;
 import com.huaqi.zhanxin.service.AssetService;
+import com.huaqi.zhanxin.service.CreditService;
+import com.huaqi.zhanxin.service.UserService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +29,11 @@ import java.util.Map;
 public class AssetController {
     @Autowired
     private AssetService assetService;
+    @Autowired
+    private CreditService creditService;
     RestControllerHelper helper = new RestControllerHelper();
+    @Autowired
+    private UserService userService;
 
     @ApiOperation(value = "获取资产列表")
     @GetMapping("assetList")
@@ -67,6 +75,15 @@ public class AssetController {
         Map<String, Object> map = new HashMap<>();
         int money=assetService.getMoney(userID);
         System.out.println(money);
+
+        // 获取年收入
+        UserInfo userInfo=userService.getInfo(userID);
+        // 计算资产得分
+        int assetScore = countAsset(money,userInfo.getAnnualIncome());
+        // 更新数据库
+        creditService.updateAssetScore(assetScore,userID);
+        //System.out.println(userInfo.getAnnualIncome());
+        System.out.println(assetScore);
         map.put("money", money);
         helper.setMsg("Success");
         helper.setData(map);
@@ -97,5 +114,29 @@ public class AssetController {
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
+    }
+
+    public int countAsset(int money,float annual_income){
+        int k2 = 100/10000;
+        int k1 = 100/10000;
+        int moneyScore,incomeScore;
+        //int houseScore = 0,stateScore= 0;
+        int accountScore;
+        if(annual_income>=100000){
+            incomeScore=100;
+        }else{
+            incomeScore=(int)annual_income/1000;
+        }
+        if(money>=80000){
+            moneyScore=100;
+        }else{
+            moneyScore=money/800;
+        }
+        //System.out.println(money);
+        System.out.println(moneyScore);
+        //System.out.println(annual_income);
+        System.out.println(incomeScore);
+        accountScore =(int)(moneyScore*0.73+incomeScore*0.27);
+        return accountScore;
     }
 }

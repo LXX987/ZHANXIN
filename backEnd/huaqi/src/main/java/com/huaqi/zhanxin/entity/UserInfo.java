@@ -13,7 +13,6 @@ public class UserInfo {
     private Integer userID;
     private Integer IDtype;
     private String IDcard;
-
     private String phone;
 
     public UserInfo(Integer occupation, Float annualIncome, Integer workingYears, Boolean authentication, Integer userID, Integer IDtype, String IDcard, String phone) {

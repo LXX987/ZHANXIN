@@ -129,7 +129,7 @@ public class UserController {
             //计算身份得分并更新
             if (userInfo.getAuthentication()) {
                 int indentityScore = calculateIdentity(userInfo.getOccupation(), userInfo.getAnnualIncome(), userInfo.getWorkingYears());
-                creditService.updateIdentityScore(indentityScore);
+                creditService.updateIdentityScore(indentityScore, userID);
             }
         }
         helper.setMsg("Success");
@@ -181,7 +181,7 @@ public class UserController {
 
     @ApiOperation(value = "更新身份信息")
     @PostMapping("updateUserInfo")
-    public Map<String, Object> resetName(HttpServletRequest request, String userName, String userEmail,int occupation, float annualIncome, int workingYears) {
+    public Map<String, Object> resetName(HttpServletRequest request, String userName, String userEmail,int occupation, float annualIncome, int workingYears, String phone) {
 
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
         int userID = getInfo.getUserId();
@@ -191,9 +191,9 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
         int resultInfo;
         if( userService.getInfo(userID)==null) {
-            resultInfo=userService.insertInfo(occupation,annualIncome,workingYears,userID);
+            resultInfo=userService.insertInfo(occupation,annualIncome,workingYears,userID,phone);
         } else {
-            resultInfo=userService.updateInfo(userID, occupation,annualIncome,workingYears);
+            resultInfo=userService.updateInfo(userID, occupation,annualIncome,workingYears,phone);
         }
         int resultName=userService.updateName(userID, userName, userEmail);
 
@@ -204,7 +204,7 @@ public class UserController {
             if(userInfo.getAuthentication())
             {
                 int indentityScore = calculateIdentity(occupation,annualIncome,workingYears);
-                creditService.updateIdentityScore(indentityScore);
+                creditService.updateIdentityScore(indentityScore,userID);
             }
         } else {
             map.put("msg", "修改失败，未查找到该账号数据");
@@ -236,6 +236,9 @@ public class UserController {
             int user_id = user.getUserID();
             creditService.insertScore(user_id,0,0,0,0,0,0);
 
+            userService.insertNewInfo(user_id); //用户信息表插入数据
+            userService.insertNewReputation(user_id); //用户信誉表插入数据
+            userService.insertCreditRecord(user_id,0,0,0,0,0,0,0,0,0,0);
             return helper.toJsonMap();
         }
         else{
@@ -283,7 +286,7 @@ public class UserController {
                 if(userInfo.getAuthentication())
                 {
                     int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-                    creditService.updateIdentityScore(indentityScore);
+                    creditService.updateIdentityScore(indentityScore,userID);
                 }
                 map.put("msg", "数据库修改成功");
                 map.put("success", "1");
