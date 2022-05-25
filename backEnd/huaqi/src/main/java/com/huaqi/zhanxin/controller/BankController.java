@@ -1,6 +1,7 @@
 package com.huaqi.zhanxin.controller;
 
 import com.huaqi.zhanxin.entity.*;
+import com.huaqi.zhanxin.service.AssetService;
 import com.huaqi.zhanxin.service.BankService;
 import com.huaqi.zhanxin.service.CreditService;
 import com.huaqi.zhanxin.service.UserService;
@@ -25,6 +26,8 @@ public class BankController {
     UserService userService;
     @Autowired
     CreditService creditService;
+    @Autowired
+    private AssetService assetService;
 
     RestControllerHelper helper = new RestControllerHelper();
 
@@ -64,6 +67,7 @@ public class BankController {
         map.put("authentication", userInfo.getAuthentication());
         map.put("IDtype", userInfo.getIDtype());
         map.put("IDcard", userInfo.getIDcard());
+        map.put("phone", userInfo.getPhone());
         HonestyProof honestyProof = userService.selectHonestyProof(userID);
         map.put("bloodDonation", honestyProof.getBloodDonation());
         map.put("volunteer", honestyProof.getVolunteer());
@@ -88,6 +92,8 @@ public class BankController {
         map.put("credit_score", credit.getCreditScore());
         map.put("behavior_score", credit.getBehaviorScore());
         map.put("social_score", credit.getSocialScore());
+        int money=assetService.getMoney(userID);
+        map.put("money", money);
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();

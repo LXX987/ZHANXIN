@@ -47,13 +47,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateInfo(int userID, int occupation, float annualIncome, int workingYears) {
-        return userMapper.updateInfo(userID,occupation,annualIncome,workingYears);
+    public int updateInfo(int userID, int occupation, float annualIncome, int workingYears,String phone) {
+        return userMapper.updateInfo(userID,occupation,annualIncome,workingYears,phone);
     }
 
     @Override
-    public int insertInfo(int occupation, float annualIncome, int workingYears, int userID) {
-        return userMapper.insertInfo(occupation,annualIncome,workingYears,userID);
+    public int insertNewInfo(int userID) {
+        return userMapper.insertNewInfo(userID);
+    }
+
+    @Override
+    public int insertInfo(int occupation, float annualIncome, int workingYears, int userID, String phone) {
+        return userMapper.insertInfo(occupation,annualIncome,workingYears,userID,phone);
     }
 
     // 返回数据库注册结果
@@ -73,6 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int insertNewReputation(int userID) {
+        return userMapper.insertNewReputation(userID);
+    }
+
+    @Override
     public Asset selectAsset(int userID) {
         return userMapper.selectAsset(userID);
     }
@@ -80,6 +90,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public CreditRecord selectCreditRecord(int userID) {
         return userMapper.selectCreditRecord(userID);
+    }
+
+    @Override
+    public int insertCreditRecord(int userID, double debtRatio, int numberRealEstateLoansOrLines, int numberOfOpenCreditLinesAndLoans, int numberOfTime30To59DaysPastDueNotWorse, double revolvingUtilizationOfUnsecuredLines, int seriousDlqin2yrs, double monthlyIncome, int numberOfTime90DaysLate, int numberOfDependents, int numberOfTime60To89DaysPastDueNotWorse) {
+        return userMapper.insertCreditRecord(userID,debtRatio,numberRealEstateLoansOrLines,numberOfOpenCreditLinesAndLoans,numberOfTime30To59DaysPastDueNotWorse,revolvingUtilizationOfUnsecuredLines,seriousDlqin2yrs,monthlyIncome,numberOfTime90DaysLate,numberOfDependents,numberOfTime60To89DaysPastDueNotWorse);
     }
 
     @Override
