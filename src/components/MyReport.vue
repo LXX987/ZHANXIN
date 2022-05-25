@@ -36,16 +36,16 @@
               <el-col :span="12">
                 <div class="grid-content bg-white">
                   <p class="txt-title">信用分</p>
-                  <el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">
-                  <el-button type="text" @click="goto_detail" class="sub_score">总分：{{score}}</el-button></el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="信用分总分" placement="right">
+                  <el-button type="text" class="sub_score">总分：{{score}}</el-button></el-tooltip>
                   <div id="leiDaTu" class="echart"></div>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-white mar-left">
                   <p class="txt-title">信用分解读<el-button type="text" class="btn-text" @click="CreditAppeal()">有疑问？点击申诉</el-button></p>
-                  <el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">
-                      <el-button type="text" @click="goto_detail" class="sub_score">总分：{{score}}</el-button></el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="信用分各维度得分" placement="right">
+                      <el-button type="text" class="sub_score">总分：{{score}}</el-button></el-tooltip>
                   <p class="txt-score">身份证明：{{idfication}}</p>
                   <p class="txt-score">资产证明：{{asset}}</p>
                   <p class="txt-score">信贷记录：{{credit_histort}}</p>
@@ -56,9 +56,9 @@
             </el-row>
             <el-row class="bg-white mar-top">
               <p class="txt-title">贷款等级</p>
-              <p class="txt-content">贷款等级：{{level}}</p>
-              <p class="txt-content">建议贷款额度：3万元</p>
-              <p class="txt-content">说明：您可以贷款的类型为小额消费信用贷款。</p>
+              <p class="txt-content">贷款等级：{{rank}}</p>
+              <p class="txt-content">建议贷款额度：{{quota}}</p>
+              <el-button @click="goto_detail()">查看详细报告</el-button>
             </el-row>
           </div>
         </el-col>
@@ -81,23 +81,24 @@ export default {
       dialogTableVisible: false,
             score:0,
             gridData:[],
-             nameofsearch:'',
-             idofsearch:'',
-             show:false,
-             searchresult:'',
-             behavior:'',
-             credit_histort:'',
-             asset:'',
-             idfication:'',
-             social:'',
-             tableData: [],
-             excellenthere:false,
-             verygoodhere:false,
-             goodhere:false,
-             fairhere:false,
-             poorhere:false,
-             verybadhere:false,
-             level:'',
+            nameofsearch:'',
+            idofsearch:'',
+            show:false,
+            searchresult:'',
+            behavior:'',
+            credit_histort:'',
+            asset:'',
+            idfication:'',
+            social:'',
+            tableData: [],
+            excellenthere:false,
+            verygoodhere:false,
+            goodhere:false,
+            fairhere:false,
+            poorhere:false,
+            verybadhere:false,
+            rank:'',
+            quota:'暂无数据',
       };
     },
     methods: {
@@ -113,25 +114,32 @@ export default {
             console.log(res.data.data.asset_score);
             this.score=res.data.data.total_score
             if(this.score<=150){
-                this.verybadhere = true
-                }
-                else if(this.score<=220){
-                this.poorhere=true;
-                this.level="较差";
-                }else if(this.score<=290){
-                this.fairhere=true;
-                this.level="普通";
-                }else if(this.score<=360){
-                this.goodhere=true;
-                this.level="良好";
-                }else if(this.score<=430){
-                this.verygoodhere=true;
-                this.level="优秀";
-                }else if(this.score<=500){
-                this.excellenthere=true;
-                this.level="极好";
-                console.log(this.excellenthere);
-                }
+            this.verybadhere = true
+              this.rank = 'VeryBad(很差)'
+              this.quota="目前您的信用分较低，不建议您进行贷款"
+            }
+            else if(this.score<=220){
+              this.poorhere=true
+              this.rank = 'Poor(较差)'
+              this.quota="目前您的信用分较低，不建议您进行贷款"
+            }else if(this.score<=290){
+              this.fairhere=true
+              this.rank = 'Fair(一般)'
+              this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到500元之间"
+            }else if(this.score<=360){
+              this.goodhere=true
+              this.rank = 'Good(良好)'
+              this.quota="目前您的信用分良好，推荐您的消费贷款额度在500元到1000元之间"
+            }else if(this.score<=430){
+              this.verygoodhere=true
+              this.rank = 'VeryGood(很优秀)'
+              this.quota="目前您的信用分优秀，推荐您的消费贷款额度在1000元到5000元之间"
+            }else if(this.score<=500){
+              this.excellenthere=true
+              this.rank = 'Excellent(极优秀)'
+              this.quota="您的信用等级为极优秀，您的推荐贷款额度为5000及以上"
+              console.log(this.excellenthere);
+            }
             this.behavior = res.data.data.behavior_score
             this.credit_histort = res.data.data.credit_score
             this.idfication =  res.data.data.identity_score
@@ -187,6 +195,9 @@ export default {
             }]
           });
         })
+      },
+      goto_detail() {
+        this.$router.push({path: '/AnswerSecQue'});
       },
       personalCenter() {
         this.$router.push({path: '/PersonalCenter'});

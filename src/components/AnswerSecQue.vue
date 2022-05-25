@@ -83,11 +83,31 @@ export default {
           oldPwd: [{validator: checkOldPwd,trigger: "blur"}],
           newPwd: [{validator: checkNewPwd,trigger: "blur"}],
         },
+        set:0,
       };
     },
     mounted:function(){
+      this.selectSecurityQuestion();
     },
     methods: {
+      selectSecurityQuestion() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/user/selectSecurityQuestion',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的安全问题数据：', res.data);
+          this.set=res.data.data.msg;
+          if(res.data.data.msg==0) {
+            this.$alert('您还未设置安全问题', {
+                  confirmButtonText: '去设置',
+                });
+            this.$router.push('/SecurityQuestion')
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
       insertSecurityQuestion() {
         this.$axios({
           method:"post",
@@ -107,6 +127,7 @@ export default {
                 message: '回答正确！',
                 type: 'success'
               });
+              this.$router.push({path: '/Report'});
             }
           } else{
             this.$message({

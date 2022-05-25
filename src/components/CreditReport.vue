@@ -117,7 +117,7 @@
      },
      methods:{
         gotoReport(){
-            this.$router.push({path: '/Report'});
+            this.$router.push({path: '/AnswerSecQue'});
          },
         gotoScoreDetail(){
             this.$router.push({path: '/ScoreDetail'});
