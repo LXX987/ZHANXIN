@@ -209,6 +209,13 @@ export default {
 </script>
 
 <style scoped>
+.bg-purple h1 {
+  font-size: 20px;
+  font-weight: 550;
+}
+.bg-purple p {
+  font-size: 20px;
+}
 #BarChart {
   width:100%;
   height:500px;
