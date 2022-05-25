@@ -23,11 +23,12 @@ public class FriendController {
 
     @ApiOperation(value = "好友列表")
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
-    public Result<?> getFriendList(@RequestParam("id") Integer id,
+    public Result<?> getFriendList(HttpServletRequest request,
                                    @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize)
     {
-
+        GetInformationFromRequest tokenInfo = new GetInformationFromRequest(request);
+        Integer id = tokenInfo.getUserId();
         List<JSONObject> jsonObjects = friendService.getFriendList(id, pageNum, pageSize);
         if(jsonObjects == null)
             return Result.error("404", "暂无好友");

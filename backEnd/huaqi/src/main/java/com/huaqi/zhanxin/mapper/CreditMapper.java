@@ -17,7 +17,7 @@ public interface CreditMapper {
     int updateTotalScore(@Param("total_score") int total_score);
 
     @Update("update Score set identity_score = #{identity_score}")
-    int updateIdentityScore(@Param("total_score") int identity_score);
+    int updateIdentityScore(@Param("identity_score") int identity_score);
 
     @Update("update Score set asset_score = #{asset_score}")
     int updateAssetScore(@Param("asset_score") int asset_score);
