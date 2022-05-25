@@ -115,23 +115,25 @@ public class UserController {
         int userID = getInfo.getUserId();
         //int userID =1;
         UserBean user = userService.selectName(userID);
+        map.put("user_id", userID);
         map.put("userName", user.getUserName());
         map.put("userEmail", user.getUserEmail());
         map.put("userAvatar", user.getUserAvatar());
         UserInfo userInfo=userService.getInfo(userID);
-        map.put("user_id", userInfo.getUserID());
-        map.put("occupation", userInfo.getOccupation());
-        map.put("annual_income", userInfo.getAnnualIncome());
-        map.put("working_years", userInfo.getWorkingYears());
-        map.put("authentication", userInfo.getAuthentication());
-        map.put("IDtype", userInfo.getIDtype());
-        map.put("IDcard", userInfo.getIDcard());
-        map.put("phone", userInfo.getPhone());
-        //计算身份得分并更新
-        if(userInfo.getAuthentication())
+        if(userInfo != null)
         {
-            int indentityScore = calculateIdentity(userInfo.getOccupation(),userInfo.getAnnualIncome(),userInfo.getWorkingYears());
-            creditService.updateIdentityScore(indentityScore,userID);
+            map.put("occupation", userInfo.getOccupation());
+            map.put("annual_income", userInfo.getAnnualIncome());
+            map.put("working_years", userInfo.getWorkingYears());
+            map.put("authentication", userInfo.getAuthentication());
+            map.put("IDtype", userInfo.getIDtype());
+            map.put("IDcard", userInfo.getIDcard());
+            map.put("phone", userInfo.getPhone());
+            //计算身份得分并更新
+            if (userInfo.getAuthentication()) {
+                int indentityScore = calculateIdentity(userInfo.getOccupation(), userInfo.getAnnualIncome(), userInfo.getWorkingYears());
+                creditService.updateIdentityScore(indentityScore, userID);
+            }
         }
         helper.setMsg("Success");
         helper.setData(map);
