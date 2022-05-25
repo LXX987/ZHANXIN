@@ -110,7 +110,7 @@ export default {
                 for(var i=0;i<3;i++)
                 {
                     //num.push(Math.floor(Math.random()*10));
-                    this.list.push(res.data.data[Math.floor(Math.random()*3)])
+                    this.list.push(res.data.data[Math.floor(Math.random()*3)+1])
                 }
                     
                 console.log("推荐视频",this.list)

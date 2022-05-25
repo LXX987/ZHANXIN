@@ -74,8 +74,8 @@
             <div class="social"><p class="paragraph">人脉关系</p>
             <p class="tip">这部分包含您的信用卡信息和历史贷款信息，金额类型数据均以人民币计算</p>
             <el-descriptions  :column="1" border>
-                <el-descriptions-item label="好友圈人数">{{idfication}}</el-descriptions-item>
-                <el-descriptions-item label="好友均分">{{credit_histort}}</el-descriptions-item>
+                <el-descriptions-item label="好友圈人数">{{socialnum}}</el-descriptions-item>
+                <el-descriptions-item label="好友均分">{{socialsocre}}</el-descriptions-item>
               </el-descriptions>
             </div>
           <div class="rank"><p class="paragraph">评分等级</p>
@@ -103,10 +103,9 @@
            <div class="quota"> {{quota}}</div>
           </div>
           </div>
-          <button @click="getOnePdf()" class="downloadIcon" ></button>
         </div>
-        
       </div>
+      <button @click="getOnePdf()" class="downloadIcon" ></button>
   </div>
 </div>
 </template>
@@ -116,6 +115,8 @@ import JsPDF from "jspdf";
 export default({
     data() {
       return{
+        socialnum:'暂无好友',
+        socialsocre:'暂无数据',
         quota:'',
         date:'',
         userName:'',
@@ -165,16 +166,17 @@ export default({
                     this.social = res.data.data.social_score
                     if(this.score<=150){
                         this.verybadhere = true
+                        this.quota="目前您的信用分较低，不建议您进行贷款"
                         }
                         else if(this.score<=220){
                         this.poorhere=true
                         this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=290){
                         this.fairhere=true
-                        this.quota="目前您的信用分较低，不建议您进行贷款"
+                        this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到5000元之间"
                         }else if(this.score<=360){
                         this.goodhere=true
-                        this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到1000元之间"
+                        this.quota="目前您的信用分良好，推荐您的消费贷款额度在500元到1000元之间"
                         }else if(this.score<=430){
                         this.verygoodhere=true
                         this.quota="目前您的信用分优秀，推荐您的消费贷款额度在1000元到5000元之间"
@@ -260,7 +262,7 @@ export default({
       },
       // 单页pdf：css高度自适应即可（此处用的一个css，为了实现多页pdf同时不让分页分割图片，css中写死了每页的高度.a4page）
       getOnePdf() {
-        var title = "单页报告";
+        var title = "个人信用报告";
         var dom = document.getElementById("pdf-container");  // 生成pdf的html内容
         window.pageYoffset = 0
         document.documentElement.scrollTop = 0
@@ -407,7 +409,13 @@ export default({
 
       },
       getSocial(){
+      this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/user/friends',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
 
+        })
       },
       initialSerial(){
         var num = "";   //定义用户编号
@@ -482,7 +490,7 @@ export default({
   text-align: right;
 }
 .downloadIcon{
-  background-color: #fff;
+  background-color: #e5e5e5ad;
   background-image: url(../../src/assets/download.png);
   background-size:100% 100%;
   border: 0;

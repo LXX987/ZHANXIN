@@ -102,6 +102,9 @@ export default ({
             }).then(res=>{
                 console.log(res.data.data)
                 this.list = res.data.data
+                for(var i=0;i<this.list.length;i++){
+                    this.list[i].videoIntro = this.list[i].videoIntro.substring(0,15)+'...'
+                }
             })
         }
     },
