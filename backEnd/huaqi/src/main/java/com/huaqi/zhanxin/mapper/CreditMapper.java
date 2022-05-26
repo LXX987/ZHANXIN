@@ -1,8 +1,11 @@
 package com.huaqi.zhanxin.mapper;
 
 import com.huaqi.zhanxin.entity.Credit;
+import com.huaqi.zhanxin.entity.SystemMessageBean;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -15,6 +18,7 @@ public interface CreditMapper {
 
     @Update("update Score set total_score = #{total_score} where user_id=#{userID}" )
     int updateTotalScore(@Param("total_score") int total_score,@Param("userID")int userID);
+
 
     @Update("update Score set identity_score = #{identity_score} where user_id=#{userID}" )
     int updateIdentityScore(@Param("identity_score") int identity_score,@Param("userID")int userID);
@@ -30,4 +34,7 @@ public interface CreditMapper {
 
     @Update("update Score set credit_score = #{credit_score} where user_id=#{userID}")
     int updateCreditScore(@Param("credit_score") int credit_score,@Param("userID")int userID);
+
+    @Select("select * from Score")
+    List<Credit> selectAllCredit();
 }

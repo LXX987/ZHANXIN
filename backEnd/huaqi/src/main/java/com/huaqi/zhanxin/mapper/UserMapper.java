@@ -84,4 +84,8 @@ public interface UserMapper {
 
     @Select("select * from Security_Question where user_id=#{userID}")
     SecurityQuestion selectSecurityQuestion(@Param("userID") int userID);
+
+    //获取年龄和分数（年龄由身份证号得到），左外连接
+    @Select(("select Score.user_id, total_score, IDcard from Identity_Info natural right outer join Score"))
+    List<AgeScoreBean> selectAllAges();
 }

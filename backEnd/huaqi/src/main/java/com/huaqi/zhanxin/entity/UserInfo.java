@@ -14,5 +14,4 @@ public class UserInfo {
     private Integer IDtype;
     private String IDcard;
     private String phone;
-
 }

@@ -138,5 +138,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectSecurityQuestion(userID);
     }
 
+    //获取全部用户的Identity_Info信息
+    @Override
+    public List<AgeScoreBean> selectAllAges() {
+        return userMapper.selectAllAges();
+    }
 
 }
