@@ -128,10 +128,12 @@
                       </span>
                     </el-dialog>
                   </p>
+                  <el-alert :closable="false" title="未成年，暂无信贷资格" type="warning" v-if="adult=='未成年'"></el-alert>
                   <el-descriptions title="" :column="1">
                     <el-descriptions-item label="实名认证">{{authentication}}</el-descriptions-item>
                     <el-descriptions-item label="证件类型">{{IDtype}}</el-descriptions-item>
                     <el-descriptions-item label="证件号">&emsp;{{IDcard}}</el-descriptions-item>
+                    <el-descriptions-item label="是否成年">&emsp;{{adult}}</el-descriptions-item>
                   </el-descriptions>
                 </div>
               </el-col>
@@ -183,6 +185,7 @@ export default {
         IDtype:'',
         IDcard:'',
         phone:'',
+        adult:'',
         infoForm: {
           name: '',
           occupation: '',
@@ -280,6 +283,7 @@ export default {
             this.authentication="未实名";
           }
           this.phone=res.data.data.phone;
+          this.adult=res.data.data.adult;
           this.infoForm.name=this.userName;
           this.infoForm.occupation=this.occupation_str;
           this.infoForm.annual_income=this.annual_income;
