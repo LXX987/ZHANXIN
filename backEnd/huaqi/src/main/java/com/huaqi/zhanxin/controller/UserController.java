@@ -129,6 +129,18 @@ public class UserController {
             map.put("IDtype", userInfo.getIDtype());
             map.put("IDcard", userInfo.getIDcard());
             map.put("phone", userInfo.getPhone());
+            // 判断成年
+            String Idcard=userInfo.getIDcard();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+            Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
+            String nowTime = df.format(now);
+            nowTime = nowTime.substring(0,4) + nowTime.substring(5, 7) + nowTime.substring(8, 10);
+            int age = (Integer.parseInt(nowTime) - Integer.parseInt(Idcard.substring(6, 14))) / 10000;
+            if(age<18) {
+                map.put("adult", "未成年");
+            } else {
+                map.put("adult", "成年");
+            }
             //计算身份得分并更新
             if (userInfo.getAuthentication()) {
                 int indentityScore = calculateIdentity(userInfo.getOccupation(), userInfo.getAnnualIncome(), userInfo.getWorkingYears());
