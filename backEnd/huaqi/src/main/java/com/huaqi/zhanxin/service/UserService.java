@@ -33,4 +33,6 @@ public interface UserService {
     int insertSecurityQuestion(int userID, String teacher, String city);
     SecurityQuestion selectSecurityQuestion(int userID);
     List<AgeScoreBean> selectAllAges();
+    int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime);
+    int updateHistoryRecord(int userID, int historyScore);
 }

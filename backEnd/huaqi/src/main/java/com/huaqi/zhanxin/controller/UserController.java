@@ -242,6 +242,10 @@ public class UserController {
             userService.insertNewInfo(user_id); //用户信息表插入数据
             userService.insertNewReputation(user_id); //用户信誉表插入数据
             userService.insertCreditRecord(user_id,0,0,0,0,0,0,0,0,0,0);
+
+            // 向用户历史分数表中插入记录
+            Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
+            userService.insertHistoryRecord(user_id, 0, currentTIme);
             return helper.toJsonMap();
         }
         else{
