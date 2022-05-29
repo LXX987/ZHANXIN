@@ -26,5 +26,9 @@ public interface CreditAppealMapper {
     @Select("select * from Credit_Appeal where reason=#{type} limit ${(pageNum-1)*pageSize},#{pageSize}")
     List<JSONObject> selectAllByType(@Param("type") String type, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 
-    @Update("update Credit_Appeal set appeal_state=#{state} where")
+    @Update("update Credit_Appeal set appeal_state=2 where user_id=#{id} and appeal_time=#{time}")
+    Integer updateAppealStateToDenied(@Param("id") Integer user_id, @Param("time") Timestamp appeal_time);
+
+    @Update({"update Credit_Appeal set appeal_state=1 where user_id=#{id} and appeal_time=#{time}; update ${type} set ${detail}=#{value} where user_id=#{id}"})
+    Integer updateAppealStateToAccepted(@Param("id") Integer user_id, @Param("time") Timestamp appeal_time, @Param("type") String type, @Param("detail") String detail, @Param("value") Double value);
 }

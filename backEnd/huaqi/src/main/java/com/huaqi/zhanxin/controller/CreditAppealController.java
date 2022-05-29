@@ -66,4 +66,14 @@ public class CreditAppealController {
             return Result.error("404", "暂无数据");
         else return Result.success(jsonObjects);
     }
+
+    @ApiOperation(value = "审核申诉")
+    @RequestMapping(value = "/appeals", method = RequestMethod.PUT)
+    public Result<?> judgeAppeal(@RequestParam Integer user_id, @RequestParam Timestamp appeal_time, @RequestParam String type, @RequestParam String detail, @RequestParam Double value, @RequestParam Integer state)
+    {
+        Integer count = creditAppealService.judgeAppeal(user_id, appeal_time, type, detail, value, state);
+        if(count == 1)
+            return Result.success();
+        else return Result.error("500", "操作失败");
+    }
 }

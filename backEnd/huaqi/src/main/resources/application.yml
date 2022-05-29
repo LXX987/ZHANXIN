@@ -16,7 +16,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.132.121.193:3306/zhanxin?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://101.132.121.193:3306/zhanxin?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
     username: zhanxin
     password: GAkEC8iNwbyzAY35
   jackson:
