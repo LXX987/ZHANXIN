@@ -20,7 +20,7 @@
                 <p class="tip-txt">数据每日00:00更新</p>
               </el-col>
             </el-row>
-            <el-row class="bg-purple">
+            <el-row class="bg-purple" id="condition">
               <!-- 用户数量-->
               <!-- 总体信用变化情况（上升多少）-->
               <el-col :span="12">
@@ -209,11 +209,11 @@ export default {
 </script>
 
 <style scoped>
-.bg-purple h1 {
+#condition h1 {
   font-size: 20px;
   font-weight: 550;
 }
-.bg-purple p {
+#condition p {
   font-size: 20px;
 }
 #BarChart {
