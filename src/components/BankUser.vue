@@ -22,6 +22,7 @@
             </el-row>
             <el-row class="bg-purple pad">
               <p class="title-txt">用户基本信息</p>
+              <el-alert :closable="false" title="未成年，暂无信贷资格" type="warning" v-if="adult=='未成年'"></el-alert>
               <el-col :span="12">
                 <el-descriptions title="" :column="1">
                   <el-descriptions-item label="姓名">&emsp;&emsp;{{name}}</el-descriptions-item>
@@ -36,6 +37,7 @@
                   <el-descriptions-item label="实名认证">{{authentication}}</el-descriptions-item>
                   <el-descriptions-item label="证件类型">{{IDtype}}</el-descriptions-item>
                   <el-descriptions-item label="证件号">&emsp;{{IDcard}}</el-descriptions-item>
+                  <el-descriptions-item label="是否成年">&emsp;{{adult}}</el-descriptions-item>
                 </el-descriptions>
               </el-col>
             </el-row>
@@ -118,6 +120,7 @@ export default {
       IDtype:'',
       IDcard:'',
       phone:'',
+      adult:'',
       score:0,
       idfication:'',
       social:'',
@@ -210,6 +213,7 @@ export default {
           this.annual_income=res.data.data.annual_income;
           this.working_years=res.data.data.working_years;
           this.phone=res.data.data.phone;
+          this.adult=res.data.data.adult;
           if(res.data.data.IDtype==1) {
             this.IDtype='身份证';
           } else {
@@ -375,6 +379,10 @@ export default {
   }
   .btn-mar-left {
     margin-left: 60px;
+  }
+  .el-alert {
+    width: 60%;
+    margin-left: 80px;
   }
   .el-descriptions {
     margin-top: 20px;

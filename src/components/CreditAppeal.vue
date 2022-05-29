@@ -44,13 +44,32 @@
                 <div class="txt-content">
                   <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item label="申诉原因" prop="reason">
-                      <el-input type="textarea" resize="none" v-model="ruleForm.reason" maxlength="500" show-word-limit></el-input>
+                      <el-select v-model="ruleForm.reason" placeholder="请选择申诉原因">
+                        <el-option label="声誉记录有误" value="声誉记录有误"></el-option>
+                        <el-option label="信贷记录有误" value="信贷记录有误"></el-option>
+                      </el-select>
                     </el-form-item>
                     <el-form-item label="问题描述" prop="question">
-                      <el-input type="textarea" resize="none" v-model="ruleForm.question" maxlength="500" show-word-limit></el-input>
+                      <el-select v-model="ruleForm.question" placeholder="请选择问题描述">
+                        <el-option label="犯罪记录有误" value="犯罪记录有误" v-if="ruleForm.reason=='声誉记录有误'"></el-option>
+                        <el-option label="献血次数有误" value="献血次数有误" v-if="ruleForm.reason=='声誉记录有误'"></el-option>
+                        <el-option label="志愿服务时长有误" value="志愿服务时长有误" v-if="ruleForm.reason=='声誉记录有误'"></el-option>
+                        <el-option label="捐款数有误" value="捐款数有误" v-if="ruleForm.reason=='声誉记录有误'"></el-option>
+                        <el-option label="话费缴费有误" value="话费缴费有误" v-if="ruleForm.reason=='声誉记录有误'"></el-option>
+                        <el-option label="月债务支出、赡养费、生活费除以总收入有误" value="月债务支出、赡养费、生活费除以总收入有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="抵押和房地产数量有误" value="抵押和房地产数量有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="月收入有误" value="月收入有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="公开贷款（如汽车和抵押贷款）和信用限额（信用卡）数量有误" value="公开贷款（如汽车和抵押贷款）和信用限额（信用卡）数量有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="信用卡循环利用率有误" value="信用卡循环利用率有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="贷款者过去两年中有30-59天逾期但不糟糕的次数有误" value="贷款者过去两年中有30-59天逾期但不糟糕的次数有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="是否存在超过90天或者更长时间逾期未还的不良行为有误" value="是否存在超过90天或者更长时间逾期未还的不良行为有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="90天或以上贷款者逾期未还的次数有误" value="90天或以上贷款者逾期未还的次数有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="贷款者过去两年中有60-89天逾期但不糟糕的次数有误" value="贷款者过去两年中有60-89天逾期但不糟糕的次数有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                        <el-option label="家庭成员数量有误" value="家庭成员数量有误" v-if="ruleForm.reason=='信贷记录有误'"></el-option>
+                      </el-select>
                     </el-form-item>
                     <el-form-item label="修改请求" prop="require">
-                      <el-input type="textarea" resize="none" v-model="ruleForm.require" maxlength="500" show-word-limit></el-input>
+                      <el-input v-model="ruleForm.require" placeholder="请输入修改目标值"></el-input>
                     </el-form-item>
                     <el-form-item>
                       <el-button type="primary" @click="submitForm('ruleForm')">提交申请</el-button>
@@ -71,6 +90,21 @@
 export default {
     name:'CreditAppeal',
     data() {
+      var checkRequire = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('修改请求不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            if(!(/(^[0-9]+.?[0-9]*$)/.test(value))) {
+              callback(new Error('请输入数字值或浮点值'));
+            } else {
+              callback();
+            }
+            
+          } 
+        }, 1000);
+      };
       return {
         appealState:'暂未提交申请',
         ruleForm: {
@@ -81,7 +115,7 @@ export default {
         rules: {
           reason: [{ required: true, message: '请填写申诉原因', trigger: 'blur' }],
           question: [{ required: true, message: '请填写问题描述', trigger: 'blur' }],
-          require: [{ required: true, message: '请填写修改请求', trigger: 'blur' }]
+          require: [{ required: true,validator: checkRequire}]
         },
         tableData: [{
           appealState: '0',
@@ -100,6 +134,7 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            console.log('submit!!');
             this.updateAppeal();
             location.reload();
           } else {
@@ -266,7 +301,8 @@ export default {
   .txt-content {
     text-align: left;
     font-size: 17px;
-    margin-top: 28px;
+    margin-top: 80px;
+    margin-bottom: 118px;
   }
   >>>.el-form-item__label {
     font-size: 18px;
@@ -274,5 +310,11 @@ export default {
   >>>.el-textarea__inner {
     height: 90px;
     font-size: 18px;
+  }
+  .el-input {
+    width: 500px;
+  }
+  .el-select {
+    width: 500px;
   }
 </style>
