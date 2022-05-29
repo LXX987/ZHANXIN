@@ -1,5 +1,7 @@
 package com.huaqi.zhanxin.controller;
 
+import cn.hutool.json.JSONObject;
+import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.Asset;
 import com.huaqi.zhanxin.entity.CreditAppeal;
 import com.huaqi.zhanxin.entity.RestControllerHelper;
@@ -51,5 +53,27 @@ public class CreditAppealController {
         int userID = getInfo.getUserId();
 
         return creditAppealService.getCreditAppeal(userID);
+    }
+
+    @ApiOperation(value = "申诉列表")
+    @RequestMapping(value = "/appeals", method = RequestMethod.GET)
+    public Result<?> getAppealList(@RequestParam(value = "type",defaultValue = "all") String type,
+                                   @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+                                   @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize)
+    {
+        List<JSONObject> jsonObjects = creditAppealService.getAppealList(type, pageNum, pageSize);
+        if(jsonObjects.isEmpty())
+            return Result.error("404", "暂无数据");
+        else return Result.success(jsonObjects);
+    }
+
+    @ApiOperation(value = "审核申诉")
+    @RequestMapping(value = "/appeals", method = RequestMethod.PUT)
+    public Result<?> judgeAppeal(@RequestParam Integer user_id, @RequestParam Timestamp appeal_time, @RequestParam String type, @RequestParam String detail, @RequestParam Double value, @RequestParam Integer state)
+    {
+        Integer count = creditAppealService.judgeAppeal(user_id, appeal_time, type, detail, value, state);
+        if(count == 1)
+            return Result.success();
+        else return Result.error("500", "操作失败");
     }
 }
