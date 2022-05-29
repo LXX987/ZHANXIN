@@ -3,6 +3,8 @@ package com.huaqi.zhanxin.controller;
 import com.huaqi.zhanxin.common.Result;
 import com.huaqi.zhanxin.entity.*;
 import com.huaqi.zhanxin.service.CreditService;
+import com.huaqi.zhanxin.service.PsychologyService;
+import com.huaqi.zhanxin.service.QuestionService;
 import com.huaqi.zhanxin.service.UserService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import com.huaqi.zhanxin.tools.JwtConfig;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +45,11 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
+    private PsychologyService psychologyService;
+    @Autowired
     private CreditService creditService;
+    @Resource
+    QuestionService questionService;
     RestControllerHelper helper = new RestControllerHelper();
 
 
@@ -153,26 +160,28 @@ public class UserController {
 
     }
 
-    // 计算身份得分的函数
+    /**
+     * 计算身份得分的函数
+     */
     public int calculateIdentity(int occupation,float annual_income,int working_years){
         //  归一化
         int identityScore = 0;
-        int k1 = 100/140000;
-        int k2 = 100/100000;
-        int k3 = 100/5;
-        int occupationScore,incomeScore,workingScore;
+        double k1 = 0.007;
+        double k2 = 0.001;
+        double k3 = 20;
+        double occupationScore,incomeScore,workingScore;
         occupationScore=k1*(occupation-55000);
         if(annual_income>=100000){
             incomeScore=100;
         }else{
-            incomeScore=k2*(int)annual_income;
+            incomeScore=k2*annual_income;
         }
         if(working_years>=5){
             workingScore = 100;
         }else{
             workingScore=k3*working_years;
         }
-        double identityScore1 = 0.4*occupationScore + 0.12*incomeScore + 0.48*workingScore;
+        double identityScore1 = (0.4*occupationScore + 0.12*incomeScore + 0.48*workingScore)*5*0.15;
         identityScore=(int)identityScore1;
         return identityScore;
     }
@@ -367,6 +376,10 @@ public class UserController {
         int userID = getInfo.getUserId();
         //int userID =1;
         HonestyProof honestyProof = userService.selectHonestyProof(userID);
+
+        int behaviorScore = calculateBehaviorScore(userID,honestyProof.getBloodDonation(),honestyProof.getVolunteer(),honestyProof.getContribution(),honestyProof.getCriminal(),honestyProof.getPhoneCost());
+        creditService.updateBehaviorScore(behaviorScore,userID);
+
         map.put("bloodDonation", honestyProof.getBloodDonation());
         map.put("volunteer", honestyProof.getVolunteer());
         map.put("contribution", honestyProof.getContribution());
@@ -377,6 +390,83 @@ public class UserController {
         return helper.toJsonMap();
     }
 
+    /**
+    计算行为方面得分
+     */
+    public int calculateBehaviorScore(int userId,int bloodDonation, double volunteer, double contribution,boolean criminal,int phoneCost){
+
+        List<PsychologyBean> historyList = psychologyService.getResult(userId);
+        historyList.sort((t1, t2) -> t2.getTestTime().compareTo(t1.getTestTime()));
+        //System.out.println(historyList.get(0));
+        int conscientiousness =  historyList.get(0).getConscientiousness();
+        int agreeableness = historyList.get(0).getAgreeableness();
+        int extraversion=historyList.get(0).getExtraversion();
+        int neuroticism=historyList.get(0).getNeuroticism();
+        int openness=historyList.get(0).getOpenness();
+        // 计算心理测试得分
+        int psyScore= 0;
+        if(neuroticism<=20){psyScore+=5;}
+        else if(neuroticism<=25){psyScore+=4;}
+        else if(neuroticism<=30){psyScore+=3;}
+        else if(neuroticism<=38){psyScore+=2;}
+        else {psyScore+=1;}
+
+        if(conscientiousness<=36){psyScore+=1;}
+        else if(conscientiousness<=39){psyScore+=2;}
+        else if(conscientiousness<=41){psyScore+=3;}
+        else if(conscientiousness<=43){psyScore+=4;}
+        else {psyScore+=5;}
+
+        if(openness<=32){psyScore+=1;}
+        else if(openness<=37){psyScore+=2;}
+        else if(openness<=42){psyScore+=3;}
+        else if(openness<=46){psyScore+=4;}
+        else {psyScore+=5;}
+
+        if(extraversion<=26){psyScore+=1;}
+        else if(extraversion<=32){psyScore+=2;}
+        else if(extraversion<=38){psyScore+=3;}
+        else if(extraversion<=41){psyScore+=4;}
+        else {psyScore+=5;}
+
+        if(agreeableness<=30){psyScore+=1;}
+        else if(agreeableness<=35){psyScore+=2;}
+        else if(agreeableness<=40){psyScore+=3;}
+        else if(agreeableness<=48){psyScore+=4;}
+        else {psyScore+=5;}
+
+        // 计算视频分
+        int videoScore = 0;
+        List<VideoScore> questionList = questionService.getVideoScore(userId);
+        for(int i = 0;i<questionList.size();i++){
+            videoScore += questionList.get(i).getQuestion_score();
+        }
+
+        // 计算声誉分
+        int conScore = 0;
+        if(contribution <=100){
+            conScore = 10;
+        }
+        else if(contribution<=500){
+            conScore = 13;
+        }
+        else if(contribution<=1000){
+            conScore = 15;
+        }
+        else{
+            conScore = 16;
+        }
+        int criScore = 30;
+        if(!criminal){
+            criScore = 0;
+        }
+        int phoScore = 10 - phoneCost;
+
+        double  behaviorScore = videoScore + psyScore + bloodDonation*5 + volunteer + conScore + criScore + phoScore;
+        int score = (int)behaviorScore;
+        return score;
+    }
+
     @ApiOperation(value = "获取信贷记录信息")
     @GetMapping("getCreditRecord")
     public Map<String, Object> getCreditRecord(HttpServletRequest request) {
@@ -385,19 +475,91 @@ public class UserController {
         int userID = getInfo.getUserId();
         //int userID =1;
         CreditRecord creditRecord=userService.selectCreditRecord(userID);
-        map.put("DebtRatio", creditRecord.getDebtRatio());
-        map.put("numberRealEstateLoansOrLines", creditRecord.getNumberRealEstateLoansOrLines());
-        map.put("numberOfOpenCreditLinesAndLoans", creditRecord.getNumberOfOpenCreditLinesAndLoans());
-        map.put("numberOfTime30To59DaysPastDueNotWorse", creditRecord.getNumberOfTime30To59DaysPastDueNotWorse());
-        map.put("revolvingUtilizationOfUnsecuredLines", creditRecord.getRevolvingUtilizationOfUnsecuredLines());
-        map.put("seriousDlqin2yrs", creditRecord.getSeriousDlqin2yrs());
-        map.put("monthlyIncome", creditRecord.getMonthlyIncome());
-        map.put("numberOfTime90DaysLate", creditRecord.getNumberOfTime90DaysLate());
-        map.put("numberOfDependents", creditRecord.getNumberOfDependents());
-        map.put("numberOfTime60To89DaysPastDueNotWorse", creditRecord.getNumberOfTime60To89DaysPastDueNotWorse());
+        double DebtRatio = creditRecord.getDebtRatio();
+        int numberRealEstateLoansOrLines = creditRecord.getNumberRealEstateLoansOrLines();
+        int numberOfOpenCreditLinesAndLoans = creditRecord.getNumberOfOpenCreditLinesAndLoans();
+        int numberOfTime30To59DaysPastDueNotWorse = creditRecord.getNumberOfTime30To59DaysPastDueNotWorse();
+        double revolvingUtilizationOfUnsecuredLines = creditRecord.getRevolvingUtilizationOfUnsecuredLines();
+        int seriousDlqin2yrs =  creditRecord.getSeriousDlqin2yrs();
+        double monthlyIncome = creditRecord.getMonthlyIncome();
+        int numberOfTime90DaysLate = creditRecord.getNumberOfTime90DaysLate();
+        int numberOfDependents = creditRecord.getNumberOfDependents();
+        int numberOfTime60To89DaysPastDueNotWorse = creditRecord.getNumberOfTime60To89DaysPastDueNotWorse();
+
+        // 计算分数
+        int creditScore = calculateCreditScore(userID,DebtRatio,
+                numberRealEstateLoansOrLines,
+                numberOfOpenCreditLinesAndLoans,
+                numberOfTime30To59DaysPastDueNotWorse,
+                revolvingUtilizationOfUnsecuredLines,
+                seriousDlqin2yrs,
+                monthlyIncome,
+                numberOfTime90DaysLate,
+                numberOfDependents,
+                numberOfTime60To89DaysPastDueNotWorse
+        );
+        // 更新分数
+        creditService.updateCreditScore(creditScore,userID);
+
+        // 数据返回给前端
+        map.put("DebtRatio", DebtRatio);
+        map.put("numberRealEstateLoansOrLines", numberRealEstateLoansOrLines);
+        map.put("numberOfOpenCreditLinesAndLoans", numberOfOpenCreditLinesAndLoans);
+        map.put("numberOfTime30To59DaysPastDueNotWorse", numberOfTime30To59DaysPastDueNotWorse);
+        map.put("revolvingUtilizationOfUnsecuredLines", revolvingUtilizationOfUnsecuredLines);
+        map.put("seriousDlqin2yrs", seriousDlqin2yrs);
+        map.put("monthlyIncome", monthlyIncome);
+        map.put("numberOfTime90DaysLate", numberOfTime90DaysLate);
+        map.put("numberOfDependents", numberOfDependents);
+        map.put("numberOfTime60To89DaysPastDueNotWorse", numberOfTime60To89DaysPastDueNotWorse);
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
+    }
+
+    /**
+    计算信贷方面的得分
+     */
+    public int calculateCreditScore(int userID,double DebtRatio,
+                                    int numberRealEstateLoansOrLines,
+                                    int numberOfOpenCreditLinesAndLoans,
+                                    int numberOfTime30To59DaysPastDueNotWorse,
+                                    double revolvingUtilizationOfUnsecuredLines,
+                                    int seriousDlqin2yrs,
+                                    double monthlyIncome,
+                                    int numberOfTime90DaysLate,
+                                    int numberOfDependents,
+                                    int numberOfTime60To89DaysPastDueNotWorse)
+    {
+        // 待完成
+        double k1=100*0.39,
+                k2=1*0.0387,
+                k3=10*0.225,
+                k4=100*0.012,
+                k5=0.001*0.0084,
+                k6=10*0.02,
+                k7=10*0.1925,
+                k8=100*0.006,
+                k9=1*0.106,
+                k10=30*0.0014;
+        UserInfo userInfo=userService.getInfo(userID);
+        String IdCard = userInfo.getIDcard();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+        Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
+        String nowTime = df.format(now);
+        int age = (Integer.parseInt(nowTime) - Integer.parseInt(IdCard.substring(6, 14))) / 10000;
+        double creditScore = (DebtRatio*k4
+                + age*k2
+                + numberRealEstateLoansOrLines*k8
+                + numberOfOpenCreditLinesAndLoans*k6
+                + numberOfTime30To59DaysPastDueNotWorse*k3
+                + revolvingUtilizationOfUnsecuredLines*k1
+                + monthlyIncome*k5
+                + numberOfTime90DaysLate*k7
+                + numberOfDependents*k10
+                + numberOfTime60To89DaysPastDueNotWorse*k9)*0.35;
+        int score = (int)creditScore;
+        return score;
     }
 
     @ApiOperation(value = "重置密码")
@@ -583,6 +745,8 @@ public class UserController {
 
     }
 
+
+
     @ApiOperation(value = "获取用户的年龄分布")
     @PostMapping("getUsersAges")
     public Map<String, Object> getUserAges() {
@@ -639,4 +803,5 @@ public class UserController {
         helper.setData(map);
         return helper.toJsonMap();
     }
+
 }
