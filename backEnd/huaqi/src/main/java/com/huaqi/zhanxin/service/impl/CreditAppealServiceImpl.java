@@ -1,5 +1,6 @@
 package com.huaqi.zhanxin.service.impl;
 
+import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.entity.CreditAppeal;
 import com.huaqi.zhanxin.mapper.CreditAppealMapper;
 import com.huaqi.zhanxin.service.CreditAppealService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CreditAppealServiceImpl implements CreditAppealService {
@@ -21,5 +23,12 @@ public class CreditAppealServiceImpl implements CreditAppealService {
     @Override
     public List<CreditAppeal> getCreditAppeal(int userId) {
         return creditAppealMapper.getCreditAppeal(userId);
+    }
+
+    @Override
+    public List<JSONObject> getAppealList(String type, Integer pageNum, Integer pageSize) {
+        if (Objects.equals(type, "all"))
+            return creditAppealMapper.selectAll(pageNum, pageSize);
+        else return creditAppealMapper.selectAllByType(type, pageNum, pageSize);
     }
 }

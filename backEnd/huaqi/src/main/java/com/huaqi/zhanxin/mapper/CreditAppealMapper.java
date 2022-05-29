@@ -1,11 +1,9 @@
 package com.huaqi.zhanxin.mapper;
 
+import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.entity.CreditAppeal;
 import com.huaqi.zhanxin.entity.Picture;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -21,4 +19,12 @@ public interface CreditAppealMapper {
 
     @Select("select * from Credit_Appeal where user_id =#{userId}")
     List<CreditAppeal> getCreditAppeal(@Param("userId") int userId);
+
+    @Select("select * from Credit_Appeal limit ${(pageNum-1)*pageSize},#{pageSize}")
+    List<JSONObject> selectAll(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    @Select("select * from Credit_Appeal where reason=#{type} limit ${(pageNum-1)*pageSize},#{pageSize}")
+    List<JSONObject> selectAllByType(@Param("type") String type, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    @Update("update Credit_Appeal set appeal_state=#{state} where")
 }
