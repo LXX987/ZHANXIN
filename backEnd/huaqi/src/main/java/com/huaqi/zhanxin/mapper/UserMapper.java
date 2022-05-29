@@ -84,4 +84,16 @@ public interface UserMapper {
 
     @Select("select * from Security_Question where user_id=#{userID}")
     SecurityQuestion selectSecurityQuestion(@Param("userID") int userID);
+
+    //获取年龄和分数（年龄由身份证号得到），左外连接
+    @Select(("select Score.user_id, total_score, IDcard from Identity_Info natural right outer join Score"))
+    List<AgeScoreBean> selectAllAges();
+
+    // 向用户信用分数历史表中插入数据（同步于注册）
+    @Insert("insert into History_Score values (#{userID}, #{historyScore}, #{historyTime})")
+    int insertHistoryRecord(@Param("userID") int userID, @Param("historyScore") int historyScore, @Param("historyTime") Timestamp historyTime);
+
+    // 向用户信用分数历史表中更新数据（一月一更或一周一更）
+    @Update("update History_Score set history_score = #{historyScore} where user_id = #{userID}")
+    int changeRecord(@Param("userID") int userID, @Param("historyScore") int historyScore);
 }

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -127,6 +129,18 @@ public class UserController {
             map.put("IDtype", userInfo.getIDtype());
             map.put("IDcard", userInfo.getIDcard());
             map.put("phone", userInfo.getPhone());
+            // 判断成年
+            String Idcard=userInfo.getIDcard();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+            Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
+            String nowTime = df.format(now);
+            nowTime = nowTime.substring(0,4) + nowTime.substring(5, 7) + nowTime.substring(8, 10);
+            int age = (Integer.parseInt(nowTime) - Integer.parseInt(Idcard.substring(6, 14))) / 10000;
+            if(age<18) {
+                map.put("adult", "未成年");
+            } else {
+                map.put("adult", "成年");
+            }
             //计算身份得分并更新
             if (userInfo.getAuthentication()) {
                 int indentityScore = calculateIdentity(userInfo.getOccupation(), userInfo.getAnnualIncome(), userInfo.getWorkingYears());
@@ -240,6 +254,10 @@ public class UserController {
             userService.insertNewInfo(user_id); //用户信息表插入数据
             userService.insertNewReputation(user_id); //用户信誉表插入数据
             userService.insertCreditRecord(user_id,0,0,0,0,0,0,0,0,0,0);
+
+            // 向用户历史分数表中插入记录
+            Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
+            userService.insertHistoryRecord(user_id, 0, currentTIme);
             return helper.toJsonMap();
         }
         else{
@@ -563,5 +581,62 @@ public class UserController {
             return helper.toJsonMap();
         }
 
+    }
+
+    @ApiOperation(value = "获取用户的年龄分布")
+    @PostMapping("getUsersAges")
+    public Map<String, Object> getUserAges() {
+        Map<String, Object> map = new HashMap<>();
+        List<AgeScoreBean> identityInfoList = userService.selectAllAges();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+        Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
+        String nowTime = df.format(now);
+        nowTime = nowTime.substring(0,4) + nowTime.substring(5, 7) + nowTime.substring(8, 10);
+        System.out.println(nowTime);
+        System.out.println(identityInfoList);
+        //计算年龄，得到userId->userAge
+        for (AgeScoreBean ageScoreBean : identityInfoList) {
+            if (ageScoreBean.getIDcard() != null && !ageScoreBean.getIDcard().isEmpty()) {
+                String Idcard = ageScoreBean.getIDcard();
+                int age = (Integer.parseInt(nowTime) - Integer.parseInt(Idcard.substring(6, 14))) / 10000;
+                System.out.println(age);
+                ageScoreBean.setAge(age);
+            } else {
+                ageScoreBean.setAge(0);
+            }
+        }
+        int unAuthentication = 0;
+        int num1822 = 0;
+        int num2225 = 0;
+        int num2530 = 0;
+        int num30 = 0;
+        for(AgeScoreBean ageScoreBean : identityInfoList) {
+            int age = ageScoreBean.getAge();
+            if(age == 0) {
+                System.out.println("未实名认证");
+                unAuthentication += 1;
+            } else if(age < 18) {
+                System.out.println("!!!，未成年不可以信贷！！！");
+            } else if(age < 22) {
+                num1822 += 1;
+            } else if(age < 25) {
+                num2225 += 1;
+            } else if(age < 30) {
+                num2530 += 1;
+            } else {
+                num30 += 1;
+            }
+        }
+        //1.获取年龄分布
+        //2.获取不同等级的年龄特征
+        map.put("unauthentication", unAuthentication);
+        map.put("num1822", num1822);
+        map.put("num2225", num2225);
+        map.put("num2530", num2530);
+        map.put("num30", num30);
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
     }
 }
