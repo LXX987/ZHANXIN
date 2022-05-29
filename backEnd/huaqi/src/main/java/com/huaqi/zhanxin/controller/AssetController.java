@@ -116,25 +116,25 @@ public class AssetController {
         return helper.toJsonMap();
     }
 
+    /**
+     * 计算资产得分
+     */
     public int countAsset(int money,float annual_income){
-        int k2 = 100/10000;
-        int k1 = 100/10000;
-        int moneyScore,incomeScore;
-        //int houseScore = 0,stateScore= 0;
+        double k2 = 0.01;
+        double k1 = 0.001;
+        double moneyScore,incomeScore;
         int accountScore;
         if(annual_income>=100000){
             incomeScore=100;
         }else{
-            incomeScore=(int)annual_income/1000;
+            incomeScore=annual_income*k2;
         }
-        if(money>=80000){
+        if(money>=50000){
             moneyScore=100;
         }else{
-            moneyScore=money/800;
+            moneyScore=money*k1;
         }
-        //System.out.println(money);
         System.out.println(moneyScore);
-        //System.out.println(annual_income);
         System.out.println(incomeScore);
         accountScore =(int)(moneyScore*0.73+incomeScore*0.27);
         return accountScore;

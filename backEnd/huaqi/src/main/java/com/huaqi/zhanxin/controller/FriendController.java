@@ -2,10 +2,12 @@ package com.huaqi.zhanxin.controller;
 
 import cn.hutool.json.JSONObject;
 import com.huaqi.zhanxin.common.Result;
+import com.huaqi.zhanxin.service.CreditService;
 import com.huaqi.zhanxin.service.FriendService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +22,8 @@ public class FriendController {
 
     @Resource
     FriendService friendService;
-
+    @Autowired
+    private CreditService creditService;
     @ApiOperation(value = "好友列表")
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
     public Result<?> getFriendList(HttpServletRequest request,
@@ -29,12 +32,32 @@ public class FriendController {
     {
         GetInformationFromRequest tokenInfo = new GetInformationFromRequest(request);
         Integer id = tokenInfo.getUserId();
+        //Integer id = 1;
+        int friendNum = 0;
         List<JSONObject> jsonObjects = friendService.getFriendList(id, pageNum, pageSize);
-        if(jsonObjects == null)
+        if(jsonObjects == null){
             return Result.error("404", "暂无好友");
-        else return Result.success(jsonObjects);
+        }
+        else{
+            // 计算好友分
+            friendNum = jsonObjects.size();
+            int avgScore = 0;
+            for(JSONObject friend :jsonObjects){
+                System.out.println(friend);
+                avgScore += friend.getInt("total_score");
+            }
+            int socialScore = calculateFriendScore(friendNum,avgScore);
+            // 更新数据
+            creditService.updateSocialScore(socialScore,id);
+            return Result.success(jsonObjects);
+        }
     }
 
+    public int calculateFriendScore(int friendNum, int avgScore){
+        double socialScore = 0.1*friendNum*avgScore*2*0.05;
+        int score = (int)socialScore;
+        return score;
+    }
     @ApiOperation(value = "添加好友")
     @RequestMapping(value = "/friends", method = RequestMethod.POST)
     public Result<?> sendFriendRequest()

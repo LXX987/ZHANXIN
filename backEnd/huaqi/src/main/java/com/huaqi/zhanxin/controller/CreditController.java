@@ -32,6 +32,11 @@ public class CreditController {
         //int userID=1;
         Credit credit = creditService.selectScore(userID);
 
+        // 计算并更新总分
+        int score = calculateCredit(credit.getIdentityScore(),credit.getAssetScore(),credit.getCreditScore(),credit.getBehaviorScore(),credit.getSocialScore());
+        creditService.updateTotalScore(score,userID);
+
+        //从history_score中获取当前分数，并将分数返回到前端
         map.put("total_score", credit.getTotalScore());
         map.put("identity_score", credit.getIdentityScore());
         map.put("asset_score", credit.getAssetScore());
@@ -43,9 +48,13 @@ public class CreditController {
         return helper.toJsonMap();
     }
 
-    public int calculateCredit(){
-
-        return 1;
+    /**
+    总分更新
+     */
+    public int calculateCredit(int identity_score, int asset_score, int credit_score, int behavior_score, int social_score){
+        double totalScore = identity_score+asset_score + credit_score + behavior_score + social_score;
+        int score = (int)totalScore;
+        return score;
     }
 
     @ApiOperation(value = "获取全部信用分数信息")

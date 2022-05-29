@@ -13,6 +13,9 @@ public interface CreditMapper {
     @Select("select * from Score where user_id=#{userID}")
     Credit selectScore(@Param("userID") int userID);
 
+    @Select("select * from Score where user_id=#{userID}")
+    Credit selectRecentScore(@Param("userID") int userID);
+
     @Insert("insert into Score(user_id,total_score,identity_score,asset_score,credit_score,behavior_score,social_score) values (#{user_id},#{total_score},#{identity_score},#{asset_score},#{credit_score},#{behavior_score},#{social_score})")
     int insertInfo(@Param("user_id") int user_id,@Param("total_score") int total_score,@Param("identity_score") int identity_score,@Param("asset_score") int asset_score,@Param("credit_score") int credit_score,@Param("behavior_score") int behavior_score,@Param("social_score") int social_score);
 
