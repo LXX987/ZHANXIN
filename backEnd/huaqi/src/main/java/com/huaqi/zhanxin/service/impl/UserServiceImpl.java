@@ -145,14 +145,27 @@ public class UserServiceImpl implements UserService {
     }
 
     // 向用户信用分数历史表中插入数据（同步于注册）
-    public int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime) {
-        return userMapper.insertHistoryRecord(userID, historyScore, historyTime);
+    public int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+                                   int creditScore, int behaviourScore, int socialScore) {
+        return userMapper.insertHistoryRecord(userID, historyScore, historyTime, identityScore, assetsScore,
+                creditScore, behaviourScore, socialScore);
     }
 
     // 向用户信用分数历史表中更新数据（一月一更或一周一更）
-    public int updateHistoryRecord(int userID, int historyScore) {
-        return userMapper.changeRecord(userID, historyScore);
+    public int updateHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+                                   int creditScore, int behaviourScore, int socialScore) {
+        return userMapper.changeRecord(userID, historyScore, historyTime, identityScore, assetsScore,
+                creditScore, behaviourScore, socialScore);
     }
 
+    // 获取目标用户的信用分数
+    public HistoryScore selectUserCredit(int userId) {
+        return userMapper.selectUserCredit(userId);
+    }
+
+    // 获取历史分数表中全部的用户id的list
+    public List<Integer> selectUserIdList() {
+        return userMapper.selectUserIdList();
+    }
 
 }

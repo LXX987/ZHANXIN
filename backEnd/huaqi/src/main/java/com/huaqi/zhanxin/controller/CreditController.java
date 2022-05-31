@@ -1,8 +1,10 @@
 package com.huaqi.zhanxin.controller;
 
 import com.huaqi.zhanxin.entity.Credit;
+import com.huaqi.zhanxin.entity.HistoryScore;
 import com.huaqi.zhanxin.entity.RestControllerHelper;
 import com.huaqi.zhanxin.service.CreditService;
+import com.huaqi.zhanxin.service.UserService;
 import com.huaqi.zhanxin.tools.GetInformationFromRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class CreditController {
     @Autowired
     private CreditService creditService;
+    @Autowired
+    private UserService userService;
     RestControllerHelper helper = new RestControllerHelper();
     @ApiOperation(value = "获取信用信息")
     @GetMapping("userCredit")
@@ -37,12 +41,15 @@ public class CreditController {
         creditService.updateTotalScore(score,userID);
 
         //从history_score中获取当前分数，并将分数返回到前端
-        map.put("total_score", credit.getTotalScore());
-        map.put("identity_score", credit.getIdentityScore());
-        map.put("asset_score", credit.getAssetScore());
-        map.put("credit_score", credit.getCreditScore());
-        map.put("behavior_score", credit.getBehaviorScore());
-        map.put("social_score", credit.getSocialScore());
+        HistoryScore currentCredit = userService.selectUserCredit(userID);
+        map.put("total_score", currentCredit.getTotalScore());
+        map.put("identity_score", currentCredit.getIdentityScore());
+        map.put("asset_score", currentCredit.getAssetScore());
+        map.put("credit_score",currentCredit.getCreditScore());
+        map.put("behavior_score", currentCredit.getBehaviorScore());
+        map.put("social_score", currentCredit.getSocialScore());
+        map.put("lastUpdateTime", currentCredit.getHistoryTime());
+
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();
