@@ -90,10 +90,27 @@ public interface UserMapper {
     List<AgeScoreBean> selectAllAges();
 
     // 向用户信用分数历史表中插入数据（同步于注册）
-    @Insert("insert into History_Score values (#{userID}, #{historyScore}, #{historyTime})")
-    int insertHistoryRecord(@Param("userID") int userID, @Param("historyScore") int historyScore, @Param("historyTime") Timestamp historyTime);
+    @Insert("insert into History_Score values (#{userID}, #{historyScore}, #{historyTime}), #{identityScore}, " +
+            "#{assetsScore}, #{creditScore}, #{behaviourScore}, #{socialScore}")
+    int insertHistoryRecord(@Param("userID") int userID, @Param("historyScore") int historyScore,
+                            @Param("historyTime") Timestamp historyTime, @Param("identityScore") int identityScore,
+                            @Param("assetsScore") int assetsScore, @Param("creditScore") int creditScore,
+                            @Param("behaviourScore") int behaviourScore, @Param("socialScore") int socialScore);
 
     // 向用户信用分数历史表中更新数据（一月一更或一周一更）
-    @Update("update History_Score set history_score = #{historyScore} where user_id = #{userID}")
-    int changeRecord(@Param("userID") int userID, @Param("historyScore") int historyScore);
+    @Update("update History_Score set history_score = #{historyScore}, time = #{historyTime}, " +
+            "identity_score = #{identityScore}, assets_score = #{assetsScore}, credit_score = #{creditScore}, " +
+            "behavior_score = #{behaviourScore}, social_score = #{socialScore} where user_id = #{userID}")
+    int changeRecord(@Param("userID") int userID, @Param("historyScore") int historyScore,
+                     @Param("historyTime") Timestamp historyTime, @Param("identityScore") int identityScore,
+                     @Param("assetsScore") int assetsScore, @Param("creditScore") int creditScore,
+                     @Param("behaviourScore") int behaviourScore, @Param("socialScore") int socialScore);
+
+    //获取目标用户的信用分数
+    @Select("select * from History_Score where user_id = #{userId}")
+    HistoryScore selectUserCredit(@Param("userId") int userId);
+
+    // 获取user_id的list
+    @Select("select user_id from History_Score")
+    List<Integer> selectUserIdList();
 }

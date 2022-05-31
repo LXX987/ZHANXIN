@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -266,7 +265,8 @@ public class UserController {
 
             // 向用户历史分数表中插入记录
             Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
-            userService.insertHistoryRecord(user_id, 0, currentTIme);
+            userService.insertHistoryRecord(user_id, 0, currentTIme, 0, 0,
+                    0, 0, 0);
             return helper.toJsonMap();
         }
         else{
@@ -745,8 +745,6 @@ public class UserController {
 
     }
 
-
-
     @ApiOperation(value = "获取用户的年龄分布")
     @PostMapping("getUsersAges")
     public Map<String, Object> getUserAges() {
@@ -799,6 +797,27 @@ public class UserController {
         map.put("num2225", num2225);
         map.put("num2530", num2530);
         map.put("num30", num30);
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "用户获取信用分数")
+    @PostMapping("getCreditScore")
+    public Map<String, Object> getCreditScore(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID = 3;
+
+        HistoryScore currentCredit = userService.selectUserCredit(userID);
+        map.put("totalScore", currentCredit.getTotalScore());
+        map.put("identityScore", currentCredit.getIdentityScore());
+        map.put("assetsScore", currentCredit.getAssetScore());
+        map.put("creditScore",currentCredit.getCreditScore());
+        map.put("behaviourScore", currentCredit.getBehaviorScore());
+        map.put("socialScore", currentCredit.getSocialScore());
+        map.put("lastUpdateTime", currentCredit.getHistoryTime());
         helper.setMsg("Success");
         helper.setData(map);
         return helper.toJsonMap();

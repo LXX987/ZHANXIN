@@ -1,8 +1,6 @@
 package com.huaqi.zhanxin.service;
 
 import com.huaqi.zhanxin.entity.*;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +31,10 @@ public interface UserService {
     int insertSecurityQuestion(int userID, String teacher, String city);
     SecurityQuestion selectSecurityQuestion(int userID);
     List<AgeScoreBean> selectAllAges();
-    int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime);
-    int updateHistoryRecord(int userID, int historyScore);
+    int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+                            int creditScore, int behaviourScore, int socialScore);
+    int updateHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+                            int creditScore, int behaviourScore, int socialScore);
+    HistoryScore selectUserCredit(int userId);
+    List<Integer> selectUserIdList();
 }
