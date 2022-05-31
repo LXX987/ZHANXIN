@@ -32,6 +32,7 @@
                     <el-col :span="12" style="padding-left:50px;padding-top:50px">
                         <!-- 信用分数解读 -->
                         <div class="score_detail"> 
+                            <el-row><p>更新时间：{{historyTime}}</p></el-row>
                             <el-row>
                                 <el-col :span="12"><el-card class="square" @click.native="gotoBehavior()"><div class="behavior">行为积累方面：{{behavior}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
                                 <el-col :span="12"><el-card class="square" @click.native="gotoLoan()"><div class="behavior" >信贷记录方面：{{credit_histort}}分</div><img class="right" src="@/assets/right.png"/></el-card></el-col>
@@ -92,6 +93,7 @@
     name:'CreditReport',
    data(){  
          return{
+             historyTime: '',
              rank:'',
             quota:'暂无数据',
             dialogTableVisible: false,
@@ -178,6 +180,7 @@
                     this.idfication =  res.data.data.identity_score
                     this.asset = res.data.data.asset_score
                     this.social = res.data.data.social_score
+                    this.historyTime = res.data.data.lastUpdateTime
                     charts.setOption({
                     tooltip: {},//提示层
                     legend: {
@@ -236,6 +239,11 @@
   }
 </script>
 <style lang="css" scoped>
+.score_detail p {
+    font-size: 18px;
+    text-align: right;
+    padding: 0px 40px 10px 0px;
+}
 .rank{
     padding-left: 180px;
     padding-right: 180px;
