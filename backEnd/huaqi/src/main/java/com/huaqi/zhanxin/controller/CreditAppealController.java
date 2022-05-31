@@ -64,7 +64,13 @@ public class CreditAppealController {
         List<JSONObject> jsonObjects = creditAppealService.getAppealList(type, pageNum, pageSize);
         if(jsonObjects.isEmpty())
             return Result.error("404", "暂无数据");
-        else return Result.success(jsonObjects);
+        else
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("listSize", jsonObjects.size());
+            jsonObject.put("data", jsonObjects);
+            return Result.success(jsonObject);
+        }
     }
 
     @ApiOperation(value = "审核申诉")
