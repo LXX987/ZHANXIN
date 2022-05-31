@@ -36,6 +36,7 @@ export default {
     methods: {
         logout() {
             this.$message('已退出账号！');
+            this.$router.push("/csLogin")
         }
     }
 }

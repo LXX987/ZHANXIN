@@ -232,7 +232,8 @@ export default new Router({
           name: 'HomePage',
           components: {
             table: () => import('@/components/HomePage')
-          }
+          },
+          meta: {  requireAuth:true  }
         },
         {
           path: 'ScoreDetail',

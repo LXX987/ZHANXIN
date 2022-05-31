@@ -23,3 +23,23 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+ 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
+      next()
+    } else {
+      // 未登录,跳转到登陆页面
+      next({
+        path: '/'
+      })
+    }
+  } else {
+    if(sessionStorage.getItem("token") == 'true'){
+      next();
+    }else{
+      next();
+    }
+  }
+});
