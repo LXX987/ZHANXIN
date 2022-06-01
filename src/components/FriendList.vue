@@ -69,7 +69,7 @@ export default {
     return {
       friends: [      ],
       user_id: -1,
-      invite_code: "",
+      invited_code: "",
       my_code: "",
       circleUrl: ""
     }
@@ -112,41 +112,27 @@ export default {
       })
     },
     inputInviteCode() {
-      this.$axios({
-        method: "post",
-        url: 'http://localhost:8899/InviteCode/friendCode',
-        headers: {
-          token: window.sessionStorage.getItem("token")
-        },
-        params: {
-          invitedCode: this.invite_code
-        },
-      }).then(res => {
-        this.$message({
-          type: 'success',
-          message: '填写成功!'
-        });
-        this.invite_code = ''
-      }, err => {
-        console.log(err);
-        this.$message({
-          type: 'success',
-          message: '填写失败!'
-        });
-      })
+      if(this.invited_code != this.my_code)
+            { 
+               this.$axios({
+                method:"post",
+                url: 'http://localhost:8888/InviteCode/friendCode',
+                params:{
+                    invitedCode:this.invited_code
+                },
+                headers: { token:window.sessionStorage.getItem("token")}
+            }).then(res=>{
+                this.$message({
+                  type: 'success',
+                  message: '填写成功!'
+                });
+            }, err => {
+             this.$message.error('该邀请码不存在！')
+              })
+            }else{
+                this.$message.error('不能填写自己的邀请码')
+            }
     },
-    // getMyCode(){
-    //   this.$axios({
-    //     method: "get",
-    //     url: 'http://localhost:8899/user/codes',
-    //     headers: {token: window.sessionStorage.getItem("token")},
-    //   }).then(res => {
-    //     console.log(res);
-    //     this.my_code=res.data.data
-    //   }, err => {
-    //     console.log(err);
-    //   })
-    // },
     copy(){
       //创建input标签
       var input = document.createElement('input')
