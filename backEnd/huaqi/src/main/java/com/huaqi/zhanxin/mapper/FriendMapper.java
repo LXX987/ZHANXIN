@@ -1,9 +1,7 @@
 package com.huaqi.zhanxin.mapper;
 
 import cn.hutool.json.JSONObject;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,4 +13,7 @@ public interface FriendMapper {
 
     @Select("select invite_code from Write_Code where user_id=#{user_id}")
     String selectOneCodeById(@Param("user_id") Integer id);
+
+    @Update("update Write_Code set invited_code=null,submit_time=null where user_id=#{friend_id} and invited_code=#{invite_code}")
+    Integer deleteFriend(@Param("friend_id") Integer friend_id, @Param("invite_code") String invite_code);
 }

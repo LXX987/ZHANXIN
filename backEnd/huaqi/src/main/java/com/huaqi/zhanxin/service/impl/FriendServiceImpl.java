@@ -28,4 +28,11 @@ public class FriendServiceImpl implements FriendService {
     {
         return friendMapper.selectOneCodeById(id);
     }
+
+    @Override
+    public Integer deleteFriend(Integer user_id, Integer friend_id)
+    {
+        String invite_code = friendMapper.selectOneCodeById(user_id);
+        return friendMapper.deleteFriend(friend_id, invite_code);
+    }
 }

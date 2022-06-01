@@ -78,4 +78,16 @@ public class FriendController {
             return Result.error("404", "暂未生成邀请码");
         else return Result.success(code);
     }
+
+    @ApiOperation(value = "删除好友")
+    @RequestMapping(value = "/friends", method = RequestMethod.DELETE)
+    public Result<?> deleteFriend(@RequestParam Integer friend_id, HttpServletRequest request)
+    {
+        GetInformationFromRequest tokenInfo = new GetInformationFromRequest(request);
+        Integer user_id = tokenInfo.getUserId();
+        Integer count = friendService.deleteFriend(user_id, friend_id);
+        if(count <= 0)
+            return Result.error("500", "删除失败");
+        else return Result.success();
+    }
 }
