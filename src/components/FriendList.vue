@@ -137,7 +137,7 @@ export default {
       //创建input标签
       var input = document.createElement('input')
       //将input的值设置为需要复制的内容
-      input.value = this.invite_code;
+      input.value = this.my_code;
       //添加input标签
       document.body.appendChild(input)
       //选中input标签
