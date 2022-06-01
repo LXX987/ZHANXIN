@@ -169,7 +169,7 @@ public class UserController {
         double k2 = 0.001;
         double k3 = 20;
         double occupationScore,incomeScore,workingScore;
-        occupationScore=k1*(occupation-55000);
+        occupationScore=k1*(occupation-5000);
         if(annual_income>=100000){
             incomeScore=100;
         }else{
