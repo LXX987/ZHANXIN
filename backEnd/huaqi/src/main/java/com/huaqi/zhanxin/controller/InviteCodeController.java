@@ -33,9 +33,9 @@ public class InviteCodeController {
     @PostMapping("generareCode")
     public Map<String, Object> generate(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-//        int userID = getInfo.getUserId();
-        int userID = 1;
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID = 1;
         if (StringUtils.isEmpty(userID)) {
             map.put("msg", "关键数据缺失");
             return map;
