@@ -25,21 +25,19 @@ new Vue({
 })
 
  
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {undefined
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
-      next()
-    } else {
-      // 未登录,跳转到登陆页面
-      next({
-        path: '/'
-      })
-    }
-  } else {
-    if(sessionStorage.getItem("token") == 'true'){
-      next();
-    }else{
-      next();
-    }
+  if (sessionStorage.getItem('token')) { // 通过vuex state获取当前的token是否存在,通过一个变量（vuex中或localstorage中），如果为真，那么跳转
+  
+  next();
+  }else {undefined
+  alert('请输入账号和密码')
+  next({undefined,
+  path: '/',//如果为假，则重定向到这个路由路劲
+  query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+  })
   }
-});
+  }else {undefined
+  next()
+  }
+  })
