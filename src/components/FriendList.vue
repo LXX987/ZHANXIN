@@ -78,6 +78,7 @@ export default {
 
   },
   mounted(){
+    this.getInviteode();
     this.getUserId();
   },
   methods: {
@@ -177,7 +178,17 @@ export default {
       }, err => {
         console.log(err);
       })
-    }
+    },
+    getInviteode() {
+          this.$axios({
+          method:"post",
+          url: 'http://localhost:8899/InviteCode/generareCode',
+          headers: { token:window.sessionStorage.getItem("token")}
+      }).then(res=>{
+          console.log(res.data.data.inviteCode)
+          this.invite_code = res.data.data.inviteCode
+      })
+    },
   }
 }
 </script>
