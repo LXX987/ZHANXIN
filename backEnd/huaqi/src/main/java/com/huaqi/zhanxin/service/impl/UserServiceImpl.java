@@ -145,9 +145,9 @@ public class UserServiceImpl implements UserService {
     }
 
     // 向用户信用分数历史表中插入数据（同步于注册）
-    public int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+    public int insertHistoryRecord(int userID, int totalScore, Timestamp historyTime, int identityScore, int assetScore,
                                    int creditScore, int behaviourScore, int socialScore) {
-        return userMapper.insertHistoryRecord(userID, historyScore, historyTime, identityScore, assetsScore,
+        return userMapper.insertHistoryRecord(userID, totalScore, historyTime, identityScore, assetScore,
                 creditScore, behaviourScore, socialScore);
     }
 

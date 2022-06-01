@@ -31,7 +31,7 @@ public interface UserService {
     int insertSecurityQuestion(int userID, String teacher, String city);
     SecurityQuestion selectSecurityQuestion(int userID);
     List<AgeScoreBean> selectAllAges();
-    int insertHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
+    int insertHistoryRecord(int userID, int totalScore, Timestamp historyTime, int identityScore, int assetScore,
                             int creditScore, int behaviourScore, int socialScore);
     int updateHistoryRecord(int userID, int historyScore, Timestamp historyTime, int identityScore, int assetsScore,
                             int creditScore, int behaviourScore, int socialScore);

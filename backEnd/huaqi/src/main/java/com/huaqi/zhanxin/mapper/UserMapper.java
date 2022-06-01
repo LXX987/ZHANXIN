@@ -90,16 +90,16 @@ public interface UserMapper {
     List<AgeScoreBean> selectAllAges();
 
     // 向用户信用分数历史表中插入数据（同步于注册）
-    @Insert("insert into History_Score values (#{userID}, #{historyScore}, #{historyTime}), #{identityScore}, " +
-            "#{assetsScore}, #{creditScore}, #{behaviourScore}, #{socialScore}")
-    int insertHistoryRecord(@Param("userID") int userID, @Param("historyScore") int historyScore,
+    @Insert("insert into History_Score values (#{userID}, #{totalScore}, #{historyTime}, #{identityScore}, " +
+            "#{assetScore}, #{creditScore}, #{behaviourScore}, #{socialScore})")
+    int insertHistoryRecord(@Param("userID") int userID, @Param("totalScore") int totalScore,
                             @Param("historyTime") Timestamp historyTime, @Param("identityScore") int identityScore,
-                            @Param("assetsScore") int assetsScore, @Param("creditScore") int creditScore,
+                            @Param("assetScore") int assetScore, @Param("creditScore") int creditScore,
                             @Param("behaviourScore") int behaviourScore, @Param("socialScore") int socialScore);
 
     // 向用户信用分数历史表中更新数据（一月一更或一周一更）
-    @Update("update History_Score set history_score = #{historyScore}, time = #{historyTime}, " +
-            "identity_score = #{identityScore}, assets_score = #{assetsScore}, credit_score = #{creditScore}, " +
+    @Update("update History_Score set total_score = #{historyScore}, history_time = #{historyTime}, " +
+            "identity_score = #{identityScore}, asset_score = #{assetsScore}, credit_score = #{creditScore}, " +
             "behavior_score = #{behaviourScore}, social_score = #{socialScore} where user_id = #{userID}")
     int changeRecord(@Param("userID") int userID, @Param("historyScore") int historyScore,
                      @Param("historyTime") Timestamp historyTime, @Param("identityScore") int identityScore,
