@@ -33,11 +33,11 @@
         <el-row :gutter="20">
           <el-col :span="8" v-for="(friend) in friends"  :key="friend.user_id">
             <el-card class="friend-card" >
-              <p class="name-txt"><el-avatar :size="50" :src="friend.userAvatar"></el-avatar>
-              <span class="name">{{friend.userName}}</span>
-                <el-button type="danger" icon="el-icon-delete" class="delete_friend" circle></el-button></p>
+              <p class="name-txt"><el-avatar :size="50" :src="friend.user_avatar"></el-avatar>
+              <span class="name">{{friend.user_name}}</span>
+                <el-button type="danger" icon="el-icon-delete" class="delete_friend" circle @click="deleteFriend(friend.user_id)"></el-button></p>
               <div class="text item">
-                <p class="descri-txt">邮箱：{{friend.userEmail}}</p>
+                <p class="descri-txt">邮箱：{{friend.user_email}}</p>
                 <p class="descri-txt">信用分：{{friend.total_score}}分</p>
               </div>
             </el-card>
@@ -67,33 +67,7 @@ export default {
   name: "FriendList",
   data() {
     return {
-      friends: [
-        {
-          userName:'张三',
-          userEmail:'12212341234@111.com',
-          total_score:400
-        },
-        {
-          userName:'hhh',
-          userEmail:'122@111',
-          total_score:400
-        },
-        {
-          userName:'hhh',
-          userEmail:'122@111',
-          total_score:400
-        },
-        {
-          userName:'张三',
-          userEmail:'12212341234@111.com',
-          total_score:400
-        },
-        {
-          userName:'张三',
-          userEmail:'12212341234@111.com',
-          total_score:400
-        }
-      ],
+      friends: [      ],
       user_id: -1,
       invite_code: "",
       my_code: "",
@@ -130,7 +104,7 @@ export default {
         //   id: this.user_id
         // }
       }).then(res => {
-        console.log(res);
+        console.log("我的好友数据："+res);
         this.friends = res.data.data;
       }, err => {
         console.log(err);
@@ -188,7 +162,22 @@ export default {
       //移除input标签
       document.body.removeChild(input)
     },
-
+    deleteFriend(index) {
+      console.log("删除好友："+index);
+      this.$axios({
+        method: "delete",
+        url: 'http://localhost:8899/user/friends',
+        params:{
+          friend_id:index
+        },
+        headers: {token: window.sessionStorage.getItem("token")},
+      }).then(res => {
+        console.log(res);
+        location.reload();
+      }, err => {
+        console.log(err);
+      })
+    }
   }
 }
 </script>
