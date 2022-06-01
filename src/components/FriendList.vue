@@ -135,18 +135,18 @@ export default {
         });
       })
     },
-    getMyCode(){
-      this.$axios({
-        method: "get",
-        url: 'http://localhost:8899/user/codes',
-        headers: {token: window.sessionStorage.getItem("token")},
-      }).then(res => {
-        console.log(res);
-        this.my_code=res.data.data
-      }, err => {
-        console.log(err);
-      })
-    },
+    // getMyCode(){
+    //   this.$axios({
+    //     method: "get",
+    //     url: 'http://localhost:8899/user/codes',
+    //     headers: {token: window.sessionStorage.getItem("token")},
+    //   }).then(res => {
+    //     console.log(res);
+    //     this.my_code=res.data.data
+    //   }, err => {
+    //     console.log(err);
+    //   })
+    // },
     copy(){
       //创建input标签
       var input = document.createElement('input')
@@ -186,7 +186,7 @@ export default {
           headers: { token:window.sessionStorage.getItem("token")}
       }).then(res=>{
           console.log(res.data.data.inviteCode)
-          this.invite_code = res.data.data.inviteCode
+          this.my_code = res.data.data.inviteCode
       })
     },
   }
