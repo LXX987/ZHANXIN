@@ -53,9 +53,9 @@ public class QuestionController {
     @ApiOperation(value = "提交问题")
     @PostMapping("videoquestion")
     public Map<String, Object> submitQuestion(HttpServletRequest request,Integer video_id, Integer watch, Integer score) {
-//        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
-//        int userID = getInfo.getUserId();
-        int userID =2;
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID =2;
         System.out.println(userID);
         Map<String, Object> map = new HashMap<>();
         try {
