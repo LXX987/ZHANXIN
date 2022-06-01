@@ -91,7 +91,7 @@ export default {
         console.log(res);
         this.user_id = res.data.data.user_id;
         this.getFriendList();
-        this.getMyCode();
+        // this.getMyCode();
       }, err => {
         console.log(err);
       })
@@ -116,7 +116,7 @@ export default {
             { 
                this.$axios({
                 method:"post",
-                url: 'http://localhost:8888/InviteCode/friendCode',
+                url: 'http://localhost:8899/InviteCode/friendCode',
                 params:{
                     invitedCode:this.invited_code
                 },
