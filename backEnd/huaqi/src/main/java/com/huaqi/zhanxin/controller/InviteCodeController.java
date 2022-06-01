@@ -34,6 +34,7 @@ public class InviteCodeController {
     public Map<String, Object> generate(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        Timestamp currentTIme = new Timestamp(System.currentTimeMillis());
         int userID = getInfo.getUserId();
         //int userID = 1;
         if (StringUtils.isEmpty(userID)) {
@@ -51,7 +52,7 @@ public class InviteCodeController {
                 code = generateCode();
                 inviteCode1 = inviteCodeService.searchCode(code);
             }
-            inviteCodeService.insertCode(userID,code);
+            inviteCodeService.insertCode(userID,code,currentTIme);
             map.put("inviteCode", code);
         }
         helper.setMsg("Success");

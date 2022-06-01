@@ -21,9 +21,10 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         return inviteCodeMapper.selectUserCode(userID);
     }
 
+
     @Override
-    public int insertCode(int userID, String inviteCode) {
-        return inviteCodeMapper.insertCode(userID,inviteCode);
+    public int insertCode(int userID, String inviteCode,Timestamp submitTime) {
+        return inviteCodeMapper.insertCode(userID,inviteCode,submitTime);
     }
 
     @Override
