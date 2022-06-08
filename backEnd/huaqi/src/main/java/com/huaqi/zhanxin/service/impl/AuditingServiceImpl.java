@@ -40,4 +40,10 @@ public class AuditingServiceImpl implements AuditingService {
         }
         else return -1;
     }
+
+    @Override
+    public Integer examineBankCertificate(Integer id, Integer state)
+    {
+        return auditingMapper.updateStateById(id, state);
+    }
 }
