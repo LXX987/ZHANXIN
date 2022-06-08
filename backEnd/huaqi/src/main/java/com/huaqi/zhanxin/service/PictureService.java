@@ -18,5 +18,6 @@ public interface PictureService {
     List<Picture> getVolunteer(int userId);
     List<Picture> getDonation(int userId);
     List<Picture> getPhoneCost(int userId);
+    List<Picture> getBank(int userId);
     List<Picture> pictureList();
 }

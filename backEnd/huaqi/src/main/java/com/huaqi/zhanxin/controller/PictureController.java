@@ -285,6 +285,55 @@ public class PictureController {
         }
     }
 
+    @ApiOperation(value="上传存款证明")
+    @ResponseBody
+    @PostMapping("uploadBank")
+    public Map<String, Object> uploadBank(HttpServletRequest request, @RequestParam("file") MultipartFile file){
+
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+
+        if(file.isEmpty()){
+            map.put("success","0");
+            map.put("file","上传文件为空！");
+            helper.setMsg("Success");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+        try {
+            String result = pictureService.uploadFile(userID,file,"bank",request);
+            LOGGER.info(result);
+            if (result.equals("-1")) {
+                map.put("success","0");
+                map.put("file","上传失败！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else if (result.equals("-2")) {
+                map.put("success","0");
+                map.put("file","文件类型错误！");
+                helper.setMsg("Failed");
+                helper.setData(map);
+                return helper.toJsonMap();
+            } else {
+                map.put("success","1");
+                map.put("file","上传文件成功！");
+                helper.setMsg("Success");
+                helper.setData(map);
+                return helper.toJsonMap();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("文件上传失败！");
+            map.put("success","0");
+            map.put("file","上传文件失败！");
+            helper.setMsg("Failed");
+            helper.setData(map);
+            return helper.toJsonMap();
+        }
+    }
+
     @ApiOperation(value = "获取犯罪记录审核情况")
     @GetMapping("getCrime")
     public Map<String, Object> getCrime(HttpServletRequest request) {
@@ -424,6 +473,35 @@ public class PictureController {
             }
             Picture phoneCostPic=phoneCostPicList.get(max);
             map.put("picState", phoneCostPic.getState());
+        }
+        helper.setMsg("Success");
+        helper.setData(map);
+        return helper.toJsonMap();
+    }
+
+    @ApiOperation(value = "获取银行存款审核情况")
+    @GetMapping("getBank")
+    public Map<String, Object> getBank(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        GetInformationFromRequest getInfo = new GetInformationFromRequest(request);
+        int userID = getInfo.getUserId();
+        //int userID =1;
+        List<Picture> phoneCostPicList = pictureService.getBank(userID);
+        if(CollectionUtils.isEmpty(phoneCostPicList)) {
+            map.put("picState", "暂无数据");
+        } else {
+            int t=0;
+            int t1=0;
+            int max=0;
+            for(int i = 0; i < phoneCostPicList.size(); i++) {
+                t1=phoneCostPicList.get(i).getPicID();
+                if(t<=t1) {
+                    t=t1;
+                    max=i;
+                }
+            }
+            Picture bankPic=phoneCostPicList.get(max);
+            map.put("picState", bankPic.getState());
         }
         helper.setMsg("Success");
         helper.setData(map);

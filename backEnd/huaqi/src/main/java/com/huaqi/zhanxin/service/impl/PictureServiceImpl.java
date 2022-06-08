@@ -125,6 +125,11 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    public List<Picture> getBank(int userId) {
+        return pictureMapper.getBank(userId);
+    }
+
+    @Override
     public List<Picture> pictureList() {
         return pictureMapper.pictureList();
     }

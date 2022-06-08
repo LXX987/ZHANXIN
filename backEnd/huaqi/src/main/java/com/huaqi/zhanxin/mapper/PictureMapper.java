@@ -33,6 +33,9 @@ public interface PictureMapper {
     @Select("select * from Asset_Verification where user_id =#{userId} and certificate = 'phoneCost' ")
     List<Picture> getPhoneCost(@Param("userId") int userId);
 
+    @Select("select * from Asset_Verification where user_id =#{userId} and certificate = 'bank' ")
+    List<Picture> getBank(@Param("userId") int userId);
+
     // 获取未审核信息列表
     @Select("select * from Asset_Verification where state=0")
     List<Picture> pictureList();
