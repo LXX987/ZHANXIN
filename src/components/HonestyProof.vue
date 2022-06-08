@@ -72,7 +72,7 @@
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
                     <p class="txt-upload">
-                      <el-button type="text" class="btn-text" @click="refresh()">点击上传献血证明</el-button>
+                      <el-button type="text" class="btn-text" @click="refresh()">点击上传全国电子无偿献血证</el-button>
                       只能上传jpg/png文件，且不超过1mb
                     </p>
                   </el-upload>
