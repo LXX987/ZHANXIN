@@ -36,7 +36,31 @@
               <div class="grid-content bg-white">
                 <p class="txt-title">资产数额</p>
                 <p class="txt-highlight">{{asset}}</p>
-                <el-button type="primary" plain class="btn-text" @click="centerDialogVisible = true">绑定银行账户</el-button>
+                <div class="upload-btn">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8899/picture/uploadBank"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <p class="txt-upload">
+                      <el-button type="text" class="btn-text" @click="refresh()">点击上传手机银行非冻结资产证明</el-button>
+                      只能上传jpg/png文件，且不超过1mb
+                    </p>
+                  </el-upload>
+                </div>
+                <el-row>
+                  <el-col :span="4"><p class="txt-tip">材料审核情况：</p></el-col>
+                  <el-col :span="20">
+                    <el-steps :active="activeBank" finish-status="success">
+                      <el-step title="步骤 1：上传照片"></el-step>
+                      <el-step title="步骤 2：审核中"></el-step>
+                      <el-step title="步骤 3：审核通过"></el-step>
+                    </el-steps>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" plain class="btn-text" @click="centerDialogVisible = true">绑定银行账户</el-button>
                 <el-dialog title="绑定银行账户" :visible.sync="centerDialogVisible" width="30%" center>
                   <div>
                     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -62,7 +86,7 @@
                     <el-button @click="resetForm('form')">取 消</el-button>
                     <el-button type="primary" @click="submitForm('form')">确 定</el-button>
                   </span>
-                </el-dialog>
+                </el-dialog> -->
               </div>
             </el-row>
             <el-row class="bg-white mar-top">
@@ -120,6 +144,10 @@ export default {
         editDialogVisible: false,
         asset:'0',
         editAddTime:'',
+        activeBank:0,
+        headers:{
+          'token':window.sessionStorage.getItem("token")
+        },
         form: {
           bank: '',
           money: '',
@@ -147,6 +175,7 @@ export default {
     mounted:function(){
       this.getMoney();
       this.getAsset();
+      this.getBank();
     },
     methods: {
       getMoney() {
@@ -190,6 +219,22 @@ export default {
             else if (this.tableData[i].money==350000) { this.tableData[i].money="20万-50万元"; }
             else if (this.tableData[i].money==750000) { this.tableData[i].money="50万-100万元"; }
             else if (this.tableData[i].money==1000000) { this.tableData[i].money="100万元及以上"; }
+          }
+        },err=>{
+          console.log(err);
+        })
+      },
+      getBank() {
+        this.$axios({
+          method:"get",
+          url: 'http://localhost:8899/picture/getBank',
+          headers: { token:window.sessionStorage.getItem("token")}
+        }).then(res=>{
+          console.log('我的银行审核记录数据：', res.data);
+          if(res.data.data.picState==0) {
+            this.activeBank=1;
+          } else if(res.data.data.picState==1) {
+            this.activeBank=3;
           }
         },err=>{
           console.log(err);
@@ -326,6 +371,17 @@ export default {
         },err=>{
           console.log(err);
         })
+      },
+      refresh() {
+        clearTimeout(this.timer);  //清除延迟执行
+        this.timer = setTimeout(()=>{   //设置延迟执行
+          this.$alert('上传成功', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              location.reload();
+            }
+          });
+        },2000);
       },
       personalCenter() {
         this.$router.push({path: '/PersonalCenter'});
@@ -473,5 +529,25 @@ export default {
   }
   .mar-left {
     margin-left: 10px;
+  }
+  .txt-upload {
+    text-align: left;
+    font-size: 12px;
+    margin-top: 20px;
+    color:#828282;
+  }
+  .btn-text {
+    font-size: 16px;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    margin-right: 40px;
+  }
+  >>>.el-step__icon {
+    display: grid;
+  }
+  .upload-btn {
+    text-align:left;
   }
 </style>

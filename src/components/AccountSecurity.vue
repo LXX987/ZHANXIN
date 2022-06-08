@@ -406,7 +406,7 @@ export default {
     font-size: 16px;
     margin-left: 300px;
   }
-  .el-form-item__label {
+  >>>.el-form-item__label {
     padding: 0px;
   }
   .mar-top2 {
