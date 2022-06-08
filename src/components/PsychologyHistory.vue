@@ -268,6 +268,7 @@ export default {
                     headers:{
                     token:window.sessionStorage.getItem("token")},
                 }).then(res=>{
+                    console.log(res.data.data);
                     var length = res.data.data.historyList.length;
             for(var i = 0; i< length; i++) {  // 通过for循环，在相同class的dom内绘制元素
                 var myChart = echarts.init(roseCharts[i]);
