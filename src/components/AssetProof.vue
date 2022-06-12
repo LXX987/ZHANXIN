@@ -429,6 +429,7 @@ export default {
     background: #1f7c69;
     padding-top: 20px;
     padding-bottom: 20px;
+    height:840px;
   }
   .bg-purple-light {
     background: #F1F6F9;
