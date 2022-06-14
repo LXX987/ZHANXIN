@@ -57,26 +57,26 @@
         <div class="ratelevel">
             <h1>我的信用等级</h1>
             <el-card class="bodycard">
-            <div class="tip"><p>&ensp;&ensp;&ensp;&ensp;我们的信用评级分为六个等级，分别是Excellent(极优秀)、VeryGood(很优秀)、Good(良好)、Fair(一般)、Poor(较差)、VeryBad(很差)。不同的信用等级可以进行不同额度的贷款。</p></div>
+            <div class="tip"><p>&ensp;&ensp;&ensp;&ensp;我们的信用评级分为六个等级，分别是极优秀、很优秀、良好、一般、较差、很差。不同的信用等级可以进行不同额度的贷款。</p></div>
             <div class="rank">
                 <el-row>
                 <el-col :span="4">
                     <div class="excellent">
-                        <li style="list-style:none;font-size:20px;padding-top:25px"><span>excellent</span><p style="font-size:16px">430~500</p></li>
+                        <li style="list-style:none;font-size:20px;padding-top:25px"><span>极优秀</span><p style="font-size:16px">430~500</p></li>
                         <li style="list-style:none" v-if="excellenthere"><i class="el-icon-location"></i>您的信用等级</li>
                         </div></el-col>
                 <el-col :span="4">
                     <div class="veryGood">
-                        <li style="list-style:none;font-size:20px;padding-top:25px"><span>veryGood</span><p style="font-size:16px">360~430</p></li>
+                        <li style="list-style:none;font-size:20px;padding-top:25px"><span>很优秀</span><p style="font-size:16px">360~430</p></li>
                         <li v-if="verygoodhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
                 <el-col :span="4">
-                    <div class="good"><li style="list-style:none;font-size:20px;padding-top:25px"><span>good</span><p style="font-size:16px">290~360</p></li><li v-if="goodhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
+                    <div class="good"><li style="list-style:none;font-size:20px;padding-top:25px"><span>良好</span><p style="font-size:16px">290~360</p></li><li v-if="goodhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
                 <el-col :span="4">
-                    <div class="fair"><li style="list-style:none;font-size:20px;padding-top:25px"><span>fair</span><p style="font-size:16px">220~290</p></li><li v-if="fairhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
+                    <div class="fair"><li style="list-style:none;font-size:20px;padding-top:25px"><span>一般</span><p style="font-size:16px">220~290</p></li><li v-if="fairhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
                 <el-col :span="4">
-                    <div class="poor"><li style="list-style:none;font-size:20px;padding-top:25px"><span>poor</span><p style="font-size:16px">150~220</p></li><li v-if="poorhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
+                    <div class="poor"><li style="list-style:none;font-size:20px;padding-top:25px"><span>较差</span><p style="font-size:16px">150~220</p></li><li v-if="poorhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
                 <el-col :span="4">
-                    <div class="veryBad"><li style="list-style:none;font-size:20px;padding-top:25px"><span>veryBad</span><p style="font-size:16px">小于150</p></li><li v-if="verybadhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
+                    <div class="veryBad"><li style="list-style:none;font-size:20px;padding-top:25px"><span>很差</span><p style="font-size:16px">小于150</p></li><li v-if="verybadhere" style="list-style:none"><i class="el-icon-location"></i>您的信用等级</li></div></el-col>
                 </el-row>
             </div>
             <div class="quota">
@@ -150,28 +150,28 @@
                     this.score=res.data.data.total_score
                     if(this.score<=150){
                         this.verybadhere = true
-                         this.rank = 'VeryBad(很差)'
+                         this.rank = '很差'
                          this.quota="目前您的信用分较低，不建议您进行贷款"
                         }
                         else if(this.score<=220){
                         this.poorhere=true
-                        this.rank = 'Poor(较差)'
+                        this.rank = '较差'
                         this.quota="目前您的信用分较低，不建议您进行贷款"
                         }else if(this.score<=290){
                         this.fairhere=true
-                        this.rank = 'Fair(一般)'
+                        this.rank = '一般'
                         this.quota="目前您的信用分一般，推荐您的消费贷款额度在100元到500元之间"
                         }else if(this.score<=360){
                         this.goodhere=true
-                        this.rank = 'Good(良好)'
+                        this.rank = '良好'
                         this.quota="目前您的信用分良好，推荐您的消费贷款额度在500元到1000元之间"
                         }else if(this.score<=430){
                         this.verygoodhere=true
-                        this.rank = 'VeryGood(很优秀)'
+                        this.rank = '很优秀'
                         this.quota="目前您的信用分优秀，推荐您的消费贷款额度在1000元到5000元之间"
                         }else if(this.score<=500){
                         this.excellenthere=true
-                        this.rank = 'Excellent(极优秀)'
+                        this.rank = '极优秀'
                         this.quota="您的信用等级为极优秀，您的推荐贷款额度为5000及以上"
                         console.log(this.excellenthere);
                         }
