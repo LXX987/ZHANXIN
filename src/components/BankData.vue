@@ -107,6 +107,7 @@ export default {
       this.$axios({
           method:"get",
           url: 'http://localhost:8899/credit/getAllCredit',
+          headers:{token:window.sessionStorage.getItem("token")},
         }).then(res=>{
           console.log(res.data);
           this.NumberOfPerple = res.data.data.totalCount;
@@ -188,6 +189,7 @@ export default {
       this.$axios({
           method:"get",
           url: 'http://localhost:8899/credit/getAllCredit',
+          headers:{token:window.sessionStorage.getItem("token")},
         }).then(res=>{
           console.log(res.data);
           this.NumberOfPerple = res.data.data.totalCount;

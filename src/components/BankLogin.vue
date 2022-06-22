@@ -49,6 +49,7 @@ export default {
           console.log(res.data.msg);
           if(res.data.msg=="登录成功"){
               console.log(res);
+              window.sessionStorage.setItem("token",res.data.token);
               this.$router.push('/BankMain')
           }
           else{
