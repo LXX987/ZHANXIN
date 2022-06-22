@@ -122,10 +122,19 @@ export default {
                 },
                 headers: { token:window.sessionStorage.getItem("token")}
             }).then(res=>{
-                this.$message({
-                  type: 'success',
-                  message: '填写成功!'
-                });
+                console.log(res.data);
+                if(res.data.msg=="关键数据缺失") {
+                  this.$message.error('请输入好友邀请码！')
+                }
+                else if(res.data.data.msg=="该邀请码不存在！") {
+                  this.$message.error('该邀请码不存在！')
+                } else {
+                  this.$message({
+                    type: 'success',
+                    message: '填写成功!'
+                  });                  
+                }
+
             }, err => {
              this.$message.error('该邀请码不存在！')
               })

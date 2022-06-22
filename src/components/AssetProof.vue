@@ -96,7 +96,7 @@
                 <el-table-column prop="money" label="资产数额" width="180"></el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">管理</el-button>
+                    <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">管理</el-button> -->
                     <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                   </template>
                 </el-table-column>
@@ -185,18 +185,24 @@ export default {
           headers: { token:window.sessionStorage.getItem("token")}
         }).then(res=>{
           console.log(res.data);
-          console.log(res.data.data.money);
-          var money=res.data.data.money;
-          console.log("hhh"+money);
-          if(money<=1000) { this.asset="0-1000元"; }
-          else if (money>1000&&money<=5000) {this.asset="1000 - 5000 元"; }
-          else if (money>5000&&money<=10000) { this.asset="5000 - 10000 元"; }
-          else if (money>10000&&money<=50000) { this.asset="1万 - 5万 元"; }
-          else if (money>50000&&money<=100000) { this.asset="5万 - 10万 元"; }
-          else if (money>100000&&money<=200000) { this.asset="10万 - 20万 元"; }
-          else if (money>200000&&money<=500000) { this.asset="20万 - 50万 元"; }
-          else if (money>500000&&money<=1000000) { this.asset="50万 - 100万 元"; }
-          else if (money>1000000) { this.asset="100万元及以上"; }
+          if(res.data.msg=="暂无数据") {
+            this.asset="暂无数据";
+          } else {
+            console.log(res.data.data.money);
+            this.asset=res.data.data.money;            
+          }
+
+
+          // console.log("hhh"+money);
+          // if(money<=1000) { this.asset="0-1000元"; }
+          // else if (money>1000&&money<=5000) {this.asset="1000 - 5000 元"; }
+          // else if (money>5000&&money<=10000) { this.asset="5000 - 10000 元"; }
+          // else if (money>10000&&money<=50000) { this.asset="1万 - 5万 元"; }
+          // else if (money>50000&&money<=100000) { this.asset="5万 - 10万 元"; }
+          // else if (money>100000&&money<=200000) { this.asset="10万 - 20万 元"; }
+          // else if (money>200000&&money<=500000) { this.asset="20万 - 50万 元"; }
+          // else if (money>500000&&money<=1000000) { this.asset="50万 - 100万 元"; }
+          // else if (money>1000000) { this.asset="100万元及以上"; }
         },err=>{
           console.log(err);
         })
